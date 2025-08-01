@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dag 2 - Minecraft Kodekurs</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="success-message" id="successMessage">Kode kopiert! 📋</div>
+    
+    <div class="container">
+        <header>
+            <h1>📅 Dag 2: Agenten og Logikk</h1>
+            <p class="subtitle">Lær syntax, styr agenten og bygg berg-og-dal-bane!</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">🏠 Hjem</a>
+            <a href="dag1.html">Dag 1</a>
+            <a href="dag2.html" class="active">Dag 2</a>
+            <a href="dag3.html">Dag 3</a>
+            <a href="dag4.html">Dag 4</a>
+        </nav>
+
+        <main>
+            <!-- Oppstart -->
+            <section class="concept">
+                <h2>🌅 Oppstart og oppsummering (10 min)</h2>
+                <ul>
+                    <li>Hva husker dere fra i går?</li>
+                    <li>Kjapp runde: fortell om noe gøy som skjedde siden sist</li>
+                </ul>
+            </section>
+
+            <!-- Konsept 1: Syntax -->
+            <section class="concept">
+                <h2>📝 Konsept 1: Hva er syntax? (15 min)</h2>
+                
+                <h3>Hva er syntax?</h3>
+                <ul>
+                    <li>Reglene for hvordan kode må skrives</li>
+                    <li>Som grammatikk i norsk - alt må være helt riktig</li>
+                    <li>Én liten feil kan ødelegge hele programmet</li>
+                </ul>
+
+                <h3>Vanlige syntax-feil:</h3>
+                <ul>
+                    <li>Glemme kolon <code>:</code> etter for-løkke</li>
+                    <li>Feil innrykk (ikke hakket inn koden)</li>
+                    <li>Feil på store/små bokstaver i variabelnavn</li>
+                    <li>Glemme anførselstegn rundt tekst</li>
+                </ul>
+
+                <h3>Demonstrasjon av feil:</h3>
+                <div class="code-block">
+                    <div class="code-title">❌ FEIL - mangler kolon</div>
+                    <pre>for count in range(5)
+    player.say("Hei")</pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-title">✅ RIKTIG</div>
+                    <pre>for count in range(5):
+    player.say("Hei")</pre>
+                </div>
+            </section>
+
+            <!-- Oppgave 1 -->
+            <section class="exercise">
+                <div class="exercise-header">
+                    <h3>🎯 Oppgave 1: Finn feilen (10 min)</h3>
+                </div>
+                <p><strong>Oppgave:</strong> Disse kodene har feil. Finn og fiks dem:</p>
+                
+                <div class="code-block">
+                    <div class="code-title">Feil 1:</div>
+                    <pre>for i in range(3)
+player.say("Test")</pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-title">Feil 2:</div>
+                    <pre>mitt_navn = "Ola"
+player.say(mitt_Navn)</pre>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-title">Feil 3:</div>
+                    <pre>for count in range(5):
+player.say("Hallo")</pre>
+                </div>
+                
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution1')">
+                        <span>👁️ Vis fasit</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution1">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>✅ Rett 1 - manglet kolon og innrykk</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>for i in range(3):
+    player.say("Test")</pre>
+                        </div>
+
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>✅ Rett 2 - feil på stor/liten bokstav</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>mitt_navn = "Ola"
+player.say(mitt_navn)</pre>
+                        </div>
+
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>✅ Rett 3 - mangler innrykk</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>for count in range(5):
+    player.say("Hallo")</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Konsept 2: Agenten -->
+            <section class="concept">
+                <h2>🤖 Konsept 2: Møt agenten (20 min)</h2>
+                
+                <h3>Hva er agenten?</h3>
+                <ul>
+                    <li>En robot i Minecraft som kan følge instruksjoner</li>
+                    <li>Må få helt nøyaktige kommandoer</li>
+                    <li>Kan bevege seg, bygge, knuse blokker</li>
+                </ul>
+
+                <h3>Grunnleggende agent-kommandoer:</h3>
+                <div class="code-block">
+                    <div class="code-title">Agent kommandoer</div>
+                    <pre>agent.teleport_to_player()           # Hent agenten til deg
+agent.move(FORWARD, 1)               # Gå 1 steg fremover
+agent.turn(TurnDirection.LEFT)       # Snu til venstre
+agent.place(DOWN)                    # Plasser blokk under seg
+agent.destroy(FORWARD)               # Knus blokk foran seg</pre>
+                </div>
+
+                <div class="important">
+                    <div class="important-title">⚠️ Retninger:</div>
+                    <ul>
+                        <li><code>FORWARD</code> (fremover), <code>BACK</code> (bakover)</li>
+                        <li><code>LEFT</code> (venstre), <code>RIGHT</code> (høyre)</li>
+                        <li><code>UP</code> (opp), <code>DOWN</code> (ned)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Oppgave 2 -->
+            <section class="exercise">
+                <div class="exercise-header">
+                    <h3>🎯 Oppgave 2: Hent agenten (5 min)</h3>
+                </div>
+                <p><strong>Oppgave:</strong> Få agenten til å teleportere til deg og si "Hei!"</p>
+                
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution2')">
+                        <span>👁️ Vis fasit</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution2">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Fasit - Hent agenten</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>agent.teleport_to_player()
+player.say("Agenten er her!")</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hovedoppgave 1: Dans -->
+            <section class="exercise" style="border-color: #28a745; background: #d4edda;">
+                <div class="exercise-header">
+                    <h3>💃 Hovedoppgave 1: Enkel dans (25 min)</h3>
+                </div>
+                
+                <div class="steps">
+                    <div class="steps-title">📋 Oppgave i deler:</div>
+                    <p><strong>Del 1:</strong> Få agenten til å gå frem og tilbake</p>
+                    <p><strong>Del 2:</strong> Legg til sving i dansen</p>
+                    <p><strong>Del 3:</strong> Gjenta dansen flere ganger med for-løkke</p>
+                </div>
+                
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution3')">
+                        <span>👁️ Vis fasit Del 1</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution3">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Fasit Del 1 - Frem og tilbake</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>def enkel_dans():
+    agent.teleport_to_player()
+    agent.move(FORWARD, 2)
+    agent.move(BACK, 2)
+
+enkel_dans()</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution4')">
+                        <span>👁️ Vis fasit Del 2</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution4">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Fasit Del 2 - Med sving</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>def dans_med_sving():
+    agent.teleport_to_player()
+    agent.move(FORWARD, 2)
+    agent.turn(TurnDirection.LEFT)
+    agent.move(FORWARD, 2)
+    agent.turn(TurnDirection.RIGHT)
+    agent.move(BACK, 2)
+
+dans_med_sving()</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution5')">
+                        <span>👁️ Vis fasit Del 3</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution5">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Fasit Del 3 - Gjentagende dans</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>def gjentagende_dans():
+    agent.teleport_to_player()
+    
+    for count in range(3):
+        agent.move(FORWARD, 2)
+        agent.turn(TurnDirection.LEFT)
+        agent.move(FORWARD, 1)
+        agent.turn(TurnDirection.RIGHT)
+        agent.move(BACK, 3)
+        agent.turn(TurnDirection.LEFT)
+
+gjentagende_dans()</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pause -->
+            <section class="concept">
+                <h2>☕ Pause (10 min)</h2>
+                <p>Aktiviteter som fremmer samarbeid og bli-kjent</p>
+            </section>
+
+            <!-- Konsept 3: If-setninger -->
+            <section class="concept">
+                <h2>🤔 Konsept 3: Vilkår (if-setninger) (20 min)</h2>
+                
+                <h3>Hva er et vilkår?</h3>
+                <ul>
+                    <li>En måte for programmet å ta beslutninger</li>
+                    <li>Spør: "Er dette sant?" - hvis ja, gjør noe, hvis nei, hopp over</li>
+                    <li>Som å si: "Hvis det regner, ta med paraply"</li>
+                </ul>
+
+                <h3>Struktur av if-setning:</h3>
+                <div class="code-block">
+                    <div class="code-title">If-setning struktur</div>
+                    <pre>if vilkår:
+    # Dette skjer hvis vilkåret er sant</pre>
+                </div>
+
+                <div class="important">
+                    <div class="important-title">⚠️ Sammenligning med == (to likhetstegn):</div>
+                    <ul>
+                        <li><code>=</code> lager variabel: <code>navn = "Ola"</code></li>
+                        <li><code>==</code> sammenligner: <code>if navn == "Ola"</code></li>
+                    </ul>
+                </div>
+
+                <h3>Eksempel:</h3>
+                <div class="code-block">
+                    <div class="code-title">If-setning eksempel</div>
+                    <pre>alder = 12
+if alder >= 10:
+    player.say("Du er stor nok!")</pre>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-title">💡 Vanlige sammenligninger:</div>
+                    <ul>
+                        <li><code>==</code> (er lik)</li>
+                        <li><code>&gt;</code> (større enn)</li>
+                        <li><code>&lt;</code> (mindre enn)</li>
+                        <li><code>&gt;=</code> (større enn eller lik)</li>
+                        <li><code>&lt;=</code> (mindre enn eller lik)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Oppgave 4 -->
+            <section class="exercise">
+                <div class="exercise-header">
+                    <h3>🎯 Oppgave 4: Enkel if-setning (10 min)</h3>
+                </div>
+                <p><strong>Oppgave:</strong> Lag en variabel med ditt favorittdyr. Hvis det er "hund", skal spilleren si "Voff voff!"</p>
+                
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution6')">
+                        <span>👁️ Vis fasit</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution6">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Fasit - If-setning</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>favorittdyr = "hund"
+
+if favorittdyr == "hund":
+    player.say("Voff voff!")</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Konsept 4: Agent bygger -->
+            <section class="concept">
+                <h2>🏗️ Konsept 4: Agent kan bygge komplekse strukturer (15 min)</h2>
+                
+                <h3>Agent kan plassere blokker strategisk:</h3>
+                <div class="code-block">
+                    <div class="code-title">Agent building</div>
+                    <pre>agent.set_item(STONE, 64, 1)  # Gi agenten 64 stein i slot 1
+agent.place(DOWN)             # Plasser blokk under seg
+agent.place(FORWARD)          # Plasser blokk foran seg</pre>
+                </div>
+
+                <h3>Agenten kan bygge mens den beveger seg:</h3>
+                <ul>
+                    <li>Kombinere movement og place-kommandoer</li>
+                    <li>Bruke for-løkker for å bygge lange strukturer</li>
+                    <li>Variere høyde og retning for komplekse former</li>
+                </ul>
+
+                <h3>Eksempel - bygge en enkel bro:</h3>
+                <div class="code-block">
+                    <div class="code-title">
+                        <span>Enkel bro</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                    </div>
+                    <pre>def bygg_bro():
+    agent.set_item(STONE, 64, 1)
+    for i in range(10):
+        agent.place(DOWN)
+        agent.move(FORWARD, 1)</pre>
+                </div>
+            </section>
+
+            <!-- Oppgave 5 -->
+            <section class="exercise">
+                <div class="exercise-header">
+                    <h3>🎯 Oppgave 5: Agent bygger trapp (10 min)</h3>
+                </div>
+                <p><strong>Oppgave:</strong> Få agenten til å bygge en trapp oppover</p>
+                
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution7')">
+                        <span>👁️ Vis fasit</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution7">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Fasit - Trapp</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>def bygg_trapp():
+    agent.teleport_to_player()
+    agent.set_item(STONE, 64, 1)
+    
+    for steg in range(8):
+        agent.place(DOWN)
+        agent.move(FORWARD, 1)
+        agent.move(UP, 1)
+
+bygg_trapp()</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hovedoppgave 2: Berg-og-dal-bane -->
+            <section class="exercise" style="border-color: #28a745; background: #d4edda;">
+                <div class="exercise-header">
+                    <h3>🎢 Hovedoppgave 2: Berg-og-dal-bane (30 min)</h3>
+                </div>
+                
+                <div class="steps">
+                    <div class="steps-title">📋 Oppgave:</div>
+                    <p>Programmere agenten til å bygge en berg-og-dal-bane med:</p>
+                    <ul>
+                        <li>Skinner som går oppover og nedover</li>
+                        <li>Stein som fundament under skinnene</li>
+                        <li>Agenten følger en bane-rute</li>
+                    </ul>
+                </div>
+                
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution8')">
+                        <span>👁️ Vis fasit - Enkel berg-og-dal-bane</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution8">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Fasit - Berg-og-dal-bane</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>def berg_og_dal_bane():
+    agent.teleport_to_player()
+    
+    # Gi agenten materialer
+    agent.set_item(STONE, 64, 1)
+    agent.set_item(RAIL, 64, 2)
+    
+    # Bygg første del - oppover
+    for steg in range(8):
+        agent.set_slot(1)  # Velg stein
+        agent.place(DOWN)
+        agent.set_slot(2)  # Velg skinner
+        agent.place(DOWN)
+        agent.move(FORWARD, 1)
+        agent.move(UP, 1)  # Gå oppover
+    
+    # Bygg andre del - flatt
+    for steg in range(6):
+        agent.set_slot(1)
+        agent.place(DOWN)
+        agent.set_slot(2)
+        agent.place(DOWN)
+        agent.move(FORWARD, 1)
+    
+    # Bygg tredje del - nedover
+    for steg in range(8):
+        agent.set_slot(1)
+        agent.place(DOWN)
+        agent.set_slot(2)
+        agent.place(DOWN)
+        agent.move(FORWARD, 1)
+        agent.move(DOWN, 1)  # Gå nedover
+
+berg_og_dal_bane()</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>🌟 Ekstra utfordring: Avansert berg-og-dal-bane med kurver</h4>
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution9')">
+                        <span>👁️ Vis fasit - Avansert versjon</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution9">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Fasit - Avansert berg-og-dal-bane</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>def avansert_berg_og_dal():
+    agent.teleport_to_player()
+    
+    # Gi agenten materialer
+    agent.set_item(STONE, 64, 1)
+    agent.set_item(RAIL, 64, 2)
+    agent.set_item(POWERED_RAIL, 16, 3)  # Ekstra fart!
+    
+    # Del 1: Oppover med powered rails
+    for steg in range(10):
+        agent.set_slot(1)
+        agent.place(DOWN)
+        
+        # Hver 3. skinne er powered rail
+        if steg % 3 == 0:
+            agent.set_slot(3)
+        else:
+            agent.set_slot(2)
+        agent.place(DOWN)
+        
+        agent.move(FORWARD, 1)
+        agent.move(UP, 1)
+    
+    # Del 2: Kurve til høyre
+    agent.turn(TurnDirection.RIGHT)
+    for steg in range(5):
+        agent.set_slot(1)
+        agent.place(DOWN)
+        agent.set_slot(2)
+        agent.place(DOWN)
+        agent.move(FORWARD, 1)
+    
+    # Del 3: Bratt nedover
+    agent.turn(TurnDirection.RIGHT)
+    for steg in range(12):
+        agent.set_slot(1)
+        agent.place(DOWN)
+        agent.set_slot(2)
+        agent.place(DOWN)
+        agent.move(FORWARD, 1)
+        agent.move(DOWN, 1)
+    
+    # Del 4: Loop tilbake
+    agent.turn(TurnDirection.RIGHT)
+    for steg in range(8):
+        agent.set_slot(1)
+        agent.place(DOWN)
+        agent.set_slot(2)
+        agent.place(DOWN)
+        agent.move(FORWARD, 1)
+
+avansert_berg_og_dal()</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Oppsummering -->
+            <section class="concept">
+                <h2>📝 Oppsummering og utsikter (10 min)</h2>
+                
+                <h3>🎉 Hva har vi lært i dag?</h3>
+                <ul>
+                    <li>Syntax må være helt riktig</li>
+                    <li>Agenten kan bevege seg og utføre oppgaver</li>
+                    <li>If-setninger lar programmet ta beslutninger</li>
+                    <li>Agenten kan bygge komplekse strukturer som berg-og-dal-baner</li>
+                </ul>
+
+                <div class="tip">
+                    <div class="tip-title">🚀 I morgen:</div>
+                    <ul>
+                        <li>Bygge noe stort og kreativt</li>
+                        <li>Bruke alt vi har lært</li>
+                        <li>Lage vår egen feriedestinasjon!</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Navigasjon -->
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="dag1.html" class="day-link" style="margin-right: 20px;">← Forrige: Dag 1</a>
+                <a href="dag3.html" class="day-link">Neste: Dag 3 - Koordinater og Kreativitet →</a>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 Minecraft Kodekurs - Dag 2 fullført! 🎉</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleSolution(solutionId) {
+            const content = document.getElementById(solutionId);
+            const header = content.previousElementSibling;
+            const icon = header.querySelector('.toggle-icon');
+            
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                icon.classList.remove('rotated');
+            } else {
+                content.classList.add('show');
+                icon.classList.add('rotated');
+            }
+        }
+
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-title').nextElementSibling;
+            const code = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(code).then(function() {
+                showSuccessMessage();
+                button.textContent = 'Kopiert! ✓';
+                button.style.background = '#38a169';
+                
+                setTimeout(() => {
+                    button.textContent = 'Kopier';
+                    button.style.background = '#48bb78';
+                }, 2000);
+            });
+        }
+        
+        function showSuccessMessage() {
+            const message = document.getElementById('successMessage');
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
