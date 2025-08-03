@@ -282,9 +282,9 @@ player.say("Hei")</pre>
                         <span>Spawn ett dyr</span>
                         <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                     </div>
-                    <pre>mobs.spawn(CHICKEN, pos(0, 5, 0))
+                    <pre>mobs.spawn(CHICKEN, world(0, 5, 0))
 # CHICKEN = type dyr
-# pos(0, 5, 0) = x, y, z koordinater</pre>
+# world(0, 5, 0) = x, y, z koordinater</pre>
                 </div>
 
                 <h3>Forskjellige dyr du kan spawne:</h3>
@@ -298,9 +298,9 @@ player.say("Hei")</pre>
                 <div class="important">
                     <div class="important-title">⚠️ Koordinat-tips:</div>
                     <ul>
-                        <li><strong>pos(0, 5, 0)</strong> - spawner 5 blokker over spilleren</li>
-                        <li><strong>pos(3, 5, 0)</strong> - spawner 3 blokker til høyre</li>
-                        <li><strong>pos(0, 10, 0)</strong> - spawner høyere oppe</li>
+                        <li><strong>world(0, 5, 0)</strong> - spawner 5 blokker over spilleren</li>
+                        <li><strong>world(3, 5, 0)</strong> - spawner 3 blokker til høyre</li>
+                        <li><strong>world(0, 10, 0)</strong> - spawner høyere oppe</li>
                     </ul>
                 </div>
             </section>
@@ -323,10 +323,10 @@ player.say("Hei")</pre>
                                 <span>Fasit - Spawne forskjellige dyr</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre>mobs.spawn(CHICKEN, pos(0, 5, 0))
-mobs.spawn(SHEEP, pos(3, 5, 0))
-mobs.spawn(COW, pos(-3, 5, 0))
-mobs.spawn(PIG, pos(0, 5, 3))</pre>
+                            <pre>mobs.spawn(CHICKEN, world(0, 5, 0))
+mobs.spawn(SHEEP, world(3, 5, 0))
+mobs.spawn(COW, world(-3, 5, 0))
+mobs.spawn(PIG, world(0, 5, 3))</pre>
                         </div>
                     </div>
                 </div>
@@ -355,7 +355,7 @@ mobs.spawn(PIG, pos(0, 5, 3))</pre>
                         <p><strong>Tips:</strong></p>
                         <ul>
                             <li>Bruk <code>count</code> variabelen i koordinatene for å få forskjellige posisjoner</li>
-                            <li>Prøv <code>pos(count, 5, 0)</code> for å spre dyrene utover</li>
+                            <li>Prøv <code>world(count, 5, 0)</code> for å spre dyrene utover</li>
                             <li>Husk kolon etter for-løkken og innrykk for alt som skal gjentas</li>
                         </ul>
                     </div>
@@ -376,7 +376,7 @@ mobs.spawn(PIG, pos(0, 5, 3))</pre>
 player.say("Starter kylling-regn!")
 
 for count in range(antall_kyllinger):
-    mobs.spawn(CHICKEN, pos(count, 5, 0))
+    mobs.spawn(CHICKEN, world(count, 5, 0))
     player.say(count + 1)
 
 player.say("Ferdig!")</pre>
@@ -404,13 +404,13 @@ player.say("Ferdig!")</pre>
                             </div>
                             <pre>for count in range(20):
     if count < 5:
-        mobs.spawn(CHICKEN, pos(count, 5, count))
+        mobs.spawn(CHICKEN, world(count, 5, count))
     elif count < 10:
-        mobs.spawn(SHEEP, pos(count - 5, 5, count - 5))
+        mobs.spawn(SHEEP, world(count - 5, 5, count - 5))
     elif count < 15:
-        mobs.spawn(COW, pos(count - 10, 5, count - 10))
+        mobs.spawn(COW, world(count - 10, 5, count - 10))
     else:
-        mobs.spawn(PIG, pos(count - 15, 5, count - 15))</pre>
+        mobs.spawn(PIG, world(count - 15, 5, count - 15))</pre>
                         </div>
                     </div>
                 </div>
