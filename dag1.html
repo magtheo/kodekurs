@@ -144,9 +144,10 @@
                         <span>Eksempel på variabler</span>
                         <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                     </div>
-                    <pre>navn = "Ola"
-                        alder = 12
-                        vekt = 56.5
+                    <pre>
+navn = "Ola"
+alder = 12
+vekt = 56.5
                 </pre>
                 </div>
 
@@ -264,17 +265,100 @@ player.say("Hei")</pre>
                 </div>
             </section>
 
+            <!-- Konsept 4: Koordinater og Spawning -->
+            <section class="concept">
+                <h2>📍 Konsept 4: Koordinater og spawne dyr (20 min)</h2>
+                
+                <h3>Hva er koordinater?</h3>
+                <ul>
+                    <li>Som en adresse i Minecraft-verdenen</li>
+                    <li>Forteller hvor noe skal plasseres</li>
+                    <li>Har tre tall: x (øst/vest), y (opp/ned), z (nord/sør)</li>
+                </ul>
+
+                <h3>Hvordan spawne dyr:</h3>
+                <div class="code-block">
+                    <div class="code-title">
+                        <span>Spawn ett dyr</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                    </div>
+                    <pre>mobs.spawn(CHICKEN, pos(0, 5, 0))
+# CHICKEN = type dyr
+# pos(0, 5, 0) = x, y, z koordinater</pre>
+                </div>
+
+                <h3>Forskjellige dyr du kan spawne:</h3>
+                <ul>
+                    <li><code>CHICKEN</code> - kylling</li>
+                    <li><code>SHEEP</code> - sau</li>
+                    <li><code>COW</code> - ku</li>
+                    <li><code>PIG</code> - gris</li>
+                </ul>
+
+                <div class="important">
+                    <div class="important-title">⚠️ Koordinat-tips:</div>
+                    <ul>
+                        <li><strong>pos(0, 5, 0)</strong> - spawner 5 blokker over spilleren</li>
+                        <li><strong>pos(3, 5, 0)</strong> - spawner 3 blokker til høyre</li>
+                        <li><strong>pos(0, 10, 0)</strong> - spawner høyere oppe</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Oppgave 4: Test spawning -->
+            <section class="exercise">
+                <div class="exercise-header">
+                    <h3>🎯 Oppgave 4: Test å spawne dyr (10 min)</h3>
+                </div>
+                <p><strong>Oppgave:</strong> Spawn ett dyr av hver type på forskjellige steder</p>
+                
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution4a')">
+                        <span>👁️ Vis fasit</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution4a">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Fasit - Spawne forskjellige dyr</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre>mobs.spawn(CHICKEN, pos(0, 5, 0))
+mobs.spawn(SHEEP, pos(3, 5, 0))
+mobs.spawn(COW, pos(-3, 5, 0))
+mobs.spawn(PIG, pos(0, 5, 3))</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Hovedoppgave: Kylling-regn -->
             <section class="exercise" style="border-color: #28a745; background: #d4edda;">
                 <div class="exercise-header">
-                    <h3>🐔 Hovedoppgave: Kylling-regn (25 min)</h3>
+                    <h3>🐔 Hovedoppgave: Kylling-regn med koordinater (25 min)</h3>
                 </div>
                 
                 <div class="steps">
                     <div class="steps-title">📋 Oppgave i deler:</div>
-                    <p><strong>Del 1:</strong> Lag en variabel for antall kyllinger og spawn dem</p>
+                    <p><strong>Del 1:</strong> Lag en variabel for antall kyllinger</p>
                     <p><strong>Del 2:</strong> Bruk for-løkke for å spawne mange kyllinger</p>
-                    <p><strong>Del 3:</strong> Få spilleren til å telle høyt mens kyllingene spawner</p>
+                    <p><strong>Del 3:</strong> Bruk koordinater for å plassere kyllingene forskjellige steder</p>
+                    <p><strong>Del 4:</strong> Få spilleren til å telle høyt mens kyllingene spawner</p>
+                </div>
+
+                <div class="hint">
+                    <div class="hint-header" onclick="toggleSolution('hint4')">
+                        <span>💡 Hint (klikk for å vise)</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="hint4">
+                        <p><strong>Tips:</strong></p>
+                        <ul>
+                            <li>Bruk <code>count</code> variabelen i koordinatene for å få forskjellige posisjoner</li>
+                            <li>Prøv <code>pos(count, 5, 0)</code> for å spre dyrene utover</li>
+                            <li>Husk kolon etter for-løkken og innrykk for alt som skal gjentas</li>
+                        </ul>
+                    </div>
                 </div>
                 
                 <div class="solution">
@@ -285,15 +369,15 @@ player.say("Hei")</pre>
                     <div class="solution-content" id="solution4">
                         <div class="code-block">
                             <div class="code-title">
-                                <span>Fasit - Kylling-regn</span>
+                                <span>Fasit - Kylling-regn med koordinater</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
                             <pre>antall_kyllinger = 20
 player.say("Starter kylling-regn!")
 
 for count in range(antall_kyllinger):
-    mobs.spawn(CHICKEN, pos(0, 5, 0))
-    player.say(count)
+    mobs.spawn(CHICKEN, pos(count, 5, 0))
+    player.say(count + 1)
 
 player.say("Ferdig!")</pre>
                         </div>
@@ -303,8 +387,8 @@ player.say("Ferdig!")</pre>
                 <h4>🌟 Ekstra utfordringer:</h4>
                 <ol>
                     <li><strong>Lett:</strong> Endre antall kyllinger til 50</li>
-                    <li><strong>Medium:</strong> Spawn forskjellige dyr (SHEEP, COW, PIG)</li>
-                    <li><strong>Vanskelig:</strong> Få dyrene til å spawne på forskjellige høyder</li>
+                    <li><strong>Medium:</strong> Spawn forskjellige dyr på forskjellige koordinater</li>
+                    <li><strong>Vanskelig:</strong> Få dyrene til å spawne i en sirkel rundt spilleren</li>
                 </ol>
 
                 <div class="solution">
@@ -320,13 +404,13 @@ player.say("Ferdig!")</pre>
                             </div>
                             <pre>for count in range(20):
     if count < 5:
-        mobs.spawn(CHICKEN, pos(0, 5, 0))
+        mobs.spawn(CHICKEN, pos(count, 5, count))
     elif count < 10:
-        mobs.spawn(SHEEP, pos(0, 5, 0))
+        mobs.spawn(SHEEP, pos(count - 5, 5, count - 5))
     elif count < 15:
-        mobs.spawn(COW, pos(0, 5, 0))
+        mobs.spawn(COW, pos(count - 10, 5, count - 10))
     else:
-        mobs.spawn(PIG, pos(0, 5, 0))</pre>
+        mobs.spawn(PIG, pos(count - 15, 5, count - 15))</pre>
                         </div>
                     </div>
                 </div>
@@ -343,13 +427,6 @@ player.say("Ferdig!")</pre>
                     <li>For-løkker gjentar kode</li>
                 </ul>
 
-                <div class="tip">
-                    <div class="tip-title">🤔 Tenk på til i morgen:</div>
-                    <ul>
-                        <li>Hva kunne vært gøy å programmere i Minecraft?</li>
-                        <li>Hvilke instruksjoner ville du gitt til en robot?</li>
-                    </ul>
-                </div>
             </section>
 
             <!-- Navigasjon -->
