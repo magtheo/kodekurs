@@ -1,55 +1,732 @@
-<!-- Presentasjon -->
-            <section class="concept">
-                <h2>🎤 Presentasjon og deling (15 min)</h2>
-                
-                <h3>Vis frem prosjektene:</h3>
-                <ul>
-                    <li>Hver deltager/gruppe viser sitt ferested</li>
-                    <li>Forklar hva som er programmert vs bygget for hånd</li>
-                    <li>Del favoritt-kommando du lagde</li>
-                </ul>
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dag 5 - Minecraft Kodekurs</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="success-message" id="successMessage">Kode kopiert! 📋</div>
+    
+    <div class="container">
+        <header>
+            <h1>📅 Dag 5: Oppsummering og Presentasjon</h1>
+            <p class="subtitle">Oppsummer, jobb på prosjekter og vis frem til foreldre!</p>
+        </header>
 
-                <h3>Refleksjon:</h3>
-                <ul>
-                    <li>Hva var vanskeligst å programmere?</li>
-                    <li>Hva ville du gjort annerledes?</li>
-                    <li>Hva vil du lære mer om?</li>
-                </ul>
+        <nav class="nav">
+            <a href="index.html">🏠 Hjem</a>
+            <a href="dag1.html">Dag 1</a>
+            <a href="dag2.html">Dag 2</a>
+            <a href="dag3.html">Dag 3</a>
+            <a href="dag4.html">Dag 4</a>
+            <a href="dag5.html" class="active">Dag 5</a>
+        </nav>
+
+        <main>
+            <!-- Velkommen -->
+            <section class="concept" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 30px; border-radius: 15px;">
+                <h2>🌅 Velkommen til siste dag!</h2>
+                <p style="font-size: 1.2em; margin: 20px 0;">I dag skal vi oppsummere alt vi har lært og vise frem våre fantastiske prosjekter!</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 30px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <strong>🎯 Dagens program:</strong><br>
+                        Oppsummering og refleksjon
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <strong>🏗️ Prosjektarbeid:</strong><br>
+                        Fullføre egne kreasjoner
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <strong>👨‍👩‍👧‍👦 Presentasjon:</strong><br>
+                        Vise frem til foreldre
+                    </div>
+                </div>
             </section>
 
-            <!-- Oppsummering av kurset -->
+            <!-- Oppsummering av hele kurset -->
             <section class="concept">
-                <h2>📚 Oppsummering av hele kurset (10 min)</h2>
+                <h2>📚 Komplett oppsummering av kurset (30 min)</h2>
                 
-                <h3>🎉 Hva har vi lært denne uken?</h3>
+                <h3>🎉 Se hvor utrolig mye du har lært!</h3>
                 <div class="days-grid">
                     <div class="tip-card">
-                        <h4>📅 Dag 1</h4>
-                        <p>Variabler, for-løkker, grunnleggende programmering</p>
+                        <h4>📅 Dag 1: Grunnleggende Programmering</h4>
+                        <ul>
+                            <li><strong>Variabler:</strong> Lagret informasjon som navn og alder</li>
+                            <li><strong>For-løkker:</strong> Gjentok kode mange ganger</li>
+                            <li><strong>Koordinater:</strong> Plasserte ting på bestemte steder</li>
+                            <li><strong>Hovedprosjekt:</strong> Kylling-regn med 20+ kyllinger! 🐔</li>
+                        </ul>
                     </div>
                     <div class="tip-card">
-                        <h4>📅 Dag 2</h4>
-                        <p>Agent-kommandoer, if-setninger, syntax</p>
+                        <h4>📅 Dag 2: Agenten og Logikk</h4>
+                        <ul>
+                            <li><strong>Syntax:</strong> Lærte viktigheten av nøyaktig kode</li>
+                            <li><strong>Agenten:</strong> Styrt en robot til å bevege seg og bygge</li>
+                            <li><strong>If-setninger:</strong> Laget programmer som tar beslutninger</li>
+                            <li><strong>Hovedprosjekt:</strong> Berg-og-dal-bane med skinner! 🎢</li>
+                        </ul>
                     </div>
                     <div class="tip-card">
-                        <h4>📅 Dag 3</h4>
-                        <p>Koordinater, bygge-kommandoer, kreativt prosjekt</p>
+                        <h4>📅 Dag 3: Interaktive Dører</h4>
+                        <ul>
+                            <li><strong>Kommandoblocker:</strong> Blokker som kjører kommandoer</li>
+                            <li><strong>Python lytting:</strong> Kode som reagerer på omgivelsene</li>
+                            <li><strong>Koordinat-system:</strong> Koblet sammen blokker og kode</li>
+                            <li><strong>Hovedprosjekt:</strong> Dører som åpnes og lukkes med knapper! 🚪</li>
+                        </ul>
+                    </div>
+                    <div class="tip-card">
+                        <h4>📅 Dag 4: Monster-Spawning</h4>
+                        <ul>
+                            <li><strong>Bevegelsesdeteksjon:</strong> Oppdaget når spilleren beveger seg</li>
+                            <li><strong>Monster-spawning:</strong> Spawnet farlige monstre automatisk</li>
+                            <li><strong>Områder og soner:</strong> Laget forskjellige farlige områder</li>
+                            <li><strong>Hovedprosjekt:</strong> Farlig dungeon med automatic monstre! 👾</li>
+                        </ul>
                     </div>
                 </div>
 
-                <h3>🏆 Viktigste lærdommer:</h3>
-                <ul>
-                    <li>Datamaskiner trenger nøyaktige instruksjoner</li>
-                    <li>Programmering handler om å dele opp store problemer i små steg</li>
-                    <li>Kreativitet + koding = fantastiske resultater!</li>
-                </ul>
+                <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; margin: 30px 0;">
+                    <h3>🏆 Du behersker nå:</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                        <div><strong>🔧 Grunnleggende programmering:</strong> Variabler, løkker, if-setninger</div>
+                        <div><strong>🤖 Automatisering:</strong> Få datamaskinen til å gjøre jobben for deg</div>
+                        <div><strong>🎮 Interaktivitet:</strong> Lage systemer som reagerer på spilleren</div>
+                        <div><strong>🏗️ Problemløsning:</strong> Bryte ned store problemer i små deler</div>
+                    </div>
+                </div>
+            </section>
 
-                <div class="tip">
-                    <div class="tip-title">🚀 Videre læring:</div>
+            <!-- Refleksjon og diskusjon -->
+            <section class="concept">
+                <h2>💭 Refleksjon og diskusjon (20 min)</h2>
+                
+                <h3>🗣️ La oss snakke sammen:</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>❓ Hva var mest gøy?</h4>
+                        <p>Hvilken dag eller oppgave likte du best?</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>❓ Hva var vanskeligst?</h4>
+                        <p>Hvor måtte du tenke mest?</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>❓ Hva vil du lage hjemme?</h4>
+                        <p>Hvilke prosjekter har du lyst til å fortsette med?</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>❓ Andre spørsmål?</h4>
+                        <p>Er det noe du lurer på om programmering?</p>
+                    </div>
+                </div>
+
+                <div class="important">
+                    <div class="important-title">🧠 Viktige leksjoner vi har lært:</div>
                     <ul>
-                        <li>Minecraft Education har flere kurs</li>
-                        <li>Prøv andre programmeringsspråk</li>
-                        <li>Lag egne prosjekter hjemme</li>
+                        <li><strong>Tålmodighet:</strong> Programmering krever at vi prøver mange ganger</li>
+                        <li><strong>Nøyaktighet:</strong> Små feil kan ødelegge alt, men det er normalt</li>
+                        <li><strong>Kreativitet:</strong> Det finnes mange måter å løse samme problem på</li>
+                        <li><strong>Samarbeid:</strong> Vi lærer best når vi hjelper hverandre</li>
                     </ul>
                 </div>
             </section>
+
+            <!-- Pause -->
+            <section class="concept">
+                <h2>☕ Pause (10 min)</h2>
+                <p>Siste pause før vi forbereder presentasjoner!</p>
+            </section>
+
+            <!-- Prosjektarbeid -->
+            <section class="exercise" style="border-color: #28a745; background: #d4edda;">
+                <div class="exercise-header">
+                    <h3>🏗️ Prosjektarbeid: Fullfør dine kreasjoner (45 min)</h3>
+                </div>
+                
+                <div class="steps">
+                    <div class="steps-title">🎯 Velg ditt fokus:</div>
+                    
+                    <div class="project-options">
+                        <div class="tip-card">
+                            <h4>🔧 Forbedre eksisterende prosjekt</h4>
+                            <p>Ta ett av prosjektene dine fra tidligere dager og gjør det enda bedre!</p>
+                            <ul>
+                                <li>Legg til flere funksjoner</li>
+                                <li>Gjør det mer avansert</li>
+                                <li>Fiks bugs eller problemer</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="tip-card">
+                            <h4>🆕 Start nytt storprosjekt</h4>
+                            <p>Kombiner alt du har lært til noe helt nytt!</p>
+                            <ul>
+                                <li>Bruk variabler, løkker og if-setninger</li>
+                                <li>Kombiner agenten, dører og monstre</li>
+                                <li>Lag din egen unike verden</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="tip-card">
+                            <h4>👥 Samarbeidsprosjekt</h4>
+                            <p>Jobb sammen med en venn!</p>
+                            <ul>
+                                <li>En person fokuserer på Python-kode</li>
+                                <li>Andre person bygger i Minecraft</li>
+                                <li>Kombiner kreftene deres!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>💡 Prosjektidéer for inspirasjon:</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>🏛️ Interaktiv museum</h4>
+                        <p>Informasjon dukker opp når du går rundt</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🎮 Mini-spill</h4>
+                        <p>Lag ditt eget spill med regler og poeng</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🏙️ Smart by</h4>
+                        <p>Bygninger som reagerer på deg</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🎪 Magisk show</h4>
+                        <p>En scene med triks og overraskelser</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>⚔️ Kampbane</h4>
+                        <p>Arena med forskjellige levels og utfordringer</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🧩 Gåte-løser</h4>
+                        <p>Puslespill som krever logisk tenkning</p>
+                    </div>
+                </div>
+
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('mega_project')">
+                        <span>👁️ Vis eksempel: Mega-prosjekt som kombinerer alt</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="mega_project">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Mega-prosjekt: Interaktiv fornøyelsespark</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre># Fornøyelsespark som kombinerer ALT vi har lært!
+def fornoyelsespark():
+    park_åpen = True
+    besøkende_teller = 0
+    
+    while park_åpen:
+                        pos = player.position()
+                        
+                        # Inngang - velkommen og info
+                        if pos.x > 50 and pos.x < 60 and pos.z > 50 and pos.z < 60:
+                            besøkende_teller += 1
+                            player.say(f"🎡 Velkommen til fornøyelsesparken! Besøkende #{besøkende_teller}")
+                            
+                            # Spawn velkomst-fyrverkeri (harmløse kyllinger)
+                            for i in range(5):
+                                mobs.spawn(CHICKEN, world(55 + i, 80, 55))
+                        
+                        # Karusell-område - spawn snille dyr som roterer
+                        elif pos.x > 70 and pos.x < 90 and pos.z > 70 and pos.z < 90:
+                            player.say("🎠 Karusell-området! Se dyrene rotere!")
+                            # Aktivér karusell
+                            blocks.place(EMERALD_BLOCK, world(100, 70, 100))
+                            loops.pause(1000)
+                            blocks.place(AIR, world(100, 70, 100))
+                        
+                        # Berg-og-dal-bane område - bygg skinner automatisk
+                        elif pos.x > 100 and pos.x < 120 and pos.z > 50 and pos.z < 70:
+                            player.say("🎢 Berg-og-dal-bane! Hold deg fast!")
+                            # Trigger bane-bygging
+                            blocks.place(DIAMOND_BLOCK, world(110, 70, 110))
+                            loops.pause(1000)
+                            blocks.place(AIR, world(110, 70, 110))
+                        
+                        # Spøkelseshus - spawn skumle men harmløse monstre
+                        elif pos.x > 120 and pos.x < 140 and pos.z > 80 and pos.z < 100:
+                            player.say("👻 Spøkelseshus! Ikke vær redd, de er snille!")
+                            # Spawn "spøkelser" (harmløse zombies i spektakel)
+                            blocks.place(REDSTONE_BLOCK, world(130, 70, 130))
+                            loops.pause(2000)
+                            blocks.place(AIR, world(130, 70, 130))
+                        
+                        # Utgang - takk for besøket
+                        elif pos.x > 140 and pos.x < 150 and pos.z > 50 and pos.z < 60:
+                            player.say("👋 Takk for besøket! Kom gjerne igjen!")
+                            # Avslutt med konfetti (kyllinger)
+                            for i in range(3):
+                                mobs.spawn(CHICKEN, world(145, 75 + i, 55))
+                        
+                        loops.pause(1000)
+
+# Start fornøyelsesparken
+loops.run_in_background(fornoyelsespark)</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Forberede presentasjon -->
+            <section class="concept">
+                <h2>🎤 Forberede presentasjon for foreldre (20 min)</h2>
+                
+                <h3>🎯 Hvordan vise frem prosjektene dine:</h3>
+                <div class="presentation-tips">
+                    <div class="tip-card">
+                        <h4>1️⃣ Start med det enkle</h4>
+                        <p>Vis først dag 1-prosjektet (kylling-regn) og forklar variabler og løkker</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>2️⃣ Vis fremgang</h4>
+                        <p>Demonstrer hvordan prosjektene ble mer avanserte hver dag</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>3️⃣ Forklar tankegang</h4>
+                        <p>"Først laget jeg en variabel, så brukte jeg en for-løkke fordi..."</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>4️⃣ Vis interaktivitet</h4>
+                        <p>La foreldrene teste døren eller gå inn i det farlige området</p>
+                    </div>
+                </div>
+
+                <h3>📝 Presentasjons-manus (fyll ut):</h3>
+                <div class="code-block">
+                    <div class="code-title">
+                        <span>Presentasjons-manus mal</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                    </div>
+                    <pre>Hei! Jeg vil vise dere hva jeg har lært på Minecraft-kodekurset:
+
+1. Dag 1 - Grunnleggende:
+   "Først lærte jeg om variabler. Det er som bokser hvor jeg kan lagre informasjon.
+   Se her: [vis kylling-regn] - jeg laget en variabel som sa hvor mange kyllinger,
+   og en for-løkke som gjentar spawning-koden!"
+
+2. Dag 2 - Agenten:
+   "Så lærte jeg å styre agenten - det er som en robot i spillet.
+   Se her: [vis berg-og-dal-bane] - agenten bygde hele banen automatisk!"
+
+3. Dag 3 - Interaktive dører:
+   "Deretter lærte jeg å lage ting som reagerer på knapper.
+   Se her: [vis dør-system] - når jeg trykker denne knappen, så åpnes døren!"
+
+4. Dag 4 - Monster-spawning:
+   "Til slutt laget jeg områder som er farlige å gå inn i.
+   Se her: [gå inn i farlig område] - nå spawner det monstre automatisk!"
+
+Konklusjon:
+"Programmering handler om å gi datamaskinen nøyaktige instruksjoner.
+Nå kan jeg lage mine egne spill og systemer i Minecraft!"</pre>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-title">🎭 Presentasjons-tips:</div>
+                    <ul>
+                        <li>Øv deg på å forklare med enkle ord</li>
+                        <li>La foreldrene teste og prøve selv</li>
+                        <li>Vis koden din og forklar tankegang</li>
+                        <li>Vær stolt av det du har laget!</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Prosjektarbeid -->
+            <section class="exercise">
+                <div class="exercise-header">
+                    <h3>🛠️ Egen prosjekt-tid (45 min)</h3>
+                </div>
+                
+                <div class="project-checklist">
+                    <h4>✅ Sjekkliste før presentasjon:</h4>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4>📋 Organisering</h4>
+                            <ul>
+                                <li>□ Alle prosjekter fungerer</li>
+                                <li>□ Koden er ryddig og kommentert</li>
+                                <li>□ Jeg vet hvordan jeg skal navigere mellom prosjektene</li>
+                            </ul>
+                        </div>
+                        <div class="tip-card">
+                            <h4>🗣️ Forklaring</h4>
+                            <ul>
+                                <li>□ Jeg kan forklare hva variabler er</li>
+                                <li>□ Jeg kan forklare hvorfor jeg brukte for-løkker</li>
+                                <li>□ Jeg kan vise hvordan kommandoblocker og Python jobber sammen</li>
+                            </ul>
+                        </div>
+                        <div class="tip-card">
+                            <h4>🎮 Demonstrasjon</h4>
+                            <ul>
+                                <li>□ Foreldrene kan prøve selv</li>
+                                <li>□ Jeg har backup-plan hvis noe ikke fungerer</li>
+                                <li>□ Jeg kan vise forskjellen mellom dag 1 og dag 4</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>🔧 Siste sjanse for forbedringer:</h3>
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('improvements')">
+                        <span>👁️ Vis forbedrings-idéer</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="improvements">
+                        <h4>💫 Raske forbedringer du kan gjøre:</h4>
+                        <ul>
+                            <li><strong>Legg til kommentarer:</strong> Skriv <code># Dette spawner kyllinger</code> over viktige linjer</li>
+                            <li><strong>Endre tall:</strong> Gjør kylling-regn større eller berg-og-dal-bane lengre</li>
+                            <li><strong>Kombiner prosjekter:</strong> Kan du få agenten til å bygge dører? Eller dører som spawner dyr?</li>
+                            <li><strong>Legg til lyder:</strong> <code>player.say()</code> med emoji for å gjøre det mer engasjerende</li>
+                            <li><strong>Fiks bugs:</strong> Hvis noe ikke fungerer helt riktig, nå er tiden for å fikse det!</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Presentasjon for foreldre -->
+            <section class="concept" style="border: 3px solid #ffd700; background: #fff9c4;">
+                <h2>👨‍👩‍👧‍👦 Presentasjon for foreldre (30 min)</h2>
+                
+                <h3>🎭 Presentasjonsformat:</h3>
+                <div class="presentation-structure">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Velkommen og introduksjon (5 min)</h4>
+                            <p>Kort om kurset og hva barna har lært</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Individuelle presentasjoner (20 min)</h4>
+                            <p>Hvert barn viser sine prosjekter (3-4 min per barn)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Gruppedemonstrasjoner (5 min)</h4>
+                            <p>Vise samarbeidsprosjekter eller særlig imponerende løsninger</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="important">
+                    <div class="important-title">🎯 Hva foreldrene skal forstå:</div>
+                    <ul>
+                        <li>Barnet har lært grunnleggende programmeringskonsepter</li>
+                        <li>De kan bryte ned problemer i små, løsbare deler</li>
+                        <li>De kan tenke logisk og strukturert</li>
+                        <li>De mestrer å gi datamaskinen presise instruksjoner</li>
+                        <li>De kan lage interaktive systemer som reagerer på input</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Viderelæring -->
+            <section class="concept">
+                <h2>🚀 Hva nå? Viderelæring og neste steg (15 min)</h2>
+                
+                <h3>🌟 For de som vil fortsette hjemme:</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>🐍 Mer Python</h4>
+                        <ul>
+                            <li>Scratch og Pygame for spill-utvikling</li>
+                            <li>Python.org har gratis ressurser</li>
+                            <li>Codecademy og Khan Academy</li>
+                        </ul>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🌐 Webutvikling</h4>
+                        <ul>
+                            <li>HTML og CSS for å lage nettsider</li>
+                            <li>JavaScript for interaktivitet</li>
+                            <li>freeCodeCamp.org</li>
+                        </ul>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🤖 Robotikk</h4>
+                        <ul>
+                            <li>LEGO Mindstorms</li>
+                            <li>Arduino og Raspberry Pi</li>
+                            <li>Lokale robotikk-klubber</li>
+                        </ul>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🎮 Spillutvikling</h4>
+                        <ul>
+                            <li>Unity og C#</li>
+                            <li>Godot og GDScript</li>
+                            <li>Roblox Studio</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h4>💪 Ditt programmeringsgrunnlag er lagt!</h4>
+                    <p>Med konseptene du har lært (variabler, løkker, if-setninger, funksjoner) kan du lære hvilket som helst programmeringsspråk. Prinsippene er de samme overalt!</p>
+                </div>
+            </section>
+
+            <!-- Sertifikat og avslutning -->
+            <section class="concept" style="background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); color: #2d3436; text-align: center; padding: 40px; border-radius: 15px;">
+                <h2>🏆 Gratulerer, du er nå en Minecraft-programmerer!</h2>
+                
+                <div style="background: rgba(255,255,255,0.9); border-radius: 15px; padding: 30px; margin: 30px auto; max-width: 600px; border: 3px solid #ffd700;">
+                    <h3 style="color: #2d3436; margin-bottom: 20px;">🎓 SERTIFIKAT</h3>
+                    <div style="border-bottom: 2px solid #ddd; margin: 20px 0; padding-bottom: 10px;">
+                        <p style="font-size: 1.2em; margin: 10px 0;"><strong>Dette bekrefter at</strong></p>
+                        <p style="font-size: 1.4em; margin: 15px 0; color: #0984e3;"><strong>_________________</strong></p>
+                        <p style="font-style: italic;">(skriv ditt navn her)</p>
+                    </div>
+                    
+                    <p style="margin: 15px 0;"><strong>har fullført Minecraft Kodekurs</strong></p>
+                    <p style="margin: 15px 0;">og behersker grunnleggende programmering</p>
+                    
+                    <div style="margin: 25px 0;">
+                        <p><strong>🎯 Ferdigheter oppnådd:</strong></p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left;">
+                            <div>✅ Variabler og datatyper</div>
+                            <div>✅ For-løkker og repetisjon</div>
+                            <div>✅ If-setninger og logikk</div>
+                            <div>✅ Funksjoner og struktur</div>
+                            <div>✅ Koordinat-systemer</div>
+                            <div>✅ Interaktive systemer</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 25px;">
+                        <p><strong>📅 Dato:</strong> August 2025</p>
+                        <p style="margin-top: 20px; font-size: 1.1em;"><strong>🌟 Du er klar for neste nivå i programmering! 🌟</strong></p>
+                    </div>
+                </div>
+                
+                <p style="font-size: 1.1em; margin: 30px 0;">Ta bilde av sertifikatet og del det med familie og venner! 📸</p>
+            </section>
+
+            <!-- Ressurser for videre læring -->
+            <section class="concept">
+                <h2>📚 Ressurser for videre læring</h2>
+                
+                <h3>🔗 Nyttige lenker for foreldre og barn:</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>🐍 Python for barn</h4>
+                        <ul>
+                            <li>python.org/community/kids/ - Offisielle ressurser</li>
+                            <li>Code.org - Gratis kurs</li>
+                            <li>Scratch.mit.edu - Visuell programmering</li>
+                        </ul>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🎮 Minecraft + Koding</h4>
+                        <ul>
+                            <li>education.minecraft.net - Flere kurs</li>
+                            <li>Minecraft Hour of Code</li>
+                            <li>ComputerCraft mod for vanlig Minecraft</li>
+                        </ul>
+                    </div>
+                    <div class="tip-card">
+                        <h4>📖 Bøker og materiell</h4>
+                        <ul>
+                            <li>"Python for Kids" av Jason R. Briggs</li>
+                            <li>"Coding Games in Scratch"</li>
+                            <li>Lokale bibliotek har ofte programmeringsbøker</li>
+                        </ul>
+                    </div>
+                    <div class="tip-card">
+                        <h4>👥 Samfunn og klubber</h4>
+                        <ul>
+                            <li>Lokale kodeklubber</li>
+                            <li>Bibliotek arrangerer ofte kurs</li>
+                            <li>Online-fellesskap for unge programmerere</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tilbakemeldinger -->
+            <section class="concept">
+                <h2>💬 Tilbakemeldinger og evaluering (15 min)</h2>
+                
+                <h3>📝 Hjelp oss å gjøre kurset bedre:</h3>
+                <div class="feedback-form">
+                    <div class="tip-card">
+                        <h4>⭐ Hva fungerte bra?</h4>
+                        <ul>
+                            <li>Hvilke oppgaver var passe vanskelige?</li>
+                            <li>Hva var mest engasjerende?</li>
+                            <li>Hvilken dag likte du best?</li>
+                        </ul>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🔧 Hva kan forbedres?</h4>
+                        <ul>
+                            <li>Var noe for lett eller for vanskelig?</li>
+                            <li>Savnet du noe i kurset?</li>
+                            <li>Trengte du mer hjelp noen steder?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: #f0f8ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h4>🙏 Takk for at du deltok!</h4>
+                    <p>Vi håper du har fått en god start på programmeringsreisen din. Husk at alle store programmerere begynte akkurat som deg - med nysgjerrighet og ønske om å lære!</p>
+                </div>
+            </section>
+
+            <!-- Avslutning -->
+            <section class="concept" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 40px; border-radius: 15px;">
+                <h2>🎉 KURSET ER FULLFØRT!</h2>
+                <p style="font-size: 1.3em; margin: 20px 0;">Du har gjennomført alle fem dager og er nå en ekte Minecraft-programmerer!</p>
+                
+                <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; margin: 30px auto;">
+                    <h3>🎯 Dine prestasjoner:</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0;">
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 2em;">🐔</div>
+                            <p><strong>Kylling-regn</strong><br>Dag 1 mesterverk</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 2em;">🎢</div>
+                            <p><strong>Berg-og-dal-bane</strong><br>Agent-byggmester</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 2em;">🚪</div>
+                            <p><strong>Interaktiv dør</strong><br>Knapp-styrt system</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 2em;">👾</div>
+                            <p><strong>Monster-spawner</strong><br>Bevegelse-aktivert</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin: 30px 0;">
+                    <h3>🌟 Du kan nå:</h3>
+                    <div style="text-align: left; display: inline-block;">
+                        <p>✨ Tenke som en programmerer</p>
+                        <p>✨ Bryte ned store problemer i små deler</p>
+                        <p>✨ Lage systemer som reagerer på omgivelsene</p>
+                        <p>✨ Kombinere kreativitet med logikk</p>
+                        <p>✨ Feilsøke og fikse kode som ikke fungerer</p>
+                    </div>
+                </div>
+
+                <div style="margin: 40px 0; padding: 25px; background: rgba(255,255,255,0.15); border-radius: 10px;">
+                    <h3>🎓 Din programmeringsreise starter NÅ!</h3>
+                    <p style="font-size: 1.1em;">Dette er bare begynnelsen. Med grunnlaget du har lagt denne uken, kan du lære hvilket som helst programmeringsspråk og bygge fantastiske ting!</p>
+                    
+                    <p style="font-size: 1.2em; margin-top: 25px; font-weight: bold;">Fortsett å utforske, eksperimentere og ha det gøy med koding! 🚀</p>
+                </div>
+            </section>
+
+            <!-- Navigasjon -->
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="dag4.html" class="day-link" style="margin-right: 20px;">← Forrige: Dag 4</a>
+                <a href="index.html" class="day-link">🏠 Tilbake til forsiden</a>
+            </div>
+        </main>
+
+        <footer style="background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); color: #2d3436; text-align: center; padding: 20px;">
+            <p style="font-size: 1.1em; font-weight: bold;">🎉 Minecraft Kodekurs 2025 - FULLFØRT! Du er fantastisk! ✨</p>
+            <p>© 2025 - Laget med ❤️ for unge programmerere</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleSolution(solutionId) {
+            const content = document.getElementById(solutionId);
+            const header = content.previousElementSibling;
+            const icon = header.querySelector('.toggle-icon');
+            
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                icon.classList.remove('rotated');
+            } else {
+                content.classList.add('show');
+                icon.classList.add('rotated');
+            }
+        }
+
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-title').nextElementSibling;
+            const code = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(code).then(function() {
+                showSuccessMessage();
+                button.textContent = 'Kopiert! ✓';
+                button.style.background = '#38a169';
+                
+                setTimeout(() => {
+                    button.textContent = 'Kopier';
+                    button.style.background = '#48bb78';
+                }, 2000);
+            });
+        }
+        
+        function showSuccessMessage() {
+            const message = document.getElementById('successMessage');
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 2000);
+        }
+
+        // Konfetti-effekt for siste dag!
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.zIndex = '9999';
+                    confetti.style.transition = 'transform 3s linear';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.style.transform = `translateY(100vh) rotate(720deg)`;
+                    }, 100);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3500);
+                }, i * 100);
+            }
+        }
+
+        // Start konfetti når siden laster
+        window.addEventListener('load', () => {
+            setTimeout(createConfetti, 1000);
+        });
+    </script>
+</body>
+</html>
