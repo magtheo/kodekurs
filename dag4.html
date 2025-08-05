@@ -11,8 +11,8 @@
     
     <div class="container">
         <header>
-            <h1>📅 Dag 4: Interaktive Systemer</h1>
-            <p class="subtitle">Lær kommandoblocker, Python lytting og lag interaktiv dør!</p>
+            <h1>📅 Dag 4: Monster-Spawning og Bevegelse</h1>
+            <p class="subtitle">Lær å spawne monstre med kommandoblocker når spilleren beveger seg!</p>
         </header>
 
         <nav class="nav">
@@ -21,6 +21,7 @@
             <a href="dag2.html">Dag 2</a>
             <a href="dag3.html">Dag 3</a>
             <a href="dag4.html" class="active">Dag 4</a>
+            <a href="dag5.html">Dag 5</a>
         </nav>
 
         <main>
@@ -28,75 +29,101 @@
             <section class="concept">
                 <h2>🌅 Oppstart og oppsummering (10 min)</h2>
                 <ul>
-                    <li>Recap av dag 1-3: variabler, løkker, if-setninger, agenten, byggeprosjekter</li>
-                    <li><strong>Dagens mål:</strong> Lage en dør som åpnes og lukkes med knapper!</li>
+                    <li>Recap av dag 1-3: variabler, løkker, if-setninger, agenten, interaktive dører</li>
+                    <li><strong>Dagens mål:</strong> Lage farlige områder hvor monstre spawner når du går!</li>
                 </ul>
             </section>
 
-            <!-- Konsept: Kommandoblocker og Python -->
+            <!-- Konsept: Bevegelsesdeteksjon -->
             <section class="concept">
-                <h2>🤝 Konsept: Kommandoblocker og Python som jobber sammen (15 min)</h2>
+                <h2>👣 Konsept: Oppdage spillerens bevegelse (20 min)</h2>
                 
-                <h3>Kommandoblocker kan plassere blokker:</h3>
-                <div class="code-block">
-                    <div class="code-title">Kommandoblokk kommando</div>
-                    <pre>/setblock x y z block_type</pre>
-                </div>
-                <p><strong>Eksempel:</strong> <code>/setblock 100 70 200 glass</code> plasserer glass på koordinat (100, 70, 200)</p>
-
-                <h3>Python kan sjekke om blokker er der:</h3>
-                <div class="code-block">
-                    <div class="code-title">Python sjekking</div>
-                    <pre>blocks.test_for_block(GLASS, world(100, 70, 200))</pre>
-                </div>
+                <h3>Hvordan kan vi vite hvor spilleren er?</h3>
                 <ul>
-                    <li>Returnerer <code>True</code> hvis glass-blokk er på koordinatet</li>
-                    <li>Returnerer <code>False</code> hvis det ikke er der</li>
+                    <li>Python kan sjekke spillerens posisjon</li>
+                    <li>Vi kan sammenligne med tidligere posisjon</li>
+                    <li>Hvis posisjon har endret seg = spilleren har beveget seg</li>
                 </ul>
 
-                <div class="important">
-                    <div class="important-title">⚠️ Magien skjer når:</div>
-                    <ol>
-                        <li>Kommandoblokk plasserer en blokk på koordinat X</li>
-                        <li>Python sjekker samme koordinat X for samme blokk-type</li>
-                        <li>Python reagerer når den "ser" blokken!</li>
-                    </ol>
+                <h3>Få spillerens posisjon:</h3>
+                <div class="code-block">
+                    <div class="code-title">Spillerens posisjon</div>
+                    <pre>pos = player.position()
+x = pos.x  # øst/vest koordinat
+y = pos.y  # opp/ned koordinat  
+z = pos.z  # nord/sør koordinat</pre>
                 </div>
 
-                <h3>Viktig: Koden må kjøre i bakgrunnen:</h3>
+                <h3>Sjekke om spilleren er på et spesielt sted:</h3>
                 <div class="code-block">
-                    <div class="code-title">Bakgrunn-loop struktur</div>
-                    <pre>def loop():
-    while True:
-        # Din kode her
+                    <div class="code-title">Posisjon-sjekking</div>
+                    <pre>pos = player.position()
+if pos.x > 100 and pos.z < 200:
+    player.say("Du er i det farlige området!")</pre>
+                </div>
 
-loops.run_in_background(loop)</pre>
+                <div class="important">
+                    <div class="important-title">⚠️ Farlige områder:</div>
+                    <ul>
+                        <li>Vi kan definere områder hvor det er farlig å gå</li>
+                        <li>Når spilleren går inn i området, spawner monstre</li>
+                        <li>Kombinerer posisjon-sjekking med monster-spawning</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Konsept: Monster-spawning med kommandoblocker -->
+            <section class="concept">
+                <h2>👾 Konsept: Monster-spawning med kommandoblocker (20 min)</h2>
+                
+                <h3>Kommandoblocker kan spawne monstre:</h3>
+                <div class="code-block">
+                    <div class="code-title">Spawn monster kommando</div>
+                    <pre>/summon zombie x y z</pre>
+                </div>
+                <p><strong>Eksempel:</strong> <code>/summon zombie 100 70 200</code> spawner en zombie på koordinat (100, 70, 200)</p>
+
+                <h3>Forskjellige monstre:</h3>
+                <ul>
+                    <li><code>zombie</code> - zombie</li>
+                    <li><code>skeleton</code> - skjelett</li>
+                    <li><code>spider</code> - edderkopp</li>
+                    <li><code>creeper</code> - creeper</li>
+                </ul>
+
+                <h3>Systemet fungerer slik:</h3>
+                <div class="important">
+                    <div class="important-title">⚠️ Sammenkobling:</div>
+                    <ol>
+                        <li>Python oppdager at spilleren er på farlig sted</li>
+                        <li>Python plasserer en signalblokk</li>
+                        <li>Kommandoblokk ser signalblokken og spawner monstre</li>
+                    </ol>
                 </div>
             </section>
 
             <!-- Oppgave 1 -->
             <section class="exercise">
                 <div class="exercise-header">
-                    <h3>🎯 Oppgave 1: Kommandoblokk plasserer blokk (15 min)</h3>
+                    <h3>🎯 Oppgave 1: Setup monster-spawning kommandoblokk (15 min)</h3>
                 </div>
                 
                 <div class="steps">
                     <div class="steps-title">📋 Trinn:</div>
                     <ol>
-                        <li>Få tak i kommandoblokk: <code>/give @p command_block</code></li>
-                        <li>Plasser kommandoblokken</li>
-                        <li>Høyreklikk på den og skriv: <code>/setblock 100 70 200 glass</code></li>
-                        <li>Koble til en knapp</li>
-                        <li>Test at glass-blokk plasseres på koordinat (100, 70, 200) når du trykker!</li>
+                        <li>Plasser en kommandoblokk</li>
+                        <li>Skriv inn: <code>/summon zombie 100 70 200</code> (bruk dine koordinater)</li>
+                        <li>Sett den til "Needs Redstone"</li>
+                        <li>Test med en knapp at zombie spawner</li>
                     </ol>
                 </div>
 
                 <div class="important">
                     <div class="important-title">⚠️ Viktig:</div>
                     <ul>
-                        <li>Du må velge dine egne koordinater!</li>
-                        <li>Skriv ned koordinatene du bruker!</li>
-                        <li>Bruk F3 for å se koordinatene dine</li>
+                        <li>Velg koordinater hvor du vil at monstre skal spawne</li>
+                        <li>Ikke for nær deg selv!</li>
+                        <li>Skriv ned koordinatene</li>
                     </ul>
                 </div>
                 
@@ -108,12 +135,13 @@ loops.run_in_background(loop)</pre>
                     <div class="solution-content" id="solution1">
                         <div class="code-block">
                             <div class="code-title">
-                                <span>Fasit - Kommandoblokk innhold</span>
+                                <span>Fasit - Monster-spawning kommando</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre>/setblock [dine_koordinater] glass</pre>
+                            <pre>/summon zombie [dine_koordinater]</pre>
                         </div>
-                        <p><strong>Eksempel:</strong> <code>/setblock 100 70 200 glass</code></p>
+                        <p><strong>Eksempel:</strong> <code>/summon zombie 100 70 200</code></p>
+                        <p><strong>Test:</strong> Koble til en knapp og sjekk at zombie spawner!</p>
                     </div>
                 </div>
             </section>
@@ -121,14 +149,9 @@ loops.run_in_background(loop)</pre>
             <!-- Oppgave 2 -->
             <section class="exercise">
                 <div class="exercise-header">
-                    <h3>🎯 Oppgave 2: Python lytter og skriver i chatten (15 min)</h3>
+                    <h3>🎯 Oppgave 2: Python oppdager bevegelse (15 min)</h3>
                 </div>
-                <p><strong>Oppgave:</strong> Lag Python-kode som oppdager glass-blokken og skriver i chatten</p>
-                
-                <div class="important">
-                    <div class="important-title">⚠️ Viktig:</div>
-                    <p>Bruk SAMME koordinater og SAMME blokk-type som i oppgave 1!</p>
-                </div>
+                <p><strong>Oppgave:</strong> Lag Python-kode som oppdager når spilleren går inn i et farlig område</p>
                 
                 <div class="solution">
                     <div class="solution-header" onclick="toggleSolution('solution2')">
@@ -138,123 +161,370 @@ loops.run_in_background(loop)</pre>
                     <div class="solution-content" id="solution2">
                         <div class="code-block">
                             <div class="code-title">
-                                <span>Fasit - Python lytter</span>
+                                <span>Fasit - Bevegelsesdeteksjon</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre>def loop():
+                            <pre># Oppdager når spilleren går inn i farlig område
+def farlig_område():
     while True:
-        # Bytt ut 100 70 200 med dine koordinater!
-        if blocks.test_for_block(GLASS, world(100, 70, 200)):
-            player.say("Jeg så glass-blokken!")
-            # Fjern blokken så meldingen ikke kommer hele tiden
-            blocks.place(AIR, world(100, 70, 200))
+        pos = player.position()
+        
+        # Definer farlig område (endre koordinater!)
+        if pos.x > 90 and pos.x < 110 and pos.z > 190 and pos.z < 210:
+            player.say("⚠️ Du har gått inn i det farlige området!")
+            # Plasser signalblokk som trigger monster-spawning
+            blocks.place(REDSTONE_BLOCK, world(120, 70, 220))
+            # Vent litt så ikke alt spawner på en gang
+            loops.pause(2000)
+            # Fjern signalblokken
+            blocks.place(AIR, world(120, 70, 220))
+            
+        loops.pause(500)  # Sjekk posisjon hver halvt sekund
 
-loops.run_in_background(loop)</pre>
+# Start systemet
+loops.run_in_background(farlig_område)</pre>
                         </div>
                     </div>
-                </div>
-            </section>
-
-            <!-- Oppgave 3 -->
-            <section class="exercise">
-                <div class="exercise-header">
-                    <h3>🎯 Oppgave 3: Plasser blokker i døråpning i stedet for chat (15 min)</h3>
-                </div>
-                
-                <div class="steps">
-                    <div class="steps-title">📋 Oppgave:</div>
-                    <ol>
-                        <li>Bygg en døråpning (3x3 luft-blokker)</li>
-                        <li>Endre Python-koden så den fyller døråpningen med blokker i stedet for å skrive i chatten</li>
-                    </ol>
                 </div>
 
                 <div class="tip">
                     <div class="tip-title">💡 Tips:</div>
                     <ul>
-                        <li>Velg koordinater for døråpningen</li>
-                        <li>Bruk <code>blocks.fill()</code> for å fylle området</li>
+                        <li>Endre koordinatene til dit du vil ha det farlige området</li>
+                        <li>Signalblokken må være der kommandoblokken din lytter</li>
+                        <li><code>loops.pause()</code> bruker millisekunder (1000 = 1 sekund)</li>
                     </ul>
-                </div>
-                
-                <div class="solution">
-                    <div class="solution-header" onclick="toggleSolution('solution3')">
-                        <span>👁️ Vis fasit</span>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="solution-content" id="solution3">
-                        <div class="code-block">
-                            <div class="code-title">
-                                <span>Fasit - Lukke dør</span>
-                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
-                            </div>
-                            <pre>def loop():
-    while True:
-        # Bytt ut med dine koordinater!
-        if blocks.test_for_block(GLASS, world(100, 70, 200)):
-            player.say("Lukker døren!")
-            # Fyll døråpningen med stein (bytt koordinater!)
-            blocks.fill(STONE, world(95, 70, 195), world(97, 72, 195), FillOperation.REPLACE)
-            # Fjern glass-blokken
-            blocks.place(AIR, world(100, 70, 200))
-
-loops.run_in_background(loop)</pre>
-                        </div>
-                    </div>
                 </div>
             </section>
 
-            <!-- Oppgave 4 -->
-            <section class="exercise" style="border-color: #28a745; background: #d4edda;">
+            <!-- Pause -->
+            <section class="concept">
+                <h2>☕ Pause (10 min)</h2>
+                <p>Tid for en pause før vi kobler alt sammen!</p>
+            </section>
+
+            <!-- Oppgave 3 -->
+            <section class="exercise">
                 <div class="exercise-header">
-                    <h3>🚪 Oppgave 4: Lage åpne-dør knapp (20 min)</h3>
+                    <h3>🎯 Oppgave 3: Koble Python og kommandoblokk (15 min)</h3>
                 </div>
                 
                 <div class="steps">
                     <div class="steps-title">📋 Oppgave:</div>
                     <ol>
-                        <li>Lag en ny kommandoblokk med ny knapp</li>
-                        <li>Denne skal plassere en ANNEN type blokk på nye koordinater</li>
-                        <li>Python skal lytte på den nye blokken og FJERNE blokkene fra døren</li>
+                        <li>Endre kommandoblokken til å lytte etter signalblokken fra Python</li>
+                        <li>Test at monstre spawner når du går inn i det farlige området</li>
                     </ol>
                 </div>
 
-                <div class="steps">
-                    <div class="steps-title">🔧 Trinn:</div>
-                    <ol>
-                        <li><strong>Ny kommandoblokk:</strong> <code>/setblock 105 70 205 STONE</code></li>
-                        <li><strong>Endre Python-koden</strong> til å også lytte på stone</li>
-                    </ol>
+                <div class="important">
+                    <div class="important-title">⚠️ Husk:</div>
+                    <ul>
+                        <li>Kommandoblokken må være på "Needs Redstone"</li>
+                        <li>Plasser redstone fra signalblokk-koordinatet til kommandoblokken</li>
+                        <li>Eller plasser kommandoblokken rett ved siden av signalblokk-koordinatet</li>
+                    </ul>
                 </div>
                 
                 <div class="solution">
-                    <div class="solution-header" onclick="toggleSolution('solution4')">
-                        <span>👁️ Vis fasit</span>
+                    <div class="solution-header" onclick="toggleSolution('solution3')">
+                        <span>👁️ Vis fasit - setup tips</span>
                         <span class="toggle-icon">▼</span>
                     </div>
-                    <div class="solution-content" id="solution4">
+                    <div class="solution-content" id="solution3">
+                        <div class="tip">
+                            <div class="tip-title">🔧 Setup-tips:</div>
+                            <ol>
+                                <li>Plasser kommandoblokken på koordinat (120, 69, 220) - rett under signalblokken</li>
+                                <li>Når Python plasserer redstone_block på (120, 70, 220), aktiverer det kommandoblokken under</li>
+                                <li>Kommandoblokken spawner monster på valgt sted</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hovedoppgave -->
+            <section class="exercise" style="border-color: #dc3545; background: #f8d7da;">
+                <div class="exercise-header">
+                    <h3>👾 Hovedoppgave: Farlig dungeon med flere monstre (35 min)</h3>
+                </div>
+                
+                <div class="steps">
+                    <div class="steps-title">📋 Stor oppgave i deler:</div>
+                    <p><strong>Del 1:</strong> Lag flere farlige områder (10 min)</p>
+                    <p><strong>Del 2:</strong> Forskjellige monstre i forskjellige områder (15 min)</p>
+                    <p><strong>Del 3:</strong> Legg til advarsler og escape-rute (10 min)</p>
+                </div>
+
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution4a')">
+                        <span>👁️ Vis fasit Del 1 - Flere områder</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution4a">
                         <div class="code-block">
                             <div class="code-title">
-                                <span>Fasit - Komplett dør-system</span>
+                                <span>Fasit Del 1 - Flere farlige områder</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre>def door_system():
+                            <pre># System med flere farlige områder
+def flere_farlige_områder():
     while True:
-        # Lukke-dør knapp (glass-blokk)
-        if blocks.test_for_block(GLASS, world(100, 70, 200)):
-            player.say("Lukker døren!")
-            # Fyll døråpningen med stein
-            blocks.fill(STONE, world(95, 70, 195), world(97, 71, 195), FillOperation.REPLACE)
-            blocks.place(AIR, world(100, 70, 200))
+        pos = player.position()
         
-        # Åpne-dør knapp (stone-blokk)  
-        if blocks.test_for_block(STONE, world(105, 70, 205)):
-            player.say("Åpner døren!")
-            # Fjern blokkene fra døråpningen
-            blocks.fill(AIR, world(95, 70, 195), world(97, 71, 195), FillOperation.REPLACE)
-            blocks.place(AIR, world(105, 70, 205))
+        # Område 1: Zombie-sone
+        if pos.x > 90 and pos.x < 110 and pos.z > 190 and pos.z < 210:
+            player.say("⚠️ Zombie-sone! Løp!")
+            blocks.place(REDSTONE_BLOCK, world(120, 70, 220))
+            loops.pause(1000)
+            blocks.place(AIR, world(120, 70, 220))
+        
+        # Område 2: Skjelett-sone  
+        elif pos.x > 120 and pos.x < 140 and pos.z > 190 and pos.z < 210:
+            player.say("🏹 Skjelett-sone! Pass deg!")
+            blocks.place(REDSTONE_BLOCK, world(150, 70, 220))
+            loops.pause(1000)
+            blocks.place(AIR, world(150, 70, 220))
+        
+        # Område 3: Creeper-sone
+        elif pos.x > 90 and pos.x < 110 and pos.z > 220 and pos.z < 240:
+            player.say("💥 Creeper-sone! Ikke løp!")
+            blocks.place(REDSTONE_BLOCK, world(120, 70, 250))
+            loops.pause(1000)
+            blocks.place(AIR, world(120, 70, 250))
+            
+        loops.pause(500)
 
-loops.run_in_background(door_system)</pre>
+loops.run_in_background(flere_farlige_områder)</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution4b')">
+                        <span>👁️ Vis fasit Del 2 - Kommandoblokk oppsett</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution4b">
+                        <div class="tip">
+                            <div class="tip-title">🔧 Kommandoblokk-oppsett for Del 2:</div>
+                            <p><strong>Kommandoblokk 1 (Zombie-spawner):</strong></p>
+                            <ul>
+                                <li>Plasser på (120, 69, 220)</li>
+                                <li>Kommando: <code>/summon zombie ~ ~2 ~</code></li>
+                            </ul>
+                            
+                            <p><strong>Kommandoblokk 2 (Skjelett-spawner):</strong></p>
+                            <ul>
+                                <li>Plasser på (150, 69, 220)</li>
+                                <li>Kommando: <code>/summon skeleton ~ ~2 ~</code></li>
+                            </ul>
+                            
+                            <p><strong>Kommandoblokk 3 (Creeper-spawner):</strong></p>
+                            <ul>
+                                <li>Plasser på (120, 69, 250)</li>
+                                <li>Kommando: <code>/summon creeper ~ ~2 ~</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution4c')">
+                        <span>👁️ Vis fasit Del 3 - Advansert system</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution4c">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Fasit Del 3 - Komplett farlig dungeon</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre># Avansert dungeon med advarsler og sikker sone
+def avansert_dungeon():
+    i_farlig_område = False
+    
+    while True:
+                        pos = player.position()
+                        
+                        # Sikker sone (ingen monstre)
+                        if pos.x > 70 and pos.x < 90 and pos.z > 170 and pos.z < 190:
+                            if i_farlig_område:
+                                player.say("✅ Du er i sikkerhet!")
+                                i_farlig_område = False
+                        
+                        # Advarsel-sone (gul advarsel)
+                        elif pos.x > 85 and pos.x < 95 and pos.z > 185 and pos.z < 195:
+                            player.say("⚠️ ADVARSEL: Farlig område foran!")
+                            # Spawn advarsels-fakler
+                            blocks.place(TORCH, world(pos.x + 1, pos.y, pos.z))
+                            blocks.place(TORCH, world(pos.x - 1, pos.y, pos.z))
+                        
+                        # Zombie-sone (lett)
+                        elif pos.x > 90 and pos.x < 110 and pos.z > 190 and pos.z < 210:
+                            if not i_farlig_område:
+                                player.say("🧟 Zombie-sone aktivert!")
+                                i_farlig_område = True
+                            # Spawn 1 zombie
+                            blocks.place(REDSTONE_BLOCK, world(120, 70, 220))
+                            loops.pause(3000)  # 3 sekunder mellom spawns
+                            blocks.place(AIR, world(120, 70, 220))
+                        
+                        # Skjelett-sone (medium)
+                        elif pos.x > 120 and pos.x < 140 and pos.z > 190 and pos.z < 210:
+                            if not i_farlig_område:
+                                player.say("🏹 Skjelett-sone aktivert!")
+                                i_farlig_område = True
+                            # Spawn 2 skjeletter
+                            blocks.place(REDSTONE_BLOCK, world(150, 70, 220))
+                            loops.pause(1000)
+                            blocks.place(AIR, world(150, 70, 220))
+                            blocks.place(REDSTONE_BLOCK, world(150, 70, 220))
+                            loops.pause(2000)
+                            blocks.place(AIR, world(150, 70, 220))
+                        
+                        # Boss-sone (vanskelig)
+                        elif pos.x > 90 and pos.x < 110 and pos.z > 220 and pos.z < 240:
+                            if not i_farlig_område:
+                                player.say("💀 BOSS-SONE! EKSTREM FARE!")
+                                i_farlig_område = True
+                            # Spawn flere monstre raskt
+                            for spawn_count in range(3):
+                                blocks.place(REDSTONE_BLOCK, world(120, 70, 250))
+                                loops.pause(500)
+                                blocks.place(AIR, world(120, 70, 250))
+                            loops.pause(2000)
+                            
+                        loops.pause(500)
+
+loops.run_in_background(avansert_dungeon)</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>🌟 Ekstra utfordringer:</h4>
+                <ol>
+                    <li><strong>Lett:</strong> Legg til flere monster-typer</li>
+                    <li><strong>Medium:</strong> Lag en "boss-kamp" med mange monstre på en gang</li>
+                    <li><strong>Vanskelig:</strong> Lag feller som spawner monstre under spilleren</li>
+                </ol>
+            </section>
+
+            <!-- Konsept: Avanserte teknikker -->
+            <section class="concept">
+                <h2>🏗️ Avanserte teknikker (15 min)</h2>
+                
+                <h3>Spawne monstre på spillerens posisjon:</h3>
+                <div class="code-block">
+                    <div class="code-title">Kommando for spawn på spiller</div>
+                    <pre>/execute at @p run summon zombie ~ ~ ~</pre>
+                </div>
+
+                <h3>Spawne mange monstre på en gang:</h3>
+                <div class="code-block">
+                    <div class="code-title">Masse-spawning kommando</div>
+                    <pre>/summon zombie ~ ~ ~
+/summon skeleton ~ ~1 ~
+/summon spider ~ ~ ~1</pre>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-title">💡 Profi-tips:</div>
+                    <ul>
+                        <li><code>~ ~ ~</code> betyr "her hvor kommandoblokken er"</li>
+                        <li><code>~ ~1 ~</code> betyr "1 blokk over kommandoblokken"</li>
+                        <li><code>@p</code> betyr "nærmeste spiller"</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Prosjektarbeid -->
+            <section class="exercise">
+                <div class="exercise-header">
+                    <h3>🏗️ Prosjektarbeid: Lag din egen farlige verden (25 min)</h3>
+                </div>
+                
+                <p><strong>Velg ett av disse prosjektene:</strong></p>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>🏰 Haunted Castle</h4>
+                        <p>Bygg et spøkelsesslott hvor monstre spawner i forskjellige rom</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🌲 Dark Forest</h4>
+                        <p>Lag en mørk skog hvor fare lurker bak hvert tre</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>⚔️ Arena Battle</h4>
+                        <p>Bygg en arena hvor bølger av monstre angriper</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🕳️ Trap Dungeon</h4>
+                        <p>Lag en felle-fylt dungeon med skjulte monstre</p>
+                    </div>
+                </div>
+
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('solution5')">
+                        <span>👁️ Vis eksempel-prosjekt</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="solution5">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Eksempel - Monster Arena</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre># Monster Arena - bølger av monstre
+def monster_arena():
+    arena_aktiv = False
+    bølge_nummer = 0
+    
+    while True:
+                        pos = player.position()
+                        
+                        # Når spilleren går inn i arenaen
+                        if pos.x > 100 and pos.x < 120 and pos.z > 100 and pos.z < 120:
+                            if not arena_aktiv:
+                                arena_aktiv = True
+                                player.say("⚔️ ARENA AKTIVERT! Kamp starter!")
+                                
+                                # Start bølge 1
+                                for bølge in range(3):
+                                    bølge_nummer = bølge + 1
+                                    player.say(f"🌊 Bølge {bølge_nummer} starter!")
+                                    
+                                    # Spawn monstre basert på bølge-nummer
+                                    for monster in range(bølge_nummer + 2):
+                                        if bølge == 0:  # Lett bølge
+                                            blocks.place(REDSTONE_BLOCK, world(130, 70, 130))
+                                        elif bølge == 1:  # Medium bølge  
+                                            blocks.place(REDSTONE_BLOCK, world(135, 70, 130))
+                                        else:  # Vanskelig bølge
+                                            blocks.place(REDSTONE_BLOCK, world(140, 70, 130))
+                                        
+                                        loops.pause(1000)
+                                        blocks.place(AIR, world(130 + (bølge * 5), 70, 130))
+                                        loops.pause(2000)
+                                    
+                                    player.say(f"✅ Bølge {bølge_nummer} fullført!")
+                                    loops.pause(5000)  # Pause mellom bølger
+                                
+                                player.say("🏆 Arena fullført! Du vant!")
+                                arena_aktiv = False
+                        
+                        # Spilleren forlater arenaen
+                        else:
+                            if arena_aktiv:
+                                player.say("🏃 Du rømte fra arenaen!")
+                                arena_aktiv = False
+                                bølge_nummer = 0
+                        
+                        loops.pause(500)
+
+loops.run_in_background(monster_arena)</pre>
                         </div>
                     </div>
                 </div>
@@ -265,190 +535,78 @@ loops.run_in_background(door_system)</pre>
                 <h2>🔧 Viktige tips og feilsøking (10 min)</h2>
                 
                 <div class="important">
-                    <div class="important-title">⚠️ Husk:</div>
+                    <div class="important-title">⚠️ Husk alltid:</div>
                     <ul>
-                        <li><strong>Same koordinater:</strong> Python må lytte på SAMME sted som kommandoblokken plasserer</li>
-                        <li><strong>Same blokk-type:</strong> Hvis kommandoblokk plasserer GLASS, må Python lytte etter GLASS</li>
-                        <li><strong>Fjern blokken:</strong> Alltid <code>blocks.place(AIR, koordinat)</code> for å fjerne indikator-blokken</li>
+                        <li><strong>Redstone-tilkobling:</strong> Kommandoblokker trenger redstone-signal for å aktiveres</li>
+                        <li><strong>Koordinat-nøyaktighet:</strong> Python må plassere signalblokk nær kommandoblokken</li>
+                        <li><strong>Pause mellom spawns:</strong> Bruk <code>loops.pause()</code> så ikke alt skjer på en gang</li>
+                        <li><strong>Fjern signalblokker:</strong> Alltid rydde opp etter seg</li>
                     </ul>
                 </div>
 
-                <h3>🔧 Vanlige feil:</h3>
+                <h3>🔧 Vanlige feil og løsninger:</h3>
                 <div class="tips-grid">
                     <div class="tip-card">
-                        <h4>❌ Forskjellige koordinater</h4>
-                        <p>mellom kommandoblokk og Python</p>
+                        <h4>❌ Monstre spawner ikke</h4>
+                        <p><strong>Sjekk:</strong> Er kommandoblokken koblet til redstone? Er koordinatene riktige?</p>
                     </div>
                     <div class="tip-card">
-                        <h4>❌ Glemmer å fjerne blokken</h4>
-                        <p>da kjører koden hele tiden</p>
+                        <h4>❌ For mange monstre</h4>
+                        <p><strong>Løsning:</strong> Øk pause-tiden mellom spawns</p>
                     </div>
                     <div class="tip-card">
-                        <h4>❌ Feil blokk-type</h4>
-                        <p>kommandoblokk plasserer glass, Python lytter etter stone</p>
+                        <h4>❌ Python reagerer ikke</h4>
+                        <p><strong>Sjekk:</strong> Kjører loopen i bakgrunnen? Riktige koordinater?</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>❌ Spilleren står fast</h4>
+                        <p><strong>Løsning:</strong> Lag escape-ruter eller safe-zones</p>
                     </div>
                 </div>
 
                 <div class="tip">
-                    <div class="tip-title">💡 Koordinat-tips:</div>
+                    <div class="tip-title">🛡️ Sikkerhetstips:</div>
                     <ul>
-                        <li>Bruk F3 for å se hvor du står</li>
-                        <li>Skriv ned alle koordinater du bruker</li>
-                        <li>Test med <code>/tp x y z</code> for å teleportere til koordinater</li>
+                        <li>Lag alltid en sikker sone hvor spilleren kan hvile</li>
+                        <li>Ikke spawn for mange monstre på en gang</li>
+                        <li>Bruk <code>/kill @e[type=zombie]</code> for å fjerne alle zombies hvis det blir for mye</li>
                     </ul>
                 </div>
             </section>
 
             <!-- Oppsummering -->
             <section class="concept">
-                <h2>📝 Oppsummering (10 min)</h2>
+                <h2>📝 Oppsummering av dag 4 (10 min)</h2>
                 
                 <h3>🎉 Hva har vi lært i dag?</h3>
                 <ul>
-                    <li>Kommandoblocker kan plassere blokker på spesifikke koordinater</li>
-                    <li>Python kan lytte etter blokker med <code>blocks.test_for_block()</code></li>
-                    <li>Vi kan lage systemer hvor knapper styrer dører</li>
-                    <li>Viktig å bruke samme koordinater og blokk-typer</li>
+                    <li>Oppdage spillerens posisjon med <code>player.position()</code></li>
+                    <li>Lage farlige områder basert på koordinater</li>
+                    <li>Koble Python-deteksjon med kommandoblokk monster-spawning</li>
+                    <li>Bruke <code>/summon</code> kommandoer for forskjellige monstre</li>
+                    <li>Lage komplekse systemer med flere områder og monstre</li>
                 </ul>
 
                 <div class="tip">
-                    <div class="tip-title">🌟 Ekstra utfordring for de som blir ferdig:</div>
-                    <p>Legg til en tredje knapp som både åpner OG lukker døren!</p>
-                </div>
-            </section>
-
-            <!-- Gratulerer -->
-            <section class="concept" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 40px; border-radius: 15px;">
-                <h2>🎉 Gratulerer!</h2>
-                <p style="font-size: 1.2em; margin: 20px 0;">Du har fullført alle fire dager av Minecraft Kodekurset!</p>
-                
-                <div style="background: rgba(255,255,255,0.1); border-radius: 10px; padding: 30px; margin: 30px auto; max-width: 600px;">
-                    <h3>🏆 Du har lært:</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
-                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
-                            <strong>📅 Dag 1:</strong> Variabler og løkker
-                        </div>
-                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
-                            <strong>📅 Dag 2:</strong> Agenten og if-setninger
-                        </div>
-                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
-                            <strong>📅 Dag 3:</strong> Koordinater og kreativitet
-                        </div>
-                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
-                            <strong>📅 Dag 4:</strong> Interaktive systemer
-                        </div>
-                    </div>
-                </div>
-                
-                <p style="font-size: 1.1em; margin: 30px 0;">Du er nå en ekte Minecraft-programmerer! 🚀</p>
-                
-                <div style="margin-top: 30px;">
-                    <h4>🌟 Hva kan du gjøre videre?</h4>
-                    <ul style="text-align: left; display: inline-block; margin: 20px 0;">
-                        <li>Eksperimenter med egne prosjekter</li>
-                        <li>Kombiner alt du har lært til noe nytt</li>
-                        <li>Hjelp andre som lærer programmering</li>
-                        <li>Utforsk andre programmeringsspråk</li>
+                    <div class="tip-title">🚀 I morgen (Dag 5):</div>
+                    <ul>
+                        <li>Oppsummering av hele kurset</li>
+                        <li>Jobbe videre på egne prosjekter</li>
+                        <li>Forberede presentasjon for foreldre</li>
+                        <li>Vise frem alt det kule vi har laget!</li>
                     </ul>
-                </div>
-
-                <div style="margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
-                    <h4>🎓 Din programmeringsreise starter nå!</h4>
-                    <p>Med det du har lært kan du:</p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
-                        <div>🐍 Lære Python videre</div>
-                        <div>🌐 Prøve webutvikling</div>
-                        <div>🎮 Lage egne spill</div>
-                        <div>🤖 Programmere roboter</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Ekstra utfordringer for avanserte -->
-            <section class="exercise">
-                <div class="exercise-header">
-                    <h3>🔥 Bonus: Avanserte interaktive systemer</h3>
-                </div>
-                
-                <div class="solution">
-                    <div class="solution-header" onclick="toggleSolution('solution5')">
-                        <span>👁️ Vis avanserte prosjekter</span>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="solution-content" id="solution5">
-                        <div class="code-block">
-                            <div class="code-title">
-                                <span>Hemmelig rom med passord</span>
-                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
-                            </div>
-                            <pre># Hemmelig rom som åpnes med 3-delt passord
-def secret_room():
-    while True:
-        knapp1 = blocks.test_for_block(EMERALD_BLOCK, world(100, 70, 200))
-        knapp2 = blocks.test_for_block(DIAMOND_BLOCK, world(101, 70, 200))
-        knapp3 = blocks.test_for_block(GOLD_BLOCK, world(102, 70, 200))
-        
-        # Alle tre knapper må trykkes i riktig rekkefølge
-        if knapp1 and knapp2 and knapp3:
-            player.say("🔓 Hemmelig rom åpnet!")
-            # Åpne hemmelig dør
-            blocks.fill(AIR, world(95, 70, 190), world(97, 72, 190), FillOperation.REPLACE)
-            
-            # Rens alle knapper
-            blocks.place(AIR, world(100, 70, 200))
-            blocks.place(AIR, world(101, 70, 200))
-            blocks.place(AIR, world(102, 70, 200))
-            
-            # Lukk igjen etter 10 sekunder
-            loops.pause(10000)
-            blocks.fill(STONE, world(95, 70, 190), world(97, 72, 190), FillOperation.REPLACE)
-            player.say("🔒 Hemmelig rom lukket!")
-
-loops.run_in_background(secret_room)</pre>
-                        </div>
-
-                        <div class="code-block">
-                            <div class="code-title">
-                                <span>Smarte lys som reagerer på bevegelse</span>
-                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
-                            </div>
-                            <pre># Lys som skrur seg på når spilleren er i nærheten
-def smart_lights():
-    while True:
-        # Sjekk om spilleren er nær "bevegelsessensoren"
-        if blocks.test_for_block(PRESSURE_PLATE, world(100, 70, 200)):
-            player.say("💡 Lys skrur seg på!")
-            
-            # Plasser lys rundt området
-            for x in range(95, 106):
-                for z in range(195, 206):
-                    if (x + z) % 2 == 0:  # Lys annen hver plass
-                        blocks.place(GLOWSTONE, world(x, 75, z))
-            
-            blocks.place(AIR, world(100, 70, 200))
-            
-            # Skru av lys etter 15 sekunder
-            loops.pause(15000)
-            for x in range(95, 106):
-                for z in range(195, 206):
-                    blocks.place(AIR, world(x, 75, z))
-            player.say("💡 Lys skrur seg av!")
-
-loops.run_in_background(smart_lights)</pre>
-                        </div>
-                    </div>
                 </div>
             </section>
 
             <!-- Navigasjon -->
             <div style="text-align: center; margin-top: 40px;">
                 <a href="dag3.html" class="day-link" style="margin-right: 20px;">← Forrige: Dag 3</a>
-                <a href="index.html" class="day-link">🏠 Tilbake til forsiden</a>
+                <a href="dag5.html" class="day-link">Neste: Dag 5 - Oppsummering →</a>
             </div>
         </main>
 
         <footer>
-            <p>© 2025 Minecraft Kodekurs - Alle dager fullført! Du er fantastisk! 🎉✨</p>
+            <p>© 2025 Minecraft Kodekurs - Dag 4 fullført! 🎉</p>
         </footer>
     </div>
 

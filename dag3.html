@@ -11,8 +11,8 @@
     
     <div class="container">
         <header>
-            <h1>📅 Dag 3: Koordinater og Kreativitet</h1>
-            <p class="subtitle">Lær koordinater, bygge med fill() og lag din feriedestinasjon!</p>
+            <h1>📅 Dag 3: Interaktive Dører</h1>
+            <p class="subtitle">Lær kommandoblocker, Python lytting og lag interaktiv dør!</p>
         </header>
 
         <nav class="nav">
@@ -21,6 +21,7 @@
             <a href="dag2.html">Dag 2</a>
             <a href="dag3.html" class="active">Dag 3</a>
             <a href="dag4.html">Dag 4</a>
+            <a href="dag5.html">Dag 5</a>
         </nav>
 
         <main>
@@ -28,60 +29,85 @@
             <section class="concept">
                 <h2>🌅 Oppstart og oppsummering (10 min)</h2>
                 <ul>
-                    <li>Quick recap: variabler, for-løkker, if-setninger, agenten</li>
-                    <li><strong>Dagens mål:</strong> Lage vår egen feriedestinasjon!</li>
+                    <li>Recap av dag 1-2: variabler, løkker, if-setninger, agenten</li>
+                    <li><strong>Dagens mål:</strong> Lage en dør som åpnes og lukkes med knapper!</li>
                 </ul>
             </section>
 
-            <!-- Konsept 1: Koordinater -->
+            <!-- Konsept: Kommandoblocker og Python -->
             <section class="concept">
-                <h2>🗺️ Konsept 1: Hva er koordinater? (20 min)</h2>
+                <h2>🤝 Konsept: Kommandoblocker og Python som jobber sammen (20 min)</h2>
                 
-                <h3>Koordinater i Minecraft:</h3>
+                <h3>Hva er en kommandoblokk?</h3>
                 <ul>
-                    <li>En måte å beskrive nøyaktig hvor noe er</li>
-                    <li>Som adresse: "2. etasje, rom 14"</li>
-                    <li>Tre tall: (X, Y, Z)</li>
+                    <li>En spesiell blokk som kan kjøre kommandoer</li>
+                    <li>Kan plassere og fjerne blokker automatisk</li>
+                    <li>Aktiveres av knapper eller redstone</li>
                 </ul>
 
-                <h3>Minecraft koordinatsystem:</h3>
+                <h3>Kommandoblocker kan plassere blokker:</h3>
+                <div class="code-block">
+                    <div class="code-title">Kommandoblokk kommando</div>
+                    <pre>/setblock x y z block_type</pre>
+                </div>
+                <p><strong>Eksempel:</strong> <code>/setblock 100 70 200 glass</code> plasserer glass på koordinat (100, 70, 200)</p>
+
+                <h3>Python kan sjekke om blokker er der:</h3>
+                <div class="code-block">
+                    <div class="code-title">Python sjekking</div>
+                    <pre>blocks.test_for_block(GLASS, world(100, 70, 200))</pre>
+                </div>
+                <ul>
+                    <li>Returnerer <code>True</code> hvis glass-blokk er på koordinatet</li>
+                    <li>Returnerer <code>False</code> hvis det ikke er der</li>
+                </ul>
+
                 <div class="important">
-                    <div class="important-title">⚠️ Koordinataksene:</div>
-                    <ul>
-                        <li><strong>X</strong> - Øst(+) / Vest(-)</li>
-                        <li><strong>Y</strong> - Opp(+) / Ned(-)</li>
-                        <li><strong>Z</strong> - Sør(+) / Nord(-)</li>
-                    </ul>
+                    <div class="important-title">⚠️ Magien skjer når:</div>
+                    <ol>
+                        <li>Kommandoblokk plasserer en blokk på koordinat X</li>
+                        <li>Python sjekker samme koordinat X for samme blokk-type</li>
+                        <li>Python reagerer når den "ser" blokken!</li>
+                    </ol>
                 </div>
 
-                <h3>To typer koordinater:</h3>
-                <ol>
-                    <li><strong>Absolutte:</strong> <code>world(100, 70, 200)</code> - fast punkt i verden</li>
-                    <li><strong>Relative:</strong> <code>pos(5, 0, -3)</code> - i forhold til der du står</li>
-                </ol>
-
-                <h3>Praktisk bruk:</h3>
+                <h3>Viktig: Koden må kjøre i bakgrunnen:</h3>
                 <div class="code-block">
-                    <div class="code-title">Koordinat eksempler</div>
-                    <pre># Plasser blokk 5 steg foran deg:
-blocks.place(STONE, pos(5, 0, 0))
+                    <div class="code-title">Bakgrunn-loop struktur</div>
+                    <pre>def loop():
+    while True:
+        # Din kode her
 
-# Plasser blokk på fast posisjon i verden:
-blocks.place(STONE, world(100, 70, 200))</pre>
+loops.run_in_background(loop)</pre>
                 </div>
             </section>
 
             <!-- Oppgave 1 -->
             <section class="exercise">
                 <div class="exercise-header">
-                    <h3>🎯 Oppgave 1: Plassere blokker med koordinater (10 min)</h3>
+                    <h3>🎯 Oppgave 1: Få tak i kommandoblokk og test (15 min)</h3>
                 </div>
-                <p><strong>Oppgave:</strong> Plasser 3 forskjellige blokker rundt deg med pos():</p>
-                <ul>
-                    <li>En stein 3 steg foran</li>
-                    <li>En treblokk 2 steg til høyre</li>
-                    <li>En glass-blokk 4 steg opp</li>
-                </ul>
+                
+                <div class="steps">
+                    <div class="steps-title">📋 Trinn:</div>
+                    <ol>
+                        <li>Få tak i kommandoblokk: <code>/give @p command_block</code></li>
+                        <li>Plasser kommandoblokken på bakken</li>
+                        <li>Høyreklikk på den og skriv: <code>/setblock 100 70 200 glass</code></li>
+                        <li>Få en knapp: <code>/give @p stone_button</code></li>
+                        <li>Plasser knappen på siden av kommandoblokken</li>
+                        <li>Test at glass-blokk plasseres på koordinat (100, 70, 200) når du trykker!</li>
+                    </ol>
+                </div>
+
+                <div class="important">
+                    <div class="important-title">⚠️ Viktig:</div>
+                    <ul>
+                        <li>Du må velge dine egne koordinater!</li>
+                        <li>Skriv ned koordinatene du bruker!</li>
+                        <li>Bruk F3 for å se koordinatene dine</li>
+                    </ul>
+                </div>
                 
                 <div class="solution">
                     <div class="solution-header" onclick="toggleSolution('solution1')">
@@ -91,59 +117,28 @@ blocks.place(STONE, world(100, 70, 200))</pre>
                     <div class="solution-content" id="solution1">
                         <div class="code-block">
                             <div class="code-title">
-                                <span>Fasit - Plassere blokker</span>
+                                <span>Fasit - Kommandoblokk innhold</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre>def plasser_blokker():
-    blocks.place(STONE, pos(3, 0, 0))        # 3 foran
-    blocks.place(OAK_WOOD, pos(0, 0, 2))     # 2 til høyre
-    blocks.place(GLASS, pos(0, 4, 0))        # 4 opp
-
-plasser_blokker()</pre>
+                            <pre>/setblock [dine_koordinater] glass</pre>
                         </div>
+                        <p><strong>Eksempel:</strong> <code>/setblock 100 70 200 glass</code></p>
+                        <p><strong>Hvordan teste:</strong> Gå til koordinat (100, 70, 200) og se om det dukker opp en glass-blokk når du trykker knappen!</p>
                     </div>
-                </div>
-            </section>
-
-            <!-- Konsept 2: Bygge med fill() -->
-            <section class="concept">
-                <h2>🏗️ Konsept 2: Bygge med fill() (15 min)</h2>
-                
-                <h3>Blocks.fill() - fylle område:</h3>
-                <div class="code-block">
-                    <div class="code-title">Fill() struktur</div>
-                    <pre>blocks.fill(STONE, pos(0,0,0), pos(5,3,5), FillOperation.REPLACE)</pre>
-                </div>
-
-                <h3>Hva betyr dette?</h3>
-                <ul>
-                    <li><code>STONE</code> - hvilken blokk</li>
-                    <li><code>pos(0,0,0)</code> - starthjørne</li>
-                    <li><code>pos(5,3,5)</code> - slutthjørne</li>
-                    <li><code>FillOperation.REPLACE</code> - erstatt alt</li>
-                </ul>
-
-                <div class="important">
-                    <div class="important-title">⚠️ FillOperation typer:</div>
-                    <ul>
-                        <li><code>REPLACE</code> - erstatt alt</li>
-                        <li><code>HOLLOW</code> - lag hul kasse (bare vegger)</li>
-                        <li><code>OUTLINE</code> - bare kanter</li>
-                    </ul>
                 </div>
             </section>
 
             <!-- Oppgave 2 -->
             <section class="exercise">
                 <div class="exercise-header">
-                    <h3>🎯 Oppgave 2: Lage enkelt hus (15 min)</h3>
+                    <h3>🎯 Oppgave 2: Python lytter og reagerer (15 min)</h3>
                 </div>
-                <p><strong>Oppgave:</strong> Bruk fill() til å lage et enkelt hus:</p>
-                <ul>
-                    <li>Vegger av tre</li>
-                    <li>Hult inni</li>
-                    <li>Dør i veggen</li>
-                </ul>
+                <p><strong>Oppgave:</strong> Lag Python-kode som oppdager glass-blokken og skriver i chatten</p>
+                
+                <div class="important">
+                    <div class="important-title">⚠️ Viktig:</div>
+                    <p>Bruk SAMME koordinater og SAMME blokk-type som i oppgave 1!</p>
+                </div>
                 
                 <div class="solution">
                     <div class="solution-header" onclick="toggleSolution('solution2')">
@@ -153,100 +148,80 @@ plasser_blokker()</pre>
                     <div class="solution-content" id="solution2">
                         <div class="code-block">
                             <div class="code-title">
-                                <span>Fasit - Enkelt hus</span>
+                                <span>Fasit - Python lytter</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre>def enkelt_hus():
-    # Vegger (hult)
-    blocks.fill(OAK_WOOD, pos(0,0,0), pos(6,4,6), FillOperation.HOLLOW)
-    
-    # Gulv
-    blocks.fill(OAK_PLANKS, pos(1,0,1), pos(5,0,5), FillOperation.REPLACE)
-    
-    # Dør (luftrom)
-    blocks.fill(AIR, pos(0,1,3), pos(0,2,3), FillOperation.REPLACE)
+                            <pre># Lytter etter glass-blokk og reagerer
+def lytter():
+    while True:
+        # Bytt ut 100 70 200 med dine koordinater!
+        if blocks.test_for_block(GLASS, world(100, 70, 200)):
+            player.say("Jeg så glass-blokken!")
+            # Fjern blokken så meldingen ikke kommer hele tiden
+            blocks.place(AIR, world(100, 70, 200))
 
-enkelt_hus()</pre>
+# Start lytting i bakgrunnen
+loops.run_in_background(lytter)</pre>
                         </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- Hovedprosjekt: Velg tema -->
-            <section class="concept">
-                <h2>🏖️ Hovedprosjekt: Velg ferietema (10 min)</h2>
-                
-                <h3>Tema å velge mellom:</h3>
-                <div class="days-grid">
-                    <div class="tip-card">
-                        <h4>🏖️ Strandresort</h4>
-                        <p>Strand, basseng, palmer</p>
-                    </div>
-                    <div class="tip-card">
-                        <h4>🏊 Badeland</h4>
-                        <p>Rutsjebaner, bassenger, spa</p>
-                    </div>
-                    <div class="tip-card">
-                        <h4>🏔️ Fjelltøyhytte</h4>
-                        <p>Koselig hytte, bålplass, utsikt</p>
-                    </div>
-                    <div class="tip-card">
-                        <h4>🎡 Fornøyelsespark</h4>
-                        <p>Karuseller, berg-og-dal-bane, kiosker</p>
-                    </div>
-                </div>
-
-                <div class="steps">
-                    <div class="steps-title">📋 Planlegging (individuelt/grupper):</div>
-                    <ul>
-                        <li>Tegn/skriv ned hva du vil bygge</li>
-                        <li>Hvilke bygninger trenger du?</li>
-                        <li>Hva kan programmeres vs bygges for hånd?</li>
-                    </ul>
+                <div class="tip">
+                    <div class="tip-title">💡 Test det:</div>
+                    <ol>
+                        <li>Kjør Python-koden</li>
+                        <li>Trykk på knappen</li>
+                        <li>Du skal se meldingen i chatten!</li>
+                    </ol>
                 </div>
             </section>
 
-            <!-- Konsept 3: Chat kommandoer -->
+            <!-- Pause -->
             <section class="concept">
-                <h2>💬 Konsept 3: Kommandoer i chat (15 min)</h2>
-                
-                <h3>Lage egne kommandoer:</h3>
-                <div class="code-block">
-                    <div class="code-title">Chat kommando struktur</div>
-                    <pre>player.on_chat("stol", make_chair)</pre>
-                </div>
-
-                <h3>Hva betyr dette?</h3>
-                <ul>
-                    <li>Når spilleren skriver "stol" i chatten</li>
-                    <li>Kjør funksjonen <code>make_chair</code></li>
-                </ul>
-
-                <h3>Komplett eksempel:</h3>
-                <div class="code-block">
-                    <div class="code-title">
-                        <span>Chat kommando eksempel</span>
-                        <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
-                    </div>
-                    <pre>def make_chair():
-    blocks.place(OAK_STAIRS, pos(1, 0, 0))
-    blocks.place(OAK_FENCE, pos(1, 1, 0))
-
-player.on_chat("stol", make_chair)</pre>
-                </div>
+                <h2>☕ Pause (10 min)</h2>
+                <p>Tid for en liten hvil før vi bygger den store døren!</p>
             </section>
 
             <!-- Oppgave 3 -->
             <section class="exercise">
                 <div class="exercise-header">
-                    <h3>🎯 Oppgave 3: Lage møbel-kommandoer (20 min)</h3>
+                    <h3>🎯 Oppgave 3: Bygg en døråpning (10 min)</h3>
                 </div>
-                <p><strong>Oppgave:</strong> Lag kommandoer for:</p>
-                <ul>
-                    <li>"stol" - lager en stol</li>
-                    <li>"bord" - lager et bord</li>
-                    <li>"seng" - lager en seng</li>
-                </ul>
+                
+                <div class="steps">
+                    <div class="steps-title">📋 Oppgave:</div>
+                    <ol>
+                        <li>Bygg vegger rundt deg med en døråpning</li>
+                        <li>Døråpningen skal være 2 blokker bred og 3 blokker høy</li>
+                        <li>Skriv ned koordinatene for døråpningen</li>
+                    </ol>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-title">💡 Tips for koordinater:</div>
+                    <ul>
+                        <li>Stå i døråpningen og bruk F3</li>
+                        <li>Døråpning fra (x1, y1, z1) til (x2, y2, z2)</li>
+                        <li>Eksempel: fra (95, 70, 195) til (96, 72, 195)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Oppgave 4 -->
+            <section class="exercise">
+                <div class="exercise-header">
+                    <h3>🎯 Oppgave 4: Lukke døren med kode (15 min)</h3>
+                </div>
+                
+                <p><strong>Oppgave:</strong> Endre Python-koden så den fyller døråpningen med blokker i stedet for å skrive i chatten</p>
+
+                <div class="tip">
+                    <div class="tip-title">💡 Tips:</div>
+                    <ul>
+                        <li>Bruk <code>blocks.fill()</code> for å fylle området</li>
+                        <li>Husk å bruke koordinatene til døråpningen din</li>
+                    </ul>
+                </div>
                 
                 <div class="solution">
                     <div class="solution-header" onclick="toggleSolution('solution3')">
@@ -256,263 +231,236 @@ player.on_chat("stol", make_chair)</pre>
                     <div class="solution-content" id="solution3">
                         <div class="code-block">
                             <div class="code-title">
-                                <span>Fasit - Møbel kommandoer</span>
+                                <span>Fasit - Lukke dør</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre>def make_chair():
-    blocks.place(OAK_STAIRS, pos(1, 0, 0))
-    blocks.place(OAK_FENCE, pos(1, 1, 0))
+                            <pre># Lytter og lukker døren
+def lukke_dor():
+    while True:
+                        # Bytt ut med dine koordinater!
+                        if blocks.test_for_block(GLASS, world(100, 70, 200)):
+                            player.say("Lukker døren!")
+                            # Fyll døråpningen med stein (bytt koordinater!)
+                            blocks.fill(COBBLESTONE, world(95, 70, 195), world(96, 72, 195), FillOperation.REPLACE)
+                            # Fjern glass-blokken
+                            blocks.place(AIR, world(100, 70, 200))
 
-def make_table():
-    blocks.place(OAK_PLANKS, pos(1, 1, 0))
-    blocks.place(OAK_FENCE, pos(1, 0, 0))
-    blocks.place(OAK_FENCE, pos(2, 0, 0))
-    blocks.place(OAK_FENCE, pos(1, 0, 1))
-    blocks.place(OAK_FENCE, pos(2, 0, 1))
-
-def make_bed():
-    blocks.place(RED_BED, pos(1, 0, 0))
-
-player.on_chat("stol", make_chair)
-player.on_chat("bord", make_table)  
-player.on_chat("seng", make_bed)</pre>
+# Start systemet
+loops.run_in_background(lukke_dor)</pre>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Kreativ byggetid -->
+            <!-- Hovedoppgave -->
             <section class="exercise" style="border-color: #28a745; background: #d4edda;">
                 <div class="exercise-header">
-                    <h3>🎨 Kreativ byggetid (45 min)</h3>
+                    <h3>🚪 Hovedoppgave: Komplett dør-system (30 min)</h3>
                 </div>
                 
-                <h3>🏖️ Strandresort kommandoer:</h3>
+                <div class="steps">
+                    <div class="steps-title">📋 Oppgave:</div>
+                    <ol>
+                        <li>Lag en andre kommandoblokk med en andre knapp</li>
+                        <li>Denne skal plassere en ANNEN type blokk på nye koordinater</li>
+                        <li>Python skal lytte på den nye blokken og ÅPNE døren (fjerne blokkene)</li>
+                        <li>Test at du kan både åpne og lukke døren!</li>
+                    </ol>
+                </div>
+
+                <div class="steps">
+                    <div class="steps-title">🔧 Detaljerte trinn:</div>
+                    <ol>
+                        <li><strong>Ny kommandoblokk:</strong> Plasser en ny kommandoblokk</li>
+                        <li><strong>Ny kommando:</strong> <code>/setblock 105 70 205 stone</code></li>
+                        <li><strong>Koble til knapp:</strong> Plasser en knapp på den nye kommandoblokken</li>
+                        <li><strong>Utvid Python-koden:</strong> Legg til lytting for stone-blokk</li>
+                    </ol>
+                </div>
+                
                 <div class="solution">
                     <div class="solution-header" onclick="toggleSolution('solution4')">
-                        <span>👁️ Vis strandresort kode</span>
+                        <span>👁️ Vis fasit</span>
                         <span class="toggle-icon">▼</span>
                     </div>
                     <div class="solution-content" id="solution4">
                         <div class="code-block">
                             <div class="code-title">
-                                <span>Strandresort - Palmer og basseng</span>
+                                <span>Fasit - Komplett dør-system</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre># Kommando for å lage palmer
-def make_palm():
-    # Stamme
-    blocks.fill(JUNGLE_WOOD, pos(1,0,0), pos(1,6,0), FillOperation.REPLACE)
-    # Blader
-    blocks.fill(JUNGLE_LEAVES, pos(0,6,-1), pos(2,7,1), FillOperation.REPLACE)
+                            <pre># Komplett dør-system med åpne og lukke
+def door_system():
+    while True:
+                        # Lukke-dør knapp (glass-blokk)
+                        if blocks.test_for_block(GLASS, world(100, 70, 200)):
+                            player.say("🔒 Lukker døren!")
+                            # Fyll døråpningen med stein (endre koordinater!)
+                            blocks.fill(COBBLESTONE, world(95, 70, 195), world(96, 72, 195), FillOperation.REPLACE)
+                            blocks.place(AIR, world(100, 70, 200))  # Fjern signalblokk
+                        
+                        # Åpne-dør knapp (stone-blokk)  
+                        if blocks.test_for_block(STONE, world(105, 70, 205)):
+                            player.say("🔓 Åpner døren!")
+                            # Fjern blokkene fra døråpningen (endre koordinater!)
+                            blocks.fill(AIR, world(95, 70, 195), world(96, 72, 195), FillOperation.REPLACE)
+                            blocks.place(AIR, world(105, 70, 205))  # Fjern signalblokk
 
-player.on_chat("palm", make_palm)
-
-# Kommando for basseng
-def make_pool():
-    blocks.fill(STONE, pos(0,0,0), pos(8,0,8), FillOperation.REPLACE)
-    blocks.fill(WATER, pos(1,1,1), pos(7,1,7), FillOperation.REPLACE)
-
-player.on_chat("basseng", make_pool)</pre>
+# Start dør-systemet
+loops.run_in_background(door_system)</pre>
                         </div>
                     </div>
                 </div>
 
-                <h3>🏊 Badeland kommandoer:</h3>
+                <h4>🌟 Ekstra utfordringer:</h4>
+                <ol>
+                    <li><strong>Lett:</strong> Endre dørmaterialet til glass eller jern</li>
+                    <li><strong>Medium:</strong> Lag en dør som lukker seg automatisk etter 5 sekunder</li>
+                    <li><strong>Vanskelig:</strong> Lag en hemmelig dør som krever et "passord" (3 knapper i riktig rekkefølge)</li>
+                </ol>
+            </section>
+
+            <!-- Tips og feilsøking -->
+            <section class="concept">
+                <h2>🔧 Viktige tips og feilsøking (15 min)</h2>
+                
+                <div class="important">
+                    <div class="important-title">⚠️ Husk alltid:</div>
+                    <ul>
+                        <li><strong>Same koordinater:</strong> Python må lytte på SAMME sted som kommandoblokken plasserer</li>
+                        <li><strong>Same blokk-type:</strong> Hvis kommandoblokk plasserer GLASS, må Python lytte etter GLASS</li>
+                        <li><strong>Fjern blokken:</strong> Alltid <code>blocks.place(AIR, koordinat)</code> for å fjerne signalblokk</li>
+                    </ul>
+                </div>
+
+                <h3>🔧 Vanlige feil og løsninger:</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>❌ Forskjellige koordinater</h4>
+                        <p>mellom kommandoblokk og Python</p>
+                        <p><strong>Løsning:</strong> Dobbelsjekk tallene!</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>❌ Glemmer å fjerne blokken</h4>
+                        <p>da kjører koden hele tiden</p>
+                        <p><strong>Løsning:</strong> <code>blocks.place(AIR, koordinat)</code></p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>❌ Feil blokk-type</h4>
+                        <p>kommandoblokk plasserer glass, Python lytter etter stone</p>
+                        <p><strong>Løsning:</strong> Bruk samme blokk-type</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>❌ Koden kjører ikke</h4>
+                        <p>glemmer <code>loops.run_in_background()</code></p>
+                        <p><strong>Løsning:</strong> Husk å starte loopen!</p>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-title">💡 Nyttige koordinat-tips:</div>
+                    <ul>
+                        <li>Bruk F3 for å se hvor du står</li>
+                        <li>Skriv ned alle koordinater du bruker på papir</li>
+                        <li>Test med <code>/tp x y z</code> for å teleportere til koordinater</li>
+                        <li>Bruk <code>/fill x1 y1 z1 x2 y2 z2 air</code> for å rydde området</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Prosjektarbeid -->
+            <section class="exercise">
+                <div class="exercise-header">
+                    <h3>🏗️ Prosjektarbeid: Lag din egen interaktive bygning (20 min)</h3>
+                </div>
+                
+                <p><strong>Velg ett av disse prosjektene:</strong></p>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>🏠 Smart hus</h4>
+                        <p>Lag et hus med flere dører som åpnes med forskjellige knapper</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🏰 Slott med portkullis</h4>
+                        <p>Bygg et slott med en stor port som kan åpnes og lukkes</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🔒 Bankboks</h4>
+                        <p>Lag en sikker boks som bare åpnes med riktig "passord"</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🎪 Magisk scene</h4>
+                        <p>Lag en scene hvor ting dukker opp og forsvinner</p>
+                    </div>
+                </div>
+
                 <div class="solution">
                     <div class="solution-header" onclick="toggleSolution('solution5')">
-                        <span>👁️ Vis badeland kode</span>
+                        <span>👁️ Vis eksempel-prosjekt</span>
                         <span class="toggle-icon">▼</span>
                     </div>
                     <div class="solution-content" id="solution5">
                         <div class="code-block">
                             <div class="code-title">
-                                <span>Badeland - Rutsjebane og spa</span>
+                                <span>Eksempel - Smart hus med 3 dører</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre># Rutsjebane
-def make_slide():
-    for i in range(10):
-        blocks.place(BLUE_CONCRETE, pos(i, -i, 0))
-        blocks.place(WATER, pos(i, -i+1, 0))
+                            <pre># Smart hus med flere dører
+def smart_house():
+    while True:
+                        # Frontdør (rød knapp = emerald signal)
+                        if blocks.test_for_block(EMERALD_BLOCK, world(100, 70, 200)):
+                            player.say("🚪 Frontdør åpnes!")
+                            blocks.fill(AIR, world(95, 70, 190), world(96, 72, 190), FillOperation.REPLACE)
+                            blocks.place(AIR, world(100, 70, 200))
+                        
+                        # Bakdør (blå knapp = diamond signal)
+                        if blocks.test_for_block(DIAMOND_BLOCK, world(110, 70, 200)):
+                            player.say("🚪 Bakdør åpnes!")
+                            blocks.fill(AIR, world(95, 70, 210), world(96, 72, 210), FillOperation.REPLACE)
+                            blocks.place(AIR, world(110, 70, 200))
+                        
+                        # Lukk alle dører (gul knapp = gold signal)
+                        if blocks.test_for_block(GOLD_BLOCK, world(105, 70, 205)):
+                            player.say("🔒 Alle dører lukkes!")
+                            blocks.fill(COBBLESTONE, world(95, 70, 190), world(96, 72, 190), FillOperation.REPLACE)
+                            blocks.fill(COBBLESTONE, world(95, 70, 210), world(96, 72, 210), FillOperation.REPLACE)
+                            blocks.place(AIR, world(105, 70, 205))
 
-player.on_chat("rutsjebane", make_slide)
-
-# Spa-basseng
-def make_spa():
-    blocks.fill(QUARTZ_BLOCK, pos(0,0,0), pos(6,2,6), FillOperation.HOLLOW)
-    blocks.fill(WATER, pos(1,1,1), pos(5,1,5), FillOperation.REPLACE)
-    
-    # Bobler (sjøgress)
-    for x in range(2, 5):
-        for z in range(2, 5):
-            blocks.place(SEAGRASS, pos(x, 1, z))
-
-player.on_chat("spa", make_spa)</pre>
+loops.run_in_background(smart_house)</pre>
                         </div>
                     </div>
                 </div>
-
-                <h3>🏔️ Fjelltøyhytte kommandoer:</h3>
-                <div class="solution">
-                    <div class="solution-header" onclick="toggleSolution('solution6')">
-                        <span>👁️ Vis hytte kode</span>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="solution-content" id="solution6">
-                        <div class="code-block">
-                            <div class="code-title">
-                                <span>Fjelltøyhytte - Bålplass og hytte</span>
-                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
-                            </div>
-                            <pre># Bålplass
-def make_campfire():
-    blocks.place(CAMPFIRE, pos(1, 0, 0))
-    # Steiner rundt
-    for x in range(-1, 3):
-        for z in range(-1, 3):
-            if abs(x-1) + abs(z-1) == 2:
-                blocks.place(COBBLESTONE, pos(x, 0, z))
-
-player.on_chat("baal", make_campfire)
-
-# Koselig hytte
-def make_cabin():
-    blocks.fill(SPRUCE_WOOD, pos(0,0,0), pos(8,5,8), FillOperation.HOLLOW)
-    blocks.fill(SPRUCE_PLANKS, pos(1,0,1), pos(7,0,7), FillOperation.REPLACE)
-    # Pipe
-    blocks.fill(COBBLESTONE, pos(4,1,0), pos(4,7,0), FillOperation.REPLACE)
-
-player.on_chat("hytte", make_cabin)</pre>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tip">
-                    <div class="tip-title">💡 Slik bruker du kommandoene:</div>
-                    <ol>
-                        <li>Kopier koden til MakeCode</li>
-                        <li>Lukk kodebyggeren</li>
-                        <li>Skriv kommandoen i chatten (f.eks. "palm")</li>
-                        <li>Se magien skje! ✨</li>
-                    </ol>
-                </div>
             </section>
 
-            <!-- Presentasjon -->
+            <!-- Oppsummering -->
             <section class="concept">
-                <h2>🎤 Presentasjon og deling (15 min)</h2>
+                <h2>📝 Oppsummering av dag 3 (10 min)</h2>
                 
-                <h3>Vis frem prosjektene:</h3>
+                <h3>🎉 Hva har vi lært i dag?</h3>
                 <ul>
-                    <li>Hver deltager/gruppe viser sitt ferested</li>
-                    <li>Forklar hva som er programmert vs bygget for hånd</li>
-                    <li>Del favoritt-kommando du lagde</li>
-                </ul>
-
-                <h3>Refleksjon:</h3>
-                <ul>
-                    <li>Hva var vanskeligst å programmere?</li>
-                    <li>Hva ville du gjort annerledes?</li>
-                    <li>Hva vil du lære mer om?</li>
-                </ul>
-            </section>
-
-            <!-- Oppsummering av kurset -->
-            <section class="concept">
-                <h2>📚 Oppsummering av hele kurset (10 min)</h2>
-                
-                <h3>🎉 Hva har vi lært denne uken?</h3>
-                <div class="days-grid">
-                    <div class="tip-card">
-                        <h4>📅 Dag 1</h4>
-                        <p>Variabler, for-løkker, grunnleggende programmering</p>
-                    </div>
-                    <div class="tip-card">
-                        <h4>📅 Dag 2</h4>
-                        <p>Agent-kommandoer, if-setninger, syntax</p>
-                    </div>
-                    <div class="tip-card">
-                        <h4>📅 Dag 3</h4>
-                        <p>Koordinater, bygge-kommandoer, kreativt prosjekt</p>
-                    </div>
-                </div>
-
-                <h3>🏆 Viktigste lærdommer:</h3>
-                <ul>
-                    <li>Datamaskiner trenger nøyaktige instruksjoner</li>
-                    <li>Programmering handler om å dele opp store problemer i små steg</li>
-                    <li>Kreativitet + koding = fantastiske resultater!</li>
+                    <li>Kommandoblocker kan plassere blokker på spesifikke koordinater</li>
+                    <li>Python kan lytte etter blokker med <code>blocks.test_for_block()</code></li>
+                    <li>Vi kan lage systemer hvor knapper styrer dører</li>
+                    <li>Viktig å bruke samme koordinater og blokk-typer</li>
+                    <li>Kombinere flere knapper for komplekse systemer</li>
                 </ul>
 
                 <div class="tip">
-                    <div class="tip-title">🚀 Videre læring:</div>
+                    <div class="tip-title">🚀 I morgen (Dag 4):</div>
                     <ul>
-                        <li>Minecraft Education har flere kurs</li>
-                        <li>Prøv andre programmeringsspråk</li>
-                        <li>Lag egne prosjekter hjemme</li>
+                        <li>Lage monstre som spawner når du beveger deg</li>
+                        <li>Bygge farlige områder og feller</li>
+                        <li>Kombinere bevegelse med automatisering</li>
                     </ul>
-                </div>
-            </section>
-
-            <!-- Ekstra utfordringer -->
-            <section class="exercise">
-                <div class="exercise-header">
-                    <h3>🌟 Ekstra utfordringer for de som blir ferdig tidlig</h3>
-                </div>
-                
-                <div class="solution">
-                    <div class="solution-header" onclick="toggleSolution('solution7')">
-                        <span>👁️ Vis avanserte kommandoer</span>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="solution-content" id="solution7">
-                        <div class="code-block">
-                            <div class="code-title">
-                                <span>Agent som bygger automatisk</span>
-                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
-                            </div>
-                            <pre># Agent som bygger automatisk
-def auto_build_house():
-    agent.teleport_to_player()
-    agent.set_item(STONE, 64, 1)
-    
-    # Bygg vegger automatisk
-    for side in range(4):
-        for steg in range(6):
-            agent.place(DOWN)
-            agent.place(UP)
-            agent.move(FORWARD, 1)
-        agent.turn(TurnDirection.RIGHT)
-
-player.on_chat("autobygg", auto_build_house)</pre>
-                        </div>
-
-                        <div class="code-block">
-                            <div class="code-title">
-                                <span>Dekorativ fontene</span>
-                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
-                            </div>
-                            <pre># Dekorativ fontene
-def make_fountain():
-    # Base
-    blocks.fill(STONE, pos(0,0,0), pos(6,1,6), FillOperation.HOLLOW)
-    blocks.fill(WATER, pos(1,1,1), pos(5,1,5), FillOperation.REPLACE)
-    
-    # Sentral søyle
-    blocks.fill(QUARTZ_PILLAR, pos(3,1,3), pos(3,4,3), FillOperation.REPLACE)
-    blocks.place(WATER, pos(3,5,3))
-
-player.on_chat("fontene", make_fountain)</pre>
-                        </div>
-                    </div>
                 </div>
             </section>
 
             <!-- Navigasjon -->
             <div style="text-align: center; margin-top: 40px;">
                 <a href="dag2.html" class="day-link" style="margin-right: 20px;">← Forrige: Dag 2</a>
-                <a href="dag4.html" class="day-link">Neste: Dag 4 - Interaktive Systemer →</a>
+                <a href="dag4.html" class="day-link">Neste: Dag 4 - Monster-Spawning →</a>
             </div>
         </main>
 
