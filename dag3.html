@@ -161,6 +161,8 @@ def lytter():
             player.say("Jeg så glass-blokken!")
             # Fjern blokken så meldingen ikke kommer hele tiden
             blocks.place(AIR, world(31, -60, -20))
+
+            # Kode for å fjerne døra
             blocks.fill(AIR, world(31, -60, -17), world(31, -58, -15), FillOperation.REPLACE)
 
 # Start lytting i bakgrunnen
@@ -241,13 +243,13 @@ loops.run_in_background(lytter)
                             <pre># Lytter og lukker døren
 def lukke_dor():
     while True:
-                        # Bytt ut med dine koordinater!
-                        if blocks.test_for_block(GLASS, world(100, 70, 200)):
-                            player.say("Lukker døren!")
-                            # Fyll døråpningen med stein (bytt koordinater!)
-                            blocks.fill(COBBLESTONE, world(95, 70, 195), world(96, 72, 195), FillOperation.REPLACE)
-                            # Fjern glass-blokken
-                            blocks.place(AIR, world(100, 70, 200))
+        # Bytt ut med dine koordinater!
+        if blocks.test_for_block(GLASS, world(100, 70, 200)):
+            player.say("Lukker døren!")
+            # Fyll døråpningen med stein (bytt koordinater!)
+            blocks.fill(COBBLESTONE, world(95, 70, 195), world(96, 72, 195), FillOperation.REPLACE)
+            # Fjern glass-blokken
+            blocks.place(AIR, world(100, 70, 200))
 
 # Start systemet
 loops.run_in_background(lukke_dor)</pre>
@@ -296,19 +298,19 @@ loops.run_in_background(lukke_dor)</pre>
                             <pre># Komplett dør-system med åpne og lukke
 def door_system():
     while True:
-                        # Lukke-dør knapp (glass-blokk)
-                        if blocks.test_for_block(GLASS, world(100, 70, 200)):
-                            player.say("🔒 Lukker døren!")
-                            # Fyll døråpningen med stein (endre koordinater!)
-                            blocks.fill(COBBLESTONE, world(95, 70, 195), world(96, 72, 195), FillOperation.REPLACE)
-                            blocks.place(AIR, world(100, 70, 200))  # Fjern signalblokk
-                        
-                        # Åpne-dør knapp (stone-blokk)  
-                        if blocks.test_for_block(STONE, world(105, 70, 205)):
-                            player.say("🔓 Åpner døren!")
-                            # Fjern blokkene fra døråpningen (endre koordinater!)
-                            blocks.fill(AIR, world(95, 70, 195), world(96, 72, 195), FillOperation.REPLACE)
-                            blocks.place(AIR, world(105, 70, 205))  # Fjern signalblokk
+        # Lukke-dør knapp (glass-blokk)
+        if blocks.test_for_block(GLASS, world(100, 70, 200)):
+            player.say("🔒 Lukker døren!")
+            # Fyll døråpningen med stein (endre koordinater!)
+            blocks.fill(COBBLESTONE, world(95, 70, 195), world(96, 72, 195), FillOperation.REPLACE)
+            blocks.place(AIR, world(100, 70, 200))  # Fjern signalblokk
+        
+        # Åpne-dør knapp (stone-blokk)  
+        if blocks.test_for_block(STONE, world(105, 70, 205)):
+            player.say("🔓 Åpner døren!")
+            # Fjern blokkene fra døråpningen (endre koordinater!)
+            blocks.fill(AIR, world(95, 70, 195), world(96, 72, 195), FillOperation.REPLACE)
+            blocks.place(AIR, world(105, 70, 205))  # Fjern signalblokk
 
 # Start dør-systemet
 loops.run_in_background(door_system)</pre>
@@ -413,24 +415,24 @@ loops.run_in_background(door_system)</pre>
                             <pre># Smart hus med flere dører
 def smart_house():
     while True:
-                        # Frontdør (rød knapp = emerald signal)
-                        if blocks.test_for_block(EMERALD_BLOCK, world(100, 70, 200)):
-                            player.say("🚪 Frontdør åpnes!")
-                            blocks.fill(AIR, world(95, 70, 190), world(96, 72, 190), FillOperation.REPLACE)
-                            blocks.place(AIR, world(100, 70, 200))
-                        
-                        # Bakdør (blå knapp = diamond signal)
-                        if blocks.test_for_block(DIAMOND_BLOCK, world(110, 70, 200)):
-                            player.say("🚪 Bakdør åpnes!")
-                            blocks.fill(AIR, world(95, 70, 210), world(96, 72, 210), FillOperation.REPLACE)
-                            blocks.place(AIR, world(110, 70, 200))
-                        
-                        # Lukk alle dører (gul knapp = gold signal)
-                        if blocks.test_for_block(GOLD_BLOCK, world(105, 70, 205)):
-                            player.say("🔒 Alle dører lukkes!")
-                            blocks.fill(COBBLESTONE, world(95, 70, 190), world(96, 72, 190), FillOperation.REPLACE)
-                            blocks.fill(COBBLESTONE, world(95, 70, 210), world(96, 72, 210), FillOperation.REPLACE)
-                            blocks.place(AIR, world(105, 70, 205))
+        # Frontdør (rød knapp = emerald signal)
+        if blocks.test_for_block(EMERALD_BLOCK, world(100, 70, 200)):
+            player.say("🚪 Frontdør åpnes!")
+            blocks.fill(AIR, world(95, 70, 190), world(96, 72, 190), FillOperation.REPLACE)
+            blocks.place(AIR, world(100, 70, 200))
+        
+        # Bakdør (blå knapp = diamond signal)
+        if blocks.test_for_block(DIAMOND_BLOCK, world(110, 70, 200)):
+            player.say("🚪 Bakdør åpnes!")
+            blocks.fill(AIR, world(95, 70, 210), world(96, 72, 210), FillOperation.REPLACE)
+            blocks.place(AIR, world(110, 70, 200))
+        
+        # Lukk alle dører (gul knapp = gold signal)
+        if blocks.test_for_block(GOLD_BLOCK, world(105, 70, 205)):
+            player.say("🔒 Alle dører lukkes!")
+            blocks.fill(COBBLESTONE, world(95, 70, 190), world(96, 72, 190), FillOperation.REPLACE)
+            blocks.fill(COBBLESTONE, world(95, 70, 210), world(96, 72, 210), FillOperation.REPLACE)
+            blocks.place(AIR, world(105, 70, 205))
 
 loops.run_in_background(smart_house)</pre>
                         </div>
