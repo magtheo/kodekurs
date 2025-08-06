@@ -151,17 +151,21 @@ loops.run_in_background(loop)</pre>
                                 <span>Fasit - Python lytter</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre># Lytter etter glass-blokk og reagerer
+                            <pre>
+
+# Lytter etter glass-blokk og reagerer
 def lytter():
     while True:
         # Bytt ut 100 70 200 med dine koordinater!
-        if blocks.test_for_block(GLASS, world(100, 70, 200)):
+        if blocks.test_for_block(GLASS, world(31, -60, -20)):
             player.say("Jeg så glass-blokken!")
             # Fjern blokken så meldingen ikke kommer hele tiden
-            blocks.place(AIR, world(100, 70, 200))
+            blocks.place(AIR, world(31, -60, -20))
+            blocks.fill(AIR, world(31, -60, -17), world(31, -58, -15), FillOperation.REPLACE)
 
 # Start lytting i bakgrunnen
-loops.run_in_background(lytter)</pre>
+loops.run_in_background(lytter)
+</pre>
                         </div>
                     </div>
                 </div>
