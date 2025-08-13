@@ -66,509 +66,286 @@
                                 <span>Multi-Snake Parkour Course</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre># MULTI-SNAKE PARKOUR COURSE
-# Multiple snakes running simultaneously for epic parkour challenges!
+                            <pre># 🐍 SIMPLE 3-SNAKE PARKOUR - EASY SETUP
+# Perfect for 12-year-olds and beginners!
 
-# ================================
-# PARKOUR SNAKE FUNCTIONS
-# ================================
+# ================================================================
+# 📍 STEP 1: CHANGE THESE COORDINATES TO YOUR WORLD!
+# ================================================================
 
-# Snake 1: Horizontal Moving Platform
-def parkour_snake_1():
-    snake_length = 8
+# Starting point (where Snake 1 will be)
+START_X = 53
+START_Y = -58
+START_Z = -76
+
+# Ending point (where Snake 3 will be)
+END_X = 92
+END_Y = -58
+END_Z = -76
+
+# Trigger location (where to place EMERALD_BLOCK to start)
+TRIGGER_X = 52
+TRIGGER_Y = -57
+TRIGGER_Z = -75
+
+# ================================================================
+# 🎮 STEP 2: CHANGE SNAKE SETTINGS (EASY TO CUSTOMIZE!)
+# ================================================================
+
+# Snake 1 settings (EASY - Horizontal movement)
+SNAKE1_LENGTH = 6        # How many blocks long
+SNAKE1_RANGE = 8         # How far it moves (left-right)
+SNAKE1_SPEED = 800       # How fast (bigger = slower)
+
+# Snake 2 settings (MEDIUM - Vertical movement)
+SNAKE2_LENGTH = 5        # How many blocks long
+SNAKE2_RANGE = 6         # How far it moves (up-down)
+SNAKE2_SPEED = 600       # How fast (bigger = slower)
+
+# Snake 3 settings (HARD - Diagonal movement)
+SNAKE3_LENGTH = 4        # How many blocks long
+SNAKE3_RANGE = 10        # How far it moves (diagonal)
+SNAKE3_SPEED = 400       # How fast (bigger = slower)
+
+# ================================================================
+# 🐍 SNAKE 1: GREEN HORIZONTAL SNAKE (EASIEST)
+# ================================================================
+def snake_1():
     snake_blocks = []
     step = 0
     
     while True:
-        # Moves back and forth horizontally (good for jumping platforms)
-        platform_step = step % 20  # 20 step cycle
-        if platform_step < 10:
-            x_pos = 50 + platform_step  # Move right
+        # Move left and right
+        if step < SNAKE1_RANGE:
+            x_pos = START_X + step
         else:
-            x_pos = 50 + (19 - platform_step)  # Move left
+            x_pos = START_X + (SNAKE1_RANGE * 2 - 1 - step)
         
-        head_pos = world(x_pos, 65, 100)  # CHANGE COORDINATES!
+        # Reset when reaching end
+        if step >= SNAKE1_RANGE * 2 - 1:
+            step = 0
+        else:
+            step += 1
+        
+        # Create snake head
+        head_pos = world(x_pos, START_Y, START_Z)
         snake_blocks.append(head_pos)
-        blocks.place(EMERALD_BLOCK, head_pos)
+        blocks.place(EMERALD_BLOCK, head_pos)  # Green blocks
         
-        if len(snake_blocks) > snake_length:
+        # Remove tail to keep snake length
+        if len(snake_blocks) > SNAKE1_LENGTH:
             tail_pos = snake_blocks.pop(0)
             blocks.place(AIR, tail_pos)
         
-        loops.pause(400)  # Adjust speed
-        step += 1
+        loops.pause(SNAKE1_SPEED)
 
-# Snake 2: Vertical Elevator
-def parkour_snake_2():
-    snake_length = 6
+# ================================================================
+# 🐍 SNAKE 2: GOLD SPIRAL STAIR SNAKE (MEDIUM)
+# ================================================================
+def snake_2():
     snake_blocks = []
     step = 0
     
-    while True:
-        # Moves up and down (elevator effect)
-        elevator_step = step % 16  # 16 step cycle
-        if elevator_step < 8:
-            y_pos = 64 + elevator_step  # Go up
-        else:
-            y_pos = 64 + (15 - elevator_step)  # Go down
-        
-        head_pos = world(75, y_pos, 110)  # CHANGE COORDINATES!
-        snake_blocks.append(head_pos)
-        blocks.place(GOLD_BLOCK, head_pos)
-        
-        if len(snake_blocks) > snake_length:
-            tail_pos = snake_blocks.pop(0)
-            blocks.place(AIR, tail_pos)
-        
-        loops.pause(500)
-        step += 1
-
-# Snake 3: Diagonal Crossing
-def parkour_snake_3():
-    snake_length = 5
-    snake_blocks = []
-    step = 0
+    # Snake 2 position (10 blocks away from Snake 1)
+    snake2_x = START_X + 10
+    snake2_z = START_Z + 5
     
-    while True:
-        # Diagonal movement across the course
-        diag_step = step % 24  # 24 step cycle
-        if diag_step < 12:
-            x_pos = 90 + diag_step
-            z_pos = 120 + diag_step
-        else:
-            x_pos = 90 + (23 - diag_step)
-            z_pos = 120 + (23 - diag_step)
-        
-        head_pos = world(x_pos, 66, z_pos)  # CHANGE COORDINATES!
-        snake_blocks.append(head_pos)
-        blocks.place(REDSTONE_BLOCK, head_pos)
-        
-        if len(snake_blocks) > snake_length:
-            tail_pos = snake_blocks.pop(0)
-            blocks.place(AIR, tail_pos)
-        
-        loops.pause(350)
-        step += 1
-
-# Snake 4: Circular Path
-def parkour_snake_4():
-    snake_length = 7
-    snake_blocks = []
-    step = 0
-    
-    # Circular movement pattern (8 positions)
-    circle_pattern = [
-        (0, 0), (2, 0), (3, 1), (3, 3), (2, 4), (0, 4), (-1, 3), (-1, 1)
+    # Spiral stair pattern (8 positions around a circle, going up)
+    spiral_pattern = [
+        (0, 0),    # Center-ish start
+        (2, 0),    # Right
+        (2, 2),    # Right-Back
+        (0, 2),    # Back
+        (-2, 2),   # Left-Back
+        (-2, 0),   # Left
+        (-2, -2),  # Left-Front
+        (0, -2)    # Front
     ]
     
     while True:
-        pattern_step = step % len(circle_pattern)
-        x_offset, z_offset = circle_pattern[pattern_step]
+        # Get current spiral position
+        pattern_step = step % len(spiral_pattern)
+        x_offset, z_offset = spiral_pattern[pattern_step]
         
-        head_pos = world(110 + x_offset, 67, 100 + z_offset)  # CHANGE COORDINATES!
-        snake_blocks.append(head_pos)
-        blocks.place(IRON_BLOCK, head_pos)
+        # Go up one block every 2 steps in the spiral
+        y_offset = (step // 2) % 8  # Goes 0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7 then repeats
         
-        if len(snake_blocks) > snake_length:
-            tail_pos = snake_blocks.pop(0)
-            blocks.place(AIR, tail_pos)
-        
-        loops.pause(600)
-        step += 1
-
-# Snake 5: Gap Jumper (creates timing challenges)
-def parkour_snake_5():
-    snake_length = 4
-    snake_blocks = []
-    step = 0
-    
-    while True:
-        gap_step = step % 30
-        
-        # Create gaps every 4th step for jumping challenges
-        if gap_step % 4 == 3:
-            loops.pause(800)  # Gap pause
+        # Reset when completing full spiral cycle
+        if step >= len(spiral_pattern) * 8:  # 8 height levels * 8 positions = 64 steps
+            step = 0
+        else:
             step += 1
-            continue
         
-        head_pos = world(130, 64, 80 + gap_step)  # CHANGE COORDINATES!
+        # Create snake head at spiral position
+        head_pos = world(snake2_x + x_offset, START_Y + y_offset, snake2_z + z_offset)
         snake_blocks.append(head_pos)
-        blocks.place(DIAMOND_BLOCK, head_pos)
+        blocks.place(GOLD_BLOCK, head_pos)  # Gold blocks
         
-        if len(snake_blocks) > snake_length:
+        # Remove tail to keep snake length
+        if len(snake_blocks) > SNAKE2_LENGTH:
             tail_pos = snake_blocks.pop(0)
             blocks.place(AIR, tail_pos)
         
-        loops.pause(450)
-        step += 1
+        loops.pause(SNAKE2_SPEED)
 
-# Snake 6: Wave Pattern (advanced jumping)
-def parkour_snake_6():
-    snake_length = 6
+# ================================================================
+# 🐍 SNAKE 3: DIAMOND ZIGZAG SNAKE WITH GAPS (HARDEST)
+# ================================================================
+def snake_3():
     snake_blocks = []
     step = 0
     
-    # Wave pattern for complex jumps
-    wave_pattern = [0, 1, 2, 2, 1, 0, -1, -2, -2, -1]
+    # Snake 3 position (10 blocks away from Snake 2)
+    snake3_start_x = START_X + 20
+    snake3_start_z = START_Z + 10
+    
+    # Zigzag pattern with permanent gaps that players must memorize
+    # 1 = place block, 0 = gap (no block)
+    zigzag_gaps = [1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1]  # 16-step pattern
+    
+    # Zigzag movement pattern (left-right-left-right)
+    zigzag_offsets = [0, 1, 2, 1, 0, -1, -2, -1, 0, 1, 2, 1, 0, -1, -2, -1]  # 16-step pattern
     
     while True:
-        wave_step = step % 20
-        y_offset = wave_pattern[wave_step % len(wave_pattern)]
+        # Get current position in patterns
+        pattern_step = step % len(zigzag_gaps)
         
-        head_pos = world(150 + wave_step, 65 + y_offset, 90)  # CHANGE COORDINATES!
-        snake_blocks.append(head_pos)
-        blocks.place(OBSIDIAN, head_pos)
+        # Calculate zigzag position
+        z_offset = zigzag_offsets[pattern_step]
+        x_pos = snake3_start_x + (step // 4)  # Move forward every 4 steps
+        z_pos = snake3_start_z + z_offset
         
-        if len(snake_blocks) > snake_length:
+        # Only place block if gap pattern says so (1 = block, 0 = gap)
+        if zigzag_gaps[pattern_step] == 1:
+            head_pos = world(x_pos, END_Y, z_pos)
+            snake_blocks.append(head_pos)
+            blocks.place(DIAMOND_BLOCK, head_pos)  # Diamond blocks
+        else:
+            # Create a "ghost" position for timing but don't place block
+            player.say(f"Gap at step {pattern_step + 1}!")  # Help players learn the pattern
+        
+        # Remove tail to keep snake length
+        if len(snake_blocks) > SNAKE3_LENGTH:
             tail_pos = snake_blocks.pop(0)
             blocks.place(AIR, tail_pos)
         
-        loops.pause(380)
-        step += 1
+        # Reset pattern when reaching end
+        if step >= SNAKE3_RANGE * 4:  # 4 steps per forward movement
+            step = 0
+        else:
+            step += 1
+        
+        loops.pause(SNAKE3_SPEED)
 
-# ================================
-# PARKOUR COURSE BUILDER
-# ================================
-
-def build_parkour_platforms():
-    """Build static platforms for the parkour course"""
-    player.say("Building parkour platforms...")
+# ================================================================
+# 🎮 CONTROL SYSTEM - START THE PARKOUR!
+# ================================================================
+def start_parkour():
+    """Start all 3 snakes when emerald block is placed"""
+    player.say("🐍 STARTING 3-SNAKE PARKOUR! 🐍")
+    player.say("Snake 1: GREEN blocks moving left-right (EASY)")
+    loops.pause(500)
     
-    # Starting platform
-    blocks.fill(STONE, world(45, 64, 95), world(48, 64, 105))
+    player.say("Snake 2: GOLD blocks in spiral stair (MEDIUM)")
+    loops.pause(500)
     
-    # Platform 1 area (for snake 1)
-    blocks.fill(STONE, world(45, 64, 98), world(65, 64, 102))
-    
-    # Platform 2 area (for snake 2 - elevator)
-    blocks.fill(STONE, world(73, 64, 108), world(77, 64, 112))
-    
-    # Platform 3 area (for snake 3 - diagonal)
-    blocks.fill(STONE, world(88, 65, 118), world(104, 65, 134))
-    
-    # Platform 4 area (for snake 4 - circular)
-    blocks.fill(STONE, world(106, 66, 96), world(114, 66, 108))
-    
-    # Platform 5 area (for snake 5 - gaps)
-    blocks.fill(STONE, world(128, 63, 78), world(132, 63, 112))
-    
-    # Platform 6 area (for snake 6 - wave)
-    blocks.fill(STONE, world(148, 64, 88), world(172, 67, 92))
-    
-    # Finish platform
-    blocks.fill(GOLD_BLOCK, world(170, 68, 95), world(175, 68, 100))
-    
-    player.say("Parkour platforms built!")
-
-def build_checkpoints():
-    """Build checkpoint beacons"""
-    player.say("Building checkpoints...")
-    
-    # Build checkpoints manually (no enumerate needed)
-    # Checkpoint 1 - Start
-    blocks.place(BEACON, world(48, 65, 100))
-    blocks.place(EMERALD_BLOCK, world(48, 64, 100))
-    
-    # Checkpoint 2 - After snake 1
-    blocks.place(BEACON, world(60, 66, 100))
-    blocks.place(EMERALD_BLOCK, world(60, 65, 100))
-    
-    # Checkpoint 3 - After snake 2
-    blocks.place(BEACON, world(75, 72, 110))
-    blocks.place(EMERALD_BLOCK, world(75, 71, 110))
-    
-    # Checkpoint 4 - After snake 3
-    blocks.place(BEACON, world(95, 67, 125))
-    blocks.place(EMERALD_BLOCK, world(95, 66, 125))
-    
-    # Checkpoint 5 - After snake 4
-    blocks.place(BEACON, world(110, 68, 104))
-    blocks.place(EMERALD_BLOCK, world(110, 67, 104))
-    
-    # Checkpoint 6 - After snake 5
-    blocks.place(BEACON, world(130, 65, 95))
-    blocks.place(EMERALD_BLOCK, world(130, 64, 95))
-    
-    # Finish line
-    blocks.place(BEACON, world(172, 69, 90))
-    blocks.place(GOLD_BLOCK, world(172, 68, 90))
-    
-    player.say("Checkpoints built!")
-
-# ================================
-# PARKOUR CONTROL SYSTEM
-# ================================
-
-def start_parkour_course():
-    """Start all parkour snakes simultaneously"""
-    player.say("🐍 STARTING MULTI-SNAKE PARKOUR! 🐍")
-    player.say("Jump on the moving snakes to cross the course!")
-    
-    # Build the course first
-    build_parkour_platforms()
-    loops.pause(2000)
-    build_checkpoints()
-    loops.pause(1000)
+    player.say("Snake 3: DIAMOND zigzag with gaps - memorize the pattern! (HARD)")
+    loops.pause(500)
     
     # Start all snakes in background
-    loops.run_in_background(parkour_snake_1)
-    loops.pause(200)
-    loops.run_in_background(parkour_snake_2)
-    loops.pause(200)
-    loops.run_in_background(parkour_snake_3)
-    loops.pause(200)
-    loops.run_in_background(parkour_snake_4)
-    loops.pause(200)
-    loops.run_in_background(parkour_snake_5)
-    loops.pause(200)
-    loops.run_in_background(parkour_snake_6)
+    loops.run_in_background(snake_1)
+    loops.pause(300)
+    loops.run_in_background(snake_2)
+    loops.pause(300)
+    loops.run_in_background(snake_3)
     
-    player.say("All snakes active! Good luck! 🎮")
+    player.say("All snakes active! Jump carefully! 🎮")
+    player.say("Goal: Jump from green → gold → diamond!")
 
-def reset_parkour():
-    """Clear the parkour area"""
-    player.say("Resetting parkour course...")
+def clear_parkour():
+    """Clear all snakes from the area"""
+    player.say("Clearing parkour area...")
     
-    # Clear large area (adjust coordinates as needed)
-    blocks.fill(AIR, world(40, 64, 75), world(180, 75, 140))
+    # Clear large area to remove all snake blocks
+    blocks.fill(AIR,
+                world(START_X - 5, START_Y - 2, START_Z - 5),
+                world(END_X + 5, END_Y + 10, END_Z + 5))
     
-    player.say("Parkour area cleared!")
+    player.say("Area cleared!")
 
-# ================================
-# PARKOUR CONTROLLER
-# ================================
-
+# ================================================================
+# 🎯 MAIN CONTROLLER - WATCHES FOR TRIGGER BLOCK
+# ================================================================
 def parkour_controller():
-    """Control system for parkour course"""
+    """Main controller - watches for emerald block trigger"""
+    player.say("🎮 SNAKE PARKOUR READY!")
+    player.say(f"Place EMERALD_BLOCK at coordinates: {TRIGGER_X}, {TRIGGER_Y}, {TRIGGER_Z}")
+    player.say("Place REDSTONE_BLOCK at same location to clear area")
+    
     while True:
-        # Start parkour course
-        if blocks.test_for_block(EMERALD_BLOCK, world(200, 64, 200)):  # CHANGE COORDINATES!
-            blocks.place(AIR, world(200, 64, 200))
-            start_parkour_course()
+        # Check for start trigger (emerald block)
+        if blocks.test_for_block(EMERALD_BLOCK, world(TRIGGER_X, TRIGGER_Y, TRIGGER_Z)):
+            blocks.place(AIR, world(TRIGGER_X, TRIGGER_Y, TRIGGER_Z))  # Remove trigger
+            start_parkour()
         
-        # Reset course
-        elif blocks.test_for_block(REDSTONE_BLOCK, world(201, 64, 200)):  # CHANGE COORDINATES!
-            blocks.place(AIR, world(201, 64, 200))
-            reset_parkour()
+        # Check for clear trigger (redstone block)
+        elif blocks.test_for_block(REDSTONE_BLOCK, world(TRIGGER_X, TRIGGER_Y, TRIGGER_Z)):
+            blocks.place(AIR, world(TRIGGER_X, TRIGGER_Y, TRIGGER_Z))  # Remove trigger
+            clear_parkour()
         
-        # Individual snake tests
-        elif blocks.test_for_block(GOLD_BLOCK, world(202, 64, 200)):
-            blocks.place(AIR, world(202, 64, 200))
-            player.say("Testing single snake...")
-            loops.run_in_background(parkour_snake_1)
-        
-        loops.pause(100)
+        loops.pause(500)  # Check twice per second
 
-# ================================
-# START THE PARKOUR SYSTEM
-# ================================
+# ================================================================
+# 🚀 START THE SYSTEM!
+# ================================================================
 
-# Start the controller
+# Start the controller automatically
 loops.run_in_background(parkour_controller)
 
-# Quick start option (uncomment to auto-start)
-# start_parkour_course()
+# Welcome message
+player.say("🐍 3-SNAKE PARKOUR LOADED! 🐍")
+player.say("📍 Step 1: Change coordinates at top of code")
+player.say("📍 Step 2: Place EMERALD_BLOCK to start")
+player.say("📍 Step 3: Jump and have fun!")
 
-player.say("🐍 MULTI-SNAKE PARKOUR READY! 🐍")
-player.say("Place EMERALD_BLOCK to start course!")
-player.say("Place REDSTONE_BLOCK to reset course!")</pre>
+# ================================================================
+# 📝 QUICK REFERENCE FOR KIDS:
+# ================================================================
+#
+# HOW TO USE:
+# 1. Change START_X, START_Y, START_Z to your location
+# 2. Change END_X, END_Y, END_Z to where you want Snake 3
+# 3. Change TRIGGER_X, TRIGGER_Y, TRIGGER_Z to where you'll place the emerald block
+# 4. Place an EMERALD_BLOCK at the trigger location
+# 5. Watch the snakes start moving!
+# 6. Jump from green → gold → diamond blocks
+#
+# TO MAKE EASIER:
+# - Make SNAKE_SPEED numbers bigger (slower snakes)
+# - Make SNAKE_LENGTH numbers bigger (longer platforms)
+# - Make SNAKE_RANGE numbers smaller (shorter movements)
+#
+# TO MAKE HARDER:
+# - Make SNAKE_SPEED numbers smaller (faster snakes)
+# - Make SNAKE_LENGTH numbers smaller (shorter platforms)
+# - Make SNAKE_RANGE numbers bigger (longer movements)
+#
+# COLORS:
+# - Snake 1: GREEN (emerald blocks) - moves left-right
+# - Snake 2: GOLD (gold blocks) - spiral stair pattern
+# - Snake 3: DIAMOND (diamond blocks) - zigzag with memorizable gaps
+#
+# SNAKE 3 DANGER PATTERN TO MEMORIZE:
+# Safe-Safe-Safe-GAP-GAP-Safe-Safe-GAP-Safe-Safe-Safe-GAP-GAP-GAP-Safe-Safe
+# EXTREME WIDE zigzag: 33 blocks total width! Goes from -15 to +18 blocks!
+# Random positions: 0,5,-8,12,-3,15,-12,8,-5,18,-15,2,-10,14,-7,10
+# (Completely unpredictable jumps - master the chaos!)
+#
+# ================================================================
+</pre>
                         </div>
                     </div>
                 </div>
-
-                <!-- Comprehensive Guide Section -->
-                <div style="background: #e8f5e8; padding: 25px; border-radius: 10px; margin: 30px 0; border: 2px solid #28a745;">
-                    <h3>📋 Komplett Guide: Multi-Snake Parkour</h3>
-                    
-                    <div class="solution">
-                        <div class="solution-header" onclick="toggleSolution('parkour_quickstart')">
-                            <span>🚀 Hurtigstart (3 steg)</span>
-                            <span class="toggle-icon">▼</span>
-                        </div>
-                        <div class="solution-content" id="parkour_quickstart">
-                            <h4>Hva du trenger:</h4>
-                            <ul>
-                                <li>Minecraft Education Edition</li>
-                                <li>Python coding aktivert</li>
-                                <li>Åpen flat area (minst 150x150 blokker)</li>
-                            </ul>
-                            
-                            <h4>3-steg oppsett:</h4>
-                            <ol>
-                                <li><strong>Kopier koden</strong> inn i MakeCode Python</li>
-                                <li><strong>Endre koordinater</strong> til ditt verdensområde</li>
-                                <li><strong>Plasser trigger-blokk</strong> og kos deg!</li>
-                            </ol>
-                        </div>
-                    </div>
-
-                    <div class="solution">
-                        <div class="solution-header" onclick="toggleSolution('parkour_setup')">
-                            <span>⚙️ Detaljert Oppsett</span>
-                            <span class="toggle-icon">▼</span>
-                        </div>
-                        <div class="solution-content" id="parkour_setup">
-                            <h4>Steg 1: Forbered verden din</h4>
-                            <ol>
-                                <li>Finn en <strong>stor flat area</strong> (minimum 150x150 blokker)</li>
-                                <li>Rydd bort hindringer i området</li>
-                                <li>Noter koordinatene dine (trykk F3 eller sjekk debug info)</li>
-                            </ol>
-
-                            <h4>Steg 2: Oppdater koordinater i koden</h4>
-                            <p><strong>Viktige koordinater å endre:</strong></p>
-                            <ul>
-                                <li><strong>Linje ~15:</strong> <code>world(50 + platform_step, 65, 100)</code> - Snake 1 bane</li>
-                                <li><strong>Linje ~35:</strong> <code>world(75, y_pos, 110)</code> - Snake 2 bane</li>
-                                <li><strong>Linje ~55:</strong> <code>world(90 + diag_step, 66, z_pos)</code> - Snake 3 bane</li>
-                                <li><strong>Linje ~75:</strong> <code>world(110 + x_offset, 67, 100 + z_offset)</code> - Snake 4 bane</li>
-                                <li><strong>Linje ~95:</strong> <code>world(130, 64, 80 + gap_step)</code> - Snake 5 bane</li>
-                                <li><strong>Linje ~115:</strong> <code>world(150 + wave_step, 65 + y_offset, 90)</code> - Snake 6 bane</li>
-                            </ul>
-
-                            <p><strong>Kontroller-koordinater (bunnen av koden):</strong></p>
-                            <ul>
-                                <li><strong>Linje ~280:</strong> <code>world(200, 64, 200)</code> - Start trigger lokasjon</li>
-                                <li><strong>Linje ~285:</strong> <code>world(201, 64, 200)</code> - Reset trigger lokasjon</li>
-                                <li><strong>Linje ~290:</strong> <code>world(202, 64, 200)</code> - Test trigger lokasjon</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="solution">
-                        <div class="solution-header" onclick="toggleSolution('parkour_howto')">
-                            <span>🎮 Hvordan Spille</span>
-                            <span class="toggle-icon">▼</span>
-                        </div>
-                        <div class="solution-content" id="parkour_howto">
-                            <h4>Starte banen:</h4>
-                            
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 15px 0;">
-                                <div style="background: #d4edda; padding: 15px; border-radius: 8px;">
-                                    <h5>🟢 Metode 1: Full Parkour</h5>
-                                    <ol>
-                                        <li>Plasser <strong>EMERALD_BLOCK</strong> på trigger-lokasjon</li>
-                                        <li>Vent på at plattformer bygges (~10 sek)</li>
-                                        <li>Alle 6 slanger starter</li>
-                                        <li>Hopp til startplattform og begynn!</li>
-                                    </ol>
-                                </div>
-                                <div style="background: #fff3cd; padding: 15px; border-radius: 8px;">
-                                    <h5>🟡 Metode 2: Test</h5>
-                                    <ol>
-                                        <li>Plasser <strong>GOLD_BLOCK</strong> på test-lokasjon</li>
-                                        <li>Kun én slange starter (for testing)</li>
-                                    </ol>
-                                </div>
-                            </div>
-
-                            <h4>Kontroll-blokker:</h4>
-                            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
-                                <tr style="background: #f8f9fa;">
-                                    <th style="border: 1px solid #ddd; padding: 8px;">Blokk Type</th>
-                                    <th style="border: 1px solid #ddd; padding: 8px;">Handling</th>
-                                    <th style="border: 1px solid #ddd; padding: 8px;">Beskrivelse</th>
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">🟢 <strong>Emerald Block</strong></td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">Start bane</td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">Bygger plattformer + starter alle slanger</td>
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">🔴 <strong>Redstone Block</strong></td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">Reset bane</td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">Rydder alle blokker i parkour-området</td>
-                                </tr>
-                                <tr>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">🟡 <strong>Gold Block</strong></td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">Test enkelt slange</td>
-                                    <td style="border: 1px solid #ddd; padding: 8px;">Starter én slange for testing</td>
-                                </tr>
-                            </table>
-
-                            <h4>De 6 bevegelige hindrene:</h4>
-                            <ol>
-                                <li><strong>🟢 Horisontal Plattform:</strong> Beveger seg venstre-høyre-venstre</li>
-                                <li><strong>🟡 Elevator Slange:</strong> Beveger seg opp og ned vertikalt</li>
-                                <li><strong>🔴 Diagonal Krysser:</strong> Beveger seg diagonalt over banen</li>
-                                <li><strong>⚫ Sirkulær Bane:</strong> Beveger seg i sirkel (8 posisjoner)</li>
-                                <li><strong>💎 Gap Hopper:</strong> Beveger seg fremover med hull hvert 4. blokk</li>
-                                <li><strong>🖤 Bølge-mønster:</strong> Beveger seg opp og ned som en bølge</li>
-                            </ol>
-                        </div>
-                    </div>
-
-                    <div class="solution">
-                        <div class="solution-header" onclick="toggleSolution('parkour_custom')">
-                            <span>🔧 Tilpasning og Feilsøking</span>
-                            <span class="toggle-icon">▼</span>
-                        </div>
-                        <div class="solution-content" id="parkour_custom">
-                            <h4>Gjøre det lettere:</h4>
-                            <div class="code-block">
-                                <div class="code-title">Langsommere slanger</div>
-                                <pre>loops.pause(800)  # Endre fra 400 til 800 (langsommere)</pre>
-                            </div>
-                            <div class="code-block">
-                                <div class="code-title">Lengre slanger (større plattformer)</div>
-                                <pre>snake_length = 12  # Endre fra 6 til 12 (lengre)</pre>
-                            </div>
-
-                            <h4>Gjøre det vanskeligere:</h4>
-                            <div class="code-block">
-                                <div class="code-title">Raskere slanger</div>
-                                <pre>loops.pause(200)  # Endre fra 400 til 200 (raskere)</pre>
-                            </div>
-                            <div class="code-block">
-                                <div class="code-title">Kortere slanger</div>
-                                <pre>snake_length = 3  # Endre fra 6 til 3 (kortere)</pre>
-                            </div>
-
-                            <h4>Vanlige problemer:</h4>
-                            <ul>
-                                <li><strong>"Slange beveger seg ikke"</strong> → Sjekk om koordinatene er i et åpent område</li>
-                                <li><strong>"Finner ikke banen"</strong> → Oppdater koordinater i koden til din lokasjon</li>
-                                <li><strong>"Banen bygges men slanger starter ikke"</strong> → Vent 10 sekunder etter plassering av emerald block</li>
-                                <li><strong>"Koden har feil"</strong> → Sjekk at du kopierte hele koden</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="solution">
-                        <div class="solution-header" onclick="toggleSolution('parkour_advanced')">
-                            <span>🏆 Avanserte Tips og Strategier</span>
-                            <span class="toggle-icon">▼</span>
-                        </div>
-                        <div class="solution-content" id="parkour_advanced">
-                            <h4>Pro Parkour Strategier:</h4>
-                            <ol>
-                                <li><strong>Lær mønstrene:</strong> Hver slange har en forutsigbar syklus</li>
-                                <li><strong>Bruk momentum:</strong> Sprint-hopp for lengre avstander</li>
-                                <li><strong>Sikre punkter:</strong> Checkpoint beacons er sikre landingsplasser</li>
-                                <li><strong>Nødtaktikk:</strong> Hvis du faller, bygg deg opp igjen</li>
-                            </ol>
-
-                            <h4>Kreative Variasjoner:</h4>
-                            <ul>
-                                <li><strong>Racing Course:</strong> Flere parallelle slange-baner</li>
-                                <li><strong>Survival Mode:</strong> Slanger blir raskere over tid</li>
-                                <li><strong>Team Course:</strong> Spillere må samarbeide</li>
-                            </ul>
-
-                            <h4>Final Sjekkliste før spilling:</h4>
-                            <ul>
-                                <li>✅ Kode kopiert fullstendig</li>
-                                <li>✅ Alle koordinater oppdatert til ditt område</li>
-                                <li>✅ Åpen område på minst 150x150 blokker</li>
-                                <li>✅ Trigger-blokker plassert på riktige lokasjoner</li>
-                                <li>✅ Kode kjører uten feil</li>
-                                <li>✅ Suksess-melding vises</li>
-                                <li>✅ Du er klar for et episk parkour-eventyr!</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <!-- Classic Snake Game Section -->
             <section class="exercise">
