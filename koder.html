@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koder - Minecraft Kodekurs</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="success-message" id="successMessage">Kode kopiert! 📋</div>
+    
+    <div class="container">
+        <header>
+            <h1>💻 Koder og Eksempler</h1>
+            <p class="subtitle">Samling av kule koder og eksempler for Minecraft Education Edition</p>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">🏠 Hjem</a>
+            <a href="dag1.html">Dag 1</a>
+            <a href="dag2.html">Dag 2</a>
+            <a href="dag3.html">Dag 3</a>
+            <a href="dag4.html">Dag 4</a>
+            <a href="dag5.html">Dag 5</a>
+            <a href="koder.html" class="active">💻 Koder</a>
+        </nav>
+
+        <main>
+            <!-- Intro section -->
+            <section class="concept" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 30px; border-radius: 15px;">
+                <h2>🎮 Avanserte Koder og Prosjekter</h2>
+                <p style="font-size: 1.1em; margin: 20px 0;">Her finner du kule koder og eksempler som går utover det grunnleggende!</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 30px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <strong>🐍 Snake-spill:</strong><br>
+                        Klassisk snake-spill i Minecraft
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <strong>🏃 Parkour:</strong><br>
+                        Bevegelige plattformer og utfordringer
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;">
+                        <strong>🎯 Mini-spill:</strong><br>
+                        Komplette spill og systemer
+                    </div>
+                </div>
+            </section>
+
+            <!-- Snake Game Section -->
+            <section class="concept">
+                <h2>🐍 Snake-spill Pakke</h2>
+                <p>Her er en komplett samling av forskjellige Snake-spill varianter for Minecraft!</p>
+                
+                <h3>🎮 Multi-Snake Parkour Course</h3>
+                <p>Et avansert parkour-system med 6 forskjellige bevegelige "slanger" som skaper utfordringer!</p>
+                
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('snake_parkour')">
+                        <span>👀 Vis Multi-Snake Parkour Kode</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="snake_parkour">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Multi-Snake Parkour Course</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre># MULTI-SNAKE PARKOUR COURSE
+# Multiple snakes running simultaneously for epic parkour challenges!
+
+# ================================
+# PARKOUR SNAKE FUNCTIONS
+# ================================
+
+# Snake 1: Horizontal Moving Platform
+def parkour_snake_1():
+    snake_length = 8
+    snake_blocks = []
+    step = 0
+    
+    while True:
+        # Moves back and forth horizontally (good for jumping platforms)
+        platform_step = step % 20  # 20 step cycle
+        if platform_step < 10:
+            x_pos = 50 + platform_step  # Move right
+        else:
+            x_pos = 50 + (19 - platform_step)  # Move left
+        
+        head_pos = world(x_pos, 65, 100)  # CHANGE COORDINATES!
+        snake_blocks.append(head_pos)
+        blocks.place(EMERALD_BLOCK, head_pos)
+        
+        if len(snake_blocks) > snake_length:
+            tail_pos = snake_blocks.pop(0)
+            blocks.place(AIR, tail_pos)
+        
+        loops.pause(400)  # Adjust speed
+        step += 1
+
+# Snake 2: Vertical Elevator
+def parkour_snake_2():
+    snake_length = 6
+    snake_blocks = []
+    step = 0
+    
+    while True:
+        # Moves up and down (elevator effect)
+        elevator_step = step % 16  # 16 step cycle
+        if elevator_step < 8:
+            y_pos = 64 + elevator_step  # Go up
+        else:
+            y_pos = 64 + (15 - elevator_step)  # Go down
+        
+        head_pos = world(75, y_pos, 110)  # CHANGE COORDINATES!
+        snake_blocks.append(head_pos)
+        blocks.place(GOLD_BLOCK, head_pos)
+        
+        if len(snake_blocks) > snake_length:
+            tail_pos = snake_blocks.pop(0)
+            blocks.place(AIR, tail_pos)
+        
+        loops.pause(500)
+        step += 1
+
+# Snake 3: Diagonal Crossing
+def parkour_snake_3():
+    snake_length = 5
+    snake_blocks = []
+    step = 0
+    
+    while True:
+        # Diagonal movement across the course
+        diag_step = step % 24  # 24 step cycle
+        if diag_step < 12:
+            x_pos = 90 + diag_step
+            z_pos = 120 + diag_step
+        else:
+            x_pos = 90 + (23 - diag_step)
+            z_pos = 120 + (23 - diag_step)
+        
+        head_pos = world(x_pos, 66, z_pos)  # CHANGE COORDINATES!
+        snake_blocks.append(head_pos)
+        blocks.place(REDSTONE_BLOCK, head_pos)
+        
+        if len(snake_blocks) > snake_length:
+            tail_pos = snake_blocks.pop(0)
+            blocks.place(AIR, tail_pos)
+        
+        loops.pause(350)
+        step += 1
+
+# Snake 4: Circular Path
+def parkour_snake_4():
+    snake_length = 7
+    snake_blocks = []
+    step = 0
+    
+    # Circular movement pattern (8 positions)
+    circle_pattern = [
+        (0, 0), (2, 0), (3, 1), (3, 3), (2, 4), (0, 4), (-1, 3), (-1, 1)
+    ]
+    
+    while True:
+        pattern_step = step % len(circle_pattern)
+        x_offset, z_offset = circle_pattern[pattern_step]
+        
+        head_pos = world(110 + x_offset, 67, 100 + z_offset)  # CHANGE COORDINATES!
+        snake_blocks.append(head_pos)
+        blocks.place(IRON_BLOCK, head_pos)
+        
+        if len(snake_blocks) > snake_length:
+            tail_pos = snake_blocks.pop(0)
+            blocks.place(AIR, tail_pos)
+        
+        loops.pause(600)
+        step += 1
+
+# Snake 5: Gap Jumper (creates timing challenges)
+def parkour_snake_5():
+    snake_length = 4
+    snake_blocks = []
+    step = 0
+    
+    while True:
+        gap_step = step % 30
+        
+        # Create gaps every 4th step for jumping challenges
+        if gap_step % 4 == 3:
+            loops.pause(800)  # Gap pause
+            step += 1
+            continue
+        
+        head_pos = world(130, 64, 80 + gap_step)  # CHANGE COORDINATES!
+        snake_blocks.append(head_pos)
+        blocks.place(DIAMOND_BLOCK, head_pos)
+        
+        if len(snake_blocks) > snake_length:
+            tail_pos = snake_blocks.pop(0)
+            blocks.place(AIR, tail_pos)
+        
+        loops.pause(450)
+        step += 1
+
+# Snake 6: Wave Pattern (advanced jumping)
+def parkour_snake_6():
+    snake_length = 6
+    snake_blocks = []
+    step = 0
+    
+    # Wave pattern for complex jumps
+    wave_pattern = [0, 1, 2, 2, 1, 0, -1, -2, -2, -1]
+    
+    while True:
+        wave_step = step % 20
+        y_offset = wave_pattern[wave_step % len(wave_pattern)]
+        
+        head_pos = world(150 + wave_step, 65 + y_offset, 90)  # CHANGE COORDINATES!
+        snake_blocks.append(head_pos)
+        blocks.place(OBSIDIAN, head_pos)
+        
+        if len(snake_blocks) > snake_length:
+            tail_pos = snake_blocks.pop(0)
+            blocks.place(AIR, tail_pos)
+        
+        loops.pause(380)
+        step += 1
+
+# ================================
+# PARKOUR COURSE BUILDER
+# ================================
+
+def build_parkour_platforms():
+    """Build static platforms for the parkour course"""
+    player.say("Building parkour platforms...")
+    
+    # Starting platform
+    blocks.fill(STONE, world(45, 64, 95), world(48, 64, 105))
+    
+    # Platform 1 area (for snake 1)
+    blocks.fill(STONE, world(45, 64, 98), world(65, 64, 102))
+    
+    # Platform 2 area (for snake 2 - elevator)
+    blocks.fill(STONE, world(73, 64, 108), world(77, 64, 112))
+    
+    # Platform 3 area (for snake 3 - diagonal)
+    blocks.fill(STONE, world(88, 65, 118), world(104, 65, 134))
+    
+    # Platform 4 area (for snake 4 - circular)
+    blocks.fill(STONE, world(106, 66, 96), world(114, 66, 108))
+    
+    # Platform 5 area (for snake 5 - gaps)
+    blocks.fill(STONE, world(128, 63, 78), world(132, 63, 112))
+    
+    # Platform 6 area (for snake 6 - wave)
+    blocks.fill(STONE, world(148, 64, 88), world(172, 67, 92))
+    
+    # Finish platform
+    blocks.fill(GOLD_BLOCK, world(170, 68, 95), world(175, 68, 100))
+    
+    player.say("Parkour platforms built!")
+
+def build_checkpoints():
+    """Build checkpoint beacons"""
+    # Checkpoint markers
+    checkpoints = [
+        world(48, 65, 100),   # Start
+        world(60, 66, 100),   # After snake 1
+        world(75, 72, 110),   # After snake 2
+        world(95, 67, 125),   # After snake 3
+        world(110, 68, 104),  # After snake 4
+        world(130, 65, 95),   # After snake 5
+        world(172, 69, 90)    # Finish
+    ]
+    
+    for i, checkpoint in enumerate(checkpoints):
+        blocks.place(BEACON, checkpoint)
+        blocks.place(EMERALD_BLOCK, world(checkpoint.get_value(Axis.X), 
+                                        checkpoint.get_value(Axis.Y) - 1, 
+                                        checkpoint.get_value(Axis.Z)))
+
+# ================================
+# PARKOUR CONTROL SYSTEM
+# ================================
+
+def start_parkour_course():
+    """Start all parkour snakes simultaneously"""
+    player.say("🐍 STARTING MULTI-SNAKE PARKOUR! 🐍")
+    player.say("Jump on the moving snakes to cross the course!")
+    
+    # Build the course first
+    build_parkour_platforms()
+    loops.pause(2000)
+    build_checkpoints()
+    loops.pause(1000)
+    
+    # Start all snakes in background
+    loops.run_in_background(parkour_snake_1)
+    loops.pause(200)
+    loops.run_in_background(parkour_snake_2)
+    loops.pause(200)
+    loops.run_in_background(parkour_snake_3)
+    loops.pause(200)
+    loops.run_in_background(parkour_snake_4)
+    loops.pause(200)
+    loops.run_in_background(parkour_snake_5)
+    loops.pause(200)
+    loops.run_in_background(parkour_snake_6)
+    
+    player.say("All snakes active! Good luck! 🎮")
+
+def reset_parkour():
+    """Clear the parkour area"""
+    player.say("Resetting parkour course...")
+    
+    # Clear large area (adjust coordinates as needed)
+    blocks.fill(AIR, world(40, 64, 75), world(180, 75, 140))
+    
+    player.say("Parkour area cleared!")
+
+# ================================
+# PARKOUR CONTROLLER
+# ================================
+
+def parkour_controller():
+    """Control system for parkour course"""
+    while True:
+        # Start parkour course
+        if blocks.test_for_block(EMERALD_BLOCK, world(200, 64, 200)):  # CHANGE COORDINATES!
+            blocks.place(AIR, world(200, 64, 200))
+            start_parkour_course()
+        
+        # Reset course
+        elif blocks.test_for_block(REDSTONE_BLOCK, world(201, 64, 200)):  # CHANGE COORDINATES!
+            blocks.place(AIR, world(201, 64, 200))
+            reset_parkour()
+        
+        # Individual snake tests
+        elif blocks.test_for_block(GOLD_BLOCK, world(202, 64, 200)):
+            blocks.place(AIR, world(202, 64, 200))
+            player.say("Testing single snake...")
+            loops.run_in_background(parkour_snake_1)
+        
+        loops.pause(100)
+
+# ================================
+# START THE PARKOUR SYSTEM
+# ================================
+
+# Start the controller
+loops.run_in_background(parkour_controller)
+
+# Quick start option (uncomment to auto-start)
+# start_parkour_course()
+
+player.say("🐍 MULTI-SNAKE PARKOUR READY! 🐍")
+player.say("Place EMERALD_BLOCK to start course!")
+player.say("Place REDSTONE_BLOCK to reset course!")</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="important">
+                    <div class="important-title">🎯 Hvordan bruke Multi-Snake Parkour:</div>
+                    <ol>
+                        <li><strong>Start:</strong> Plasser en EMERALD_BLOCK på koordinat (200, 64, 200)</li>
+                        <li><strong>Reset:</strong> Plasser en REDSTONE_BLOCK på koordinat (201, 64, 200)</li>
+                        <li><strong>Test:</strong> Plasser en GOLD_BLOCK på koordinat (202, 64, 200) for å teste en enkelt slange</li>
+                        <li><strong>Spill:</strong> Hopp på de bevegelige blokkene for å krysse parkour-banen!</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Classic Snake Game Section -->
+            <section class="exercise">
+                <div class="exercise-header">
+                    <h3>🐍 Klassisk Snake-spill</h3>
+                </div>
+                
+                <p>Et enklere, klassisk snake-spill som er perfekt for å forstå grunnleggende spillogikk!</p>
+                
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('classic_snake')">
+                        <span>👀 Vis Klassisk Snake Kode</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="classic_snake">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Klassisk Snake-spill</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre># KLASSISK SNAKE SPILL
+# En enkel versjon av det klassiske snake-spillet!
+
+# Globale variabler
+snake_body = []
+snake_direction = "NORTH"
+food_position = None
+score = 0
+game_active = False
+
+def setup_snake_game():
+    """Setup the snake game area"""
+    global snake_body, food_position, score
+    
+    # Clear game area
+    blocks.fill(AIR, world(0, 64, 0), world(20, 64, 20))
+    
+    # Create border
+    blocks.fill(STONE, world(-1, 64, -1), world(21, 64, 21))
+    blocks.fill(AIR, world(0, 64, 0), world(20, 64, 20))
+    
+    # Initialize snake
+    snake_body = [world(10, 64, 10)]
+    blocks.place(EMERALD_BLOCK, snake_body[0])
+    
+    # Place first food
+    spawn_food()
+    
+    player.say(f"🐍 Snake Game Started! Score: {score}")
+
+def spawn_food():
+    """Spawn food at random location"""
+    global food_position
+    import random
+    
+    # Find empty spot
+    while True:
+        x = random.randint(1, 19)
+        z = random.randint(1, 19)
+        food_position = world(x, 64, z)
+        
+        # Check if position is free
+        if food_position not in snake_body:
+            blocks.place(APPLE, food_position)
+            break
+
+def move_snake():
+    """Move the snake in current direction"""
+    global snake_body, score, game_active
+    
+    if not game_active:
+        return
+    
+    # Get current head position
+    head = snake_body[0]
+    
+    # Calculate new head position
+    if snake_direction == "NORTH":
+        new_head = world(head.get_value(Axis.X), 64, head.get_value(Axis.Z) - 1)
+    elif snake_direction == "SOUTH":
+        new_head = world(head.get_value(Axis.X), 64, head.get_value(Axis.Z) + 1)
+    elif snake_direction == "EAST":
+        new_head = world(head.get_value(Axis.X) + 1, 64, head.get_value(Axis.Z))
+    elif snake_direction == "WEST":
+        new_head = world(head.get_value(Axis.X) - 1, 64, head.get_value(Axis.Z))
+    
+    # Check collision with walls
+    x = new_head.get_value(Axis.X)
+    z = new_head.get_value(Axis.Z)
+    if x < 0 or x > 20 or z < 0 or z > 20:
+        game_over()
+        return
+    
+    # Check collision with self
+    if new_head in snake_body:
+        game_over()
+        return
+    
+    # Add new head
+    snake_body.insert(0, new_head)
+    blocks.place(EMERALD_BLOCK, new_head)
+    
+    # Check if food eaten
+    if new_head == food_position:
+        score += 1
+        player.say(f"🍎 Food eaten! Score: {score}")
+        spawn_food()
+    else:
+        # Remove tail
+        tail = snake_body.pop()
+        blocks.place(AIR, tail)
+
+def game_over():
+    """End the game"""
+    global game_active
+    game_active = False
+    player.say(f"💀 Game Over! Final Score: {score}")
+    player.say("Place EMERALD_BLOCK to play again!")
+
+def snake_controller():
+    """Control system for snake game"""
+    global snake_direction, game_active
+    
+    while True:
+        # Start game
+        if blocks.test_for_block(EMERALD_BLOCK, world(25, 64, 10)):
+            blocks.place(AIR, world(25, 64, 10))
+            setup_snake_game()
+            game_active = True
+        
+        # Direction controls
+        elif blocks.test_for_block(REDSTONE_BLOCK, world(25, 64, 8)):  # North
+            blocks.place(AIR, world(25, 64, 8))
+            if snake_direction != "SOUTH":
+                snake_direction = "NORTH"
+        
+        elif blocks.test_for_block(REDSTONE_BLOCK, world(25, 64, 12)):  # South
+            blocks.place(AIR, world(25, 64, 12))
+            if snake_direction != "NORTH":
+                snake_direction = "SOUTH"
+        
+        elif blocks.test_for_block(REDSTONE_BLOCK, world(23, 64, 10)):  # West
+            blocks.place(AIR, world(23, 64, 10))
+            if snake_direction != "EAST":
+                snake_direction = "WEST"
+        
+        elif blocks.test_for_block(REDSTONE_BLOCK, world(27, 64, 10)):  # East
+            blocks.place(AIR, world(27, 64, 10))
+            if snake_direction != "WEST":
+                snake_direction = "EAST"
+        
+        loops.pause(100)
+
+def snake_game_loop():
+    """Main game loop"""
+    while True:
+        if game_active:
+            move_snake()
+            loops.pause(800)  # Game speed
+        else:
+            loops.pause(1000)
+
+# Start the systems
+loops.run_in_background(snake_controller)
+loops.run_in_background(snake_game_loop)
+
+player.say("🐍 CLASSIC SNAKE GAME READY! 🐍")
+player.say("Place EMERALD_BLOCK at (25,64,10) to start!")
+player.say("Use REDSTONE_BLOCK at compass positions to control!")</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-title">🎮 Spillkontroller:</div>
+                    <ul>
+                        <li><strong>Start spill:</strong> EMERALD_BLOCK på (25, 64, 10)</li>
+                        <li><strong>Nord:</strong> REDSTONE_BLOCK på (25, 64, 8)</li>
+                        <li><strong>Sør:</strong> REDSTONE_BLOCK på (25, 64, 12)</li>
+                        <li><strong>Vest:</strong> REDSTONE_BLOCK på (23, 64, 10)</li>
+                        <li><strong>Øst:</strong> REDSTONE_BLOCK på (27, 64, 10)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Mini Games Section -->
+            <section class="concept">
+                <h2>🎯 Andre Mini-spill og Systemer</h2>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>🏃 Auto-Runner</h4>
+                        <p>En automatisk løpebane med hindringer som dukker opp</p>
+                        <small>Kommer snart...</small>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🎨 Pixel Art Creator</h4>
+                        <p>System for å lage pixel art automatisk fra kode</p>
+                        <small>Kommer snart...</small>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🏰 Castle Defense</h4>
+                        <p>Forsvar slottet ditt mot bølger av monstre</p>
+                        <small>Kommer snart...</small>
+                    </div>
+                    <div class="tip-card">
+                        <h4>🎵 Music Maker</h4>
+                        <p>Lag musikk og melodier med note blocks</p>
+                        <small>Kommer snart...</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Code Upload Section -->
+            <section class="exercise" style="border-color: #17a2b8; background: #d1ecf1;">
+                <div class="exercise-header">
+                    <h3>📤 Del din egen kode!</h3>
+                </div>
+                
+                <p>Har du laget noe kult? Del koden din her!</p>
+                
+                <div class="steps">
+                    <div class="steps-title">📋 Hvordan dele kode:</div>
+                    <ol>
+                        <li>Kopier koden din fra Minecraft MakeCode</li>
+                        <li>Lim den inn i en kommentar på GitHub-repositoryet</li>
+                        <li>Eller send den til kurslederen som kan legge den til!</li>
+                        <li>Beskriv hva koden gjør og hvordan den fungerer</li>
+                    </ol>
+                </div>
+
+                <div class="tip">
+                    <div class="tip-title">💡 Tips for god kode-deling:</div>
+                    <ul>
+                        <li>Legg til kommentarer som forklarer hva koden gjør</li>
+                        <li>Skriv tydelige instruksjoner for hvordan bruke koden</li>
+                        <li>Fortell hvilke koordinater som må endres</li>
+                        <li>Beskriv hva som er spesielt eller kult med prosjektet ditt</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Code Template Section -->
+            <section class="concept">
+                <h2>📋 Kode-mal for egne prosjekter</h2>
+                <p>Bruk denne malen når du lager egne prosjekter!</p>
+                
+                <div class="solution">
+                    <div class="solution-header" onclick="toggleSolution('code_template')">
+                        <span>👀 Vis Kode-mal</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="solution-content" id="code_template">
+                        <div class="code-block">
+                            <div class="code-title">
+                                <span>Kode-mal for egne prosjekter</span>
+                                <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
+                            </div>
+                            <pre># ================================
+# PROSJEKT NAVN: [Skriv navnet på prosjektet ditt her]
+# LAGET AV: [Ditt navn]
+# DATO: [Dagens dato]
+# BESKRIVELSE: [Forklar hva prosjektet gjør]
+# ================================
+
+# VIKTIGE KOORDINATER (endre disse til dine egne!):
+# Start område: world(0, 64, 0)
+# Kontroll-blokk: world(100, 64, 100)
+# Signal-blokk: world(101, 64, 100)
+
+# ================================
+# HOVEDFUNKSJONER
+# ================================
+
+def main_function():
+    """Hovedfunksjon som gjør det viktigste i prosjektet"""
+    player.say("🎮 Prosjekt starter!")
+    
+    # Din kode her...
+    
+    player.say("✅ Prosjekt ferdig!")
+
+def helper_function():
+    """Hjelpefunksjon for spesielle oppgaver"""
+    # Din hjelpekode her...
+    pass
+
+# ================================
+# KONTROLL-SYSTEM
+# ================================
+
+def controller():
+    """Kontroll-system som lytter etter input"""
+    while True:
+        # Start prosjekt
+        if blocks.test_for_block(EMERALD_BLOCK, world(100, 64, 100)):
+            blocks.place(AIR, world(100, 64, 100))
+            main_function()
+        
+        # Reset prosjekt
+        elif blocks.test_for_block(REDSTONE_BLOCK, world(101, 64, 100)):
+            blocks.place(AIR, world(101, 64, 100))
+            reset_project()
+        
+        loops.pause(100)
+
+def reset_project():
+    """Rydd opp og reset prosjektet"""
+    player.say("🔄 Resetter prosjekt...")
+    
+    # Rydd opp kode her...
+    
+    player.say("✅ Prosjekt reset!")
+
+# ================================
+# START PROSJEKTET
+# ================================
+
+# Start kontroll-systemet
+loops.run_in_background(controller)
+
+# Oppstart-melding
+player.say("🚀 [PROSJEKT NAVN] READY!")
+player.say("Place EMERALD_BLOCK at (100,64,100) to start!")
+player.say("Place REDSTONE_BLOCK at (101,64,100) to reset!")
+
+# ================================
+# INSTRUKSJONER FOR BRUK:
+# 1. Endre koordinatene øverst til dine egne
+# 2. Fyll inn dine funksjoner
+# 3. Test at alt fungerer
+# 4. Del koden med andre!
+# ================================</pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigasjon -->
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="index.html" class="day-link">🏠 Tilbake til forsiden</a>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 Minecraft Kodekurs - Koder og Eksempler! 💻</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleSolution(solutionId) {
+            const content = document.getElementById(solutionId);
+            const header = content.previousElementSibling;
+            const icon = header.querySelector('.toggle-icon');
+            
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                icon.classList.remove('rotated');
+            } else {
+                content.classList.add('show');
+                icon.classList.add('rotated');
+            }
+        }
+
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-title').nextElementSibling;
+            const code = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(code).then(function() {
+                showSuccessMessage();
+                button.textContent = 'Kopiert! ✅';
+                button.style.background = '#38a169';
+                
+                setTimeout(() => {
+                    button.textContent = 'Kopier';
+                    button.style.background = '#48bb78';
+                }, 2000);
+            });
+        }
+        
+        function showSuccessMessage() {
+            const message = document.getElementById('successMessage');
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
