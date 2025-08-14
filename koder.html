@@ -66,67 +66,69 @@
                                 <span>Ring Race Timer</span>
                                 <button class="copy-btn" onclick="copyCode(this)">Kopier</button>
                             </div>
-                            <pre>RING1 = world(53, -57, -62)
-            RING2 = world(30, -57, -70)
+                            <pre>
+RING1 = world(53, -57, -62)
+RING2 = world(30, -57, -70)
 
-            def on_run_in_background():
-                # Reset course so detection isn't instant
-                blocks.place(AIR, RING1)
-                blocks.place(AIR, RING2)
+def on_run_in_background():
+    # Reset course so detection isn't instant
+    blocks.place(AIR, RING1)
+    blocks.place(AIR, RING2)
 
-                ring1done = False
-                ring2done = False
-                poeng = 0
-                started = False
-                finished = False
+    ring1done = False
+    ring2done = False
+    poeng = 0
+    started = False
+    finished = False
 
-                start_ticks = 0
-                last_check_tick = 0
-                check_interval_ticks = 2  # only check every 2 game ticks (~0.1s)
+    start_ticks = 0
+    last_check_tick = 0
+    check_interval_ticks = 2  # only check every 2 game ticks (~0.1s)
 
-                while True:
-                    current_tick = gameplay.time_query(GAME_TIME)
+    while True:
+        current_tick = gameplay.time_query(GAME_TIME)
 
-                    # Only run logic if enough ticks have passed
-                    if current_tick - last_check_tick >= check_interval_ticks:
-                        last_check_tick = current_tick
+        # Only run logic if enough ticks have passed
+        if current_tick - last_check_tick >= check_interval_ticks:
+            last_check_tick = current_tick
 
-                        # First ring detection
-                        if not ring1done and blocks.test_for_block(GLASS, RING1):
-                            ring1done = True
-                            poeng += 1
-                            player.say("RING 1 done")
-                            if not started:
-                                started = True
-                                start_ticks = current_tick
-                                continue
+            # First ring detection
+            if not ring1done and blocks.test_for_block(GLASS, RING1):
+                ring1done = True
+                poeng += 1
+                player.say("RING 1 done")
+                if not started:
+                    started = True
+                    start_ticks = current_tick
+                    continue
 
-                        # Second ring detection
-                        if not ring2done and blocks.test_for_block(GLASS, RING2):
-                            ring2done = True
-                            poeng += 1
-                            player.say("RING 2 done")
-                            if not started:
-                                started = True
-                                start_ticks = current_tick
-                                continue
+            # Second ring detection
+            if not ring2done and blocks.test_for_block(GLASS, RING2):
+                ring2done = True
+                poeng += 1
+                player.say("RING 2 done")
+                if not started:
+                    started = True
+                    start_ticks = current_tick
+                    continue
 
-                        # Finish check
-                        if started and not finished and ring1done and ring2done:
-                            end_ticks = gameplay.time_query(GAME_TIME)
-                            elapsed_ticks = end_ticks - start_ticks
-                            total_seconds = elapsed_ticks // 20
-                            minutes = total_seconds // 60
-                            seconds = total_seconds % 60
-                            time_str = str(minutes) + ":" + ("0" if seconds &lt; 10 else "") + str(seconds)
+            # Finish check
+            if started and not finished and ring1done and ring2done:
+                end_ticks = gameplay.time_query(GAME_TIME)
+                elapsed_ticks = end_ticks - start_ticks
+                total_seconds = elapsed_ticks // 20
+                minutes = total_seconds // 60
+                seconds = total_seconds % 60
+                time_str = str(minutes) + ":" + ("0" if seconds &lt; 10 else "") + str(seconds)
 
-                            player.say("Du har fullført alle ringer")
-                            player.say("Du har " + str(poeng) + " poeng")
-                            player.say("Tid: " + time_str)
-                            finished = True
-                            break
+                player.say("Du har fullført alle ringer")
+                player.say("Du har " + str(poeng) + " poeng")
+                player.say("Tid: " + time_str)
+                finished = True
+                break
 
-            loops.run_in_background(on_run_in_background)</pre>
+loops.run_in_background(on_run_in_background)
+                            </pre>
                         </div>
                     </div>
                 </div>
