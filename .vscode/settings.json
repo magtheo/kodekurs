@@ -1,0 +1,7 @@
+{
+    "llmCommitter.llmProvider": "openrouter",
+    "llmCommitter.llmModel": "gpt-4o-mini",
+    "llmCommitter.maxTokens": 4000,
+    "llmCommitter.temperature": 0.3,
+    "llmCommitter.llmInstructions": ""
+}
