@@ -43,6 +43,11 @@
         .copy-btn:hover { background:#e9efff; }
         .copy-btn:active { transform: translateY(1px); }
         .copy-btn:focus { outline: 2px solid #2c5cff; outline-offset: 2px; }
+
+        .grid-2img { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+        @media (max-width: 700px) {
+          .grid-2img { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -145,6 +150,20 @@
                     </li>
                 </ol>
             </section>
+
+              <!-- Add images between instructions and code -->
+            <div class="grid-2img" style="margin: 32px 0;">
+                <div style="display: flex; justify-content: center;">
+                    <img src="../image/roblox/dag4/boostbox-example.png" alt="Eksempel på boost-boks i Roblox Studio" style="max-width:260px; width:100%; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <img src="../image/roblox/dag4/boost-ui-example.png" alt="Eksempel på boost-melding på skjermen" style="max-width:260px; width:100%; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+                </div>
+            </div>
+            <div class="grid-2img" style="margin-top: -24px;">
+                <p class="mini" style="text-align:center;">Boost-boks i Workspace</p>
+                <p class="mini" style="text-align:center;">Boost-melding på skjermen</p>
+            </div>
 
             <!-- Kode barna lager + Kopier-knapp -->
             <section class="card">
