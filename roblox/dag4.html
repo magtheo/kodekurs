@@ -5,12 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dag 4 - Roblox Studio Kodekurs</title>
     <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Små UI-forbedringer for Dag 4 */
+        .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:#eef5ff; font-size:0.9rem; margin-right:8px; }
+        .grid { display:grid; gap:16px; }
+        .grid-2 { grid-template-columns: 1fr; }
+        @media (min-width: 900px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
+        .card { background:#fff; border:1px solid #eee; border-radius:12px; padding:16px; box-shadow:0 1px 2px rgba(0,0,0,0.04); }
+        .kode { background:#0b1020; color:#e9f0ff; border-radius:10px; padding:16px; overflow:auto; font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; line-height:1.4; }
+        .callout { border-left:4px solid #6aa6ff; background:#f5f9ff; padding:12px 14px; border-radius:8px; }
+        .danger { border-left:4px solid #ff6a6a; background:#fff5f5; }
+        .success { border-left:4px solid #29b36a; background:#f3fff8; }
+        .subtitle { max-width:60ch; }
+        .legend { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+        ol.stepper { counter-reset: step; list-style: none; padding-left: 0; }
+        ol.stepper > li { counter-increment: step; margin: 0 0 14px 0; background:#fafafa; border:1px solid #eee; border-radius:10px; padding:12px 14px; }
+        ol.stepper > li::before { content: counter(step); display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:#2c5cff; color:#fff; font-weight:700; margin-right:10px; }
+        .prop { background:#f7f7ff; border:1px dashed #cdd1ff; border-radius:8px; padding:8px 10px; margin-top:10px; }
+        .mini { font-size:0.95rem; color:#334; }
+        .task-list li { margin-bottom:8px; }
+        .concept-badge { font-weight:600; color:#2c5cff; }
+        .tight { margin-top: 6px; margin-bottom: 0; }
+
+        /* --- Kopier-knapp for kodesnutt --- */
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 6px 10px;
+            border: 1px solid #d9e2ff;
+            background: #f3f6ff;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background:#e9efff; }
+        .copy-btn:active { transform: translateY(1px); }
+        .copy-btn:focus { outline: 2px solid #2c5cff; outline-offset: 2px; }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>📅 Dag 4: Brukergrensesnitt (UI)</h1>
-            <p class="subtitle">Lær å lage knapper, tekstbokser og andre interaktive elementer i spillet ditt!</p>
+            <p class="subtitle">I dag lager vi en usynlig «boost-boks» i verden, viser en melding på skjermen, og gir spilleren midlertidig fart og hopphøyde.</p>
+            <div class="legend">
+                <span class="pill">UI (TextLabel)</span>
+                <span class="pill">Events (Touched)</span>
+                <span class="pill">Services (Players)</span>
+                <span class="pill">Humanoid (WalkSpeed/JumpPower)</span>
+                <span class="pill">Timers (task.delay)</span>
+                <span class="pill">WaitForChild</span>
+            </div>
         </header>
 
         <nav class="nav">
@@ -40,10 +87,189 @@
         </nav>
 
         <main>
-            <section class="concept">
-                <h2>Velkommen til Dag 4!</h2>
-                <p>Her vil innholdet for Dag 4 av Roblox Studio Kodekurset komme. Vi skal dykke inn i hvordan man lager brukergrensesnitt (UI) for å gi spillerne interaktive elementer i spillet.</p>
-                <p>Følg med for spennende oppgaver og konsepter!</p>
+            <!-- Mål -->
+            <section class="concept card">
+                <h2>🎯 Mål for dagen</h2>
+                <ul class="task-list">
+                    <li>Bygge en del («boost-boks») i <strong>Workspace</strong> som trigger når spilleren går gjennom.</li>
+                    <li>Lage <strong>ScreenGui</strong> med <strong>TextLabel</strong> som viser en melding.</li>
+                    <li>Gi <strong>midlertidig</strong> fart og hopphøyde med kode — og resette etter noen sekunder.</li>
+                </ul>
+                <div class="callout success mini">
+                    <strong>Resultat:</strong> Tydelig “power-up” med trygg reset og forklarende tekst på skjermen.
+                </div>
+            </section>
+
+            <!-- Trinnvis: bygge i Studio -->
+            <section class="card">
+                <h2>🧱 Bygg i Studio: Slik setter du opp alt</h2>
+
+                <h3>Del A — Lag «boost-boks» i <em>Workspace</em></h3>
+                <ol class="stepper">
+                    <li>
+                        Sett inn en <strong>Part</strong> i <em>Workspace</em> (rotnivå).
+                        <div class="prop mini">
+                            <p class="tight"><strong>Gi den navnet:</strong> <code>boostBox</code></p>
+                            <p class="tight"><strong>Anchored:</strong> <code>true</code> (så den ikke faller)</p>
+                            <p class="tight"><strong>CanCollide:</strong> <code>false</code> (spilleren kan gå gjennom)</p>
+                            <p class="tight"><strong>CanTouch:</strong> <code>true</code> (må være på for at <code>Touched</code> skal trigge)</p>
+                            <p class="tight"><strong>Transparency:</strong> <code>0.7–1</code> (gjør den usynlig/halvtransparent)</p>
+                            <p class="tight"><strong>Size:</strong> f.eks. <code>8, 4, 8</code> (tilpass)</p>
+                            <p class="tight"><strong>Plassering:</strong> Legg den der spilleren passerer naturlig (løype, døråpning, rampe).</p>
+                        </div>
+                    </li>
+                    <li>
+                        (Valgfritt) Endre <strong>Color</strong> mens du tester, så du ser hvor boksen er. Sett den til transparent igjen før dere spiller.
+                    </li>
+                </ol>
+
+                <h3>Del B — Lag <em>ScreenGui</em> + <em>TextLabel</em> + <em>LocalScript</em></h3>
+                <ol class="stepper">
+                    <li>
+                        <strong>StarterGui, trykk på +</strong> → <strong>ScreenGui</strong> (f.eks. navn <em>BoostUI</em>).
+                    </li>
+                    <li>
+                        Inni <strong>ScreenGui</strong>: lag en <strong>TextLabel</strong>.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Text:</strong> f.eks. “Du fikk en boost!” (vi overskriver i kode)</p>
+                            <p class="tight"><strong>Visible:</strong> <code>false</code> (starter skjult)</p>
+                            <p class="tight"><strong>BackgroundTransparency:</strong> 0.3–0.5 (lesbart, men ikke i veien)</p>
+                            <p class="tight"><strong>AnchorPoint/Position/Size:</strong> Plasser øverst midt på skjermen</p>
+                        </div>
+                    </li>
+                    <li>
+                        Høyreklikk <strong>TextLabel</strong> → <strong>LocalScript</strong>.
+                        <div class="prop mini">
+                            Lim inn koden under. Denne kjører på spillerens maskin, styrer UI og leser av <em>Humanoid</em>.
+                        </div>
+                    </li>
+                </ol>
+            </section>
+
+            <!-- Kode barna lager + Kopier-knapp -->
+            <section class="card">
+                <h2>👩‍💻 Koden barna lager i dag</h2>
+                <p class="mini">Legg denne i <strong>LocalScript</strong> under <em>TextLabel</em> (i <em>ScreenGui</em>).</p>
+
+                <div class="code-wrap">
+                    <button class="copy-btn" data-target="#code-dag4" aria-label="Kopier koden">Kopier</button>
+                    <pre class="kode"><code id="code-dag4" class="language-lua">local textLabel = script.Parent
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+local boostBox = workspace:WaitForChild("boostBox")
+
+-- Settings
+local BOOST_SPEED = 32 -- normal is 16
+local BOOST_JUMPPOWER = 150 -- normal is 50
+local BOOST_DURATION = 2 -- seconds
+
+-- Store defaults so we can reset
+local NORMAL_SPEED = humanoid.WalkSpeed
+local NORMAL_JUMPPOWER = humanoid.JumpPower
+
+boostBox.Touched:Connect(function(hit)
+    if hit.Parent == character then
+        print("box hit")
+
+        -- Show text
+        textLabel.Visible = true
+        textLabel.Text = "You get speed and jumpboost for 2 seconds!"
+        task.delay(3, function()
+            textLabel.Visible = false
+        end)
+
+        -- Ensure we’re using JumpPower
+        humanoid.UseJumpPower = true
+
+        -- Apply boost
+        humanoid.WalkSpeed = BOOST_SPEED
+        humanoid.JumpPower = BOOST_JUMPPOWER
+        print("Boost applied!")
+
+        -- Reset after delay
+        task.delay(BOOST_DURATION, function()
+            if humanoid then
+                humanoid.WalkSpeed = NORMAL_SPEED
+                humanoid.JumpPower = NORMAL_JUMPPOWER
+                print("Boost reset.")
+            end
+        end)
+    end
+end)</code></pre>
+                </div>
+            </section>
+
+            <!-- Kombinert: flow + konsepter -->
+            <section class="card">
+                <h2>🧩 Hvordan fungerer koden (i riktig rekkefølge)</h2>
+                <ol class="stepper">
+                    <li>
+                        <strong>Finn spilleren</strong> med <span class="concept-badge">Players</span>:
+                        <span class="mini">Vi henter <code>Players.LocalPlayer</code> fordi UI og boost bare gjelder for “meg”.</span>
+                    </li>
+                    <li>
+                        <strong>Vent til figuren er klar</strong> med <span class="concept-badge">WaitForChild</span>:
+                        <span class="mini"><code>character = player.Character or player.CharacterAdded:Wait()</code> og <code>Humanoid</code> må finnes før vi endrer fart/hopp.</span>
+                    </li>
+                    <li>
+                        <strong>Finn “boost-boksen”</strong> i <span class="concept-badge">Workspace</span>:
+                        <span class="mini"><code>workspace:WaitForChild("boostBox")</code> sikrer at delen er lastet. Husk <code>Anchored=true</code>, <code>CanCollide=false</code>, <code>CanTouch=true</code>, og gjennomsiktighet.</span>
+                    </li>
+                    <li>
+                        <strong>Lytt etter berøring</strong> med <span class="concept-badge">Touched</span> (Event):
+                        <span class="mini">Når noe treffer boksen, sjekker vi <code>if hit.Parent == character</code> for å være sikre på at det er vår spiller.</span>
+                    </li>
+                    <li>
+                        <strong>Vis melding på skjermen</strong> (UI):
+                        <span class="mini">Vi setter <code>textLabel.Visible = true</code> og endrer <code>Text</code> for å forklare boosten. Skjules etter <code>task.delay(3, ...)</code>.</span>
+                    </li>
+                    <li>
+                        <strong>Gi midlertidig kraft</strong> (Humanoid-egenskaper):
+                        <span class="mini">Vi bruker <code>UseJumpPower = true</code>, setter <code>WalkSpeed</code> og <code>JumpPower</code> til boost-verdier, men lagrer normalverdiene først.</span>
+                    </li>
+                    <li>
+                        <strong>Tilbakestill etter tid</strong> med <span class="concept-badge">task.delay</span>:
+                        <span class="mini">Etter <code>BOOST_DURATION</code> settes <code>WalkSpeed</code> og <code>JumpPower</code> tilbake slik at spillet føles rettferdig.</span>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="grid grid-2">
+                <div class="card">
+                    <h3>🧪 Mini-oppgaver</h3>
+                    <ul class="task-list mini">
+                        <li>Gjør meldingen norsk og legg til en emoji (🎉).</li>
+                        <li>Lag en ny boks som bare gir ekstra fart — ikke hopp.</li>
+                        <li>Endre <code>BOOST_DURATION</code> til 5 sek og observer.</li>
+                        <li>Endre <strong>Size/Plassering</strong> på boksen for å lage en “boost-port”.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>🚀 Videreutvikling</h3>
+                    <ul class="task-list mini">
+                        <li>Legg til debounce (en boolean som låser boosten i 2 sek).</li>
+                        <li>Resett ved <code>CharacterAdded</code> (når spilleren respawner).</li>
+                        <li>Bytt til <code>ProximityPrompt</code> for mer bevisst aktivering.</li>
+                        <li>Lag en nedtelling i UI (2…1…0) med <code>task.spawn</code> eller <code>RunService.Heartbeat</code>.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>🛠️ Feilsøking</h2>
+                <div class="callout danger mini">
+                    <strong>“boostBox is not a valid member of Workspace”</strong><br>
+                    Sjekk at delen heter <code>boostBox</code> (samme store/små bokstaver), og at den ligger i <em>Workspace</em> — ikke inni en annen modell.
+                </div>
+                <div class="callout mini">
+                    <strong>Boost utløses ikke:</strong> Sørg for <code>Anchored=true</code>, <code>CanTouch=true</code>, og at spilleren faktisk passerer gjennom boksen.
+                </div>
+                <div class="callout mini">
+                    <strong>Hopp endrer seg ikke:</strong> Sett <code>humanoid.UseJumpPower = true</code>. Noen prosjekter bruker <em>JumpHeight</em> i stedet for <em>JumpPower</em>.
+                </div>
             </section>
 
             <div style="text-align: center; margin-top: 40px;">
@@ -56,5 +282,47 @@
             <p>© 2025 Kodekurs for Barn - Roblox-kurset! 🌟</p>
         </footer>
     </div>
+
+    <!-- Kopier-knapp logikk -->
+    <script>
+    (function () {
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+        } else {
+          // Fallback for file:// eller ikke-secure context
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          try { document.execCommand('copy'); }
+          finally { document.body.removeChild(ta); }
+          return Promise.resolve();
+        }
+      }
+
+      document.querySelectorAll('.copy-btn').forEach(function (btn) {
+        btn.addEventListener('click', async function () {
+          const targetSel = btn.getAttribute('data-target');
+          const codeEl = document.querySelector(targetSel);
+          const code = codeEl ? codeEl.innerText : '';
+          try {
+            await copyText(code);
+            const old = btn.textContent;
+            btn.textContent = 'Kopiert!';
+            btn.setAttribute('aria-live', 'polite');
+            setTimeout(function () { btn.textContent = old; }, 1500);
+          } catch (e) {
+            const old = btn.textContent;
+            btn.textContent = 'Kunne ikke kopiere';
+            setTimeout(function () { btn.textContent = old; }, 1500);
+          }
+        });
+      });
+    })();
+    </script>
 </body>
 </html>
