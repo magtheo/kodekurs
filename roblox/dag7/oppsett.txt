@@ -1,0 +1,119 @@
+Klart! Her er et tydelig “Explorer-kart” med nøyaktig hvor alt skal ligge, hva det skal hete, og hvilke egenskaper som er viktige.
+
+---
+
+## 1) ReplicatedStorage (nettverksdeling)
+
+```
+ReplicatedStorage
+└─ EatApple (RemoteEvent)
+```
+
+* **EatApple**: `RemoteEvent` (høyreklikk ReplicatedStorage → Insert Object → RemoteEvent → gi navn **EatApple**)
+
+---
+
+## 2) ServerStorage (mal for verktøyet)
+
+```
+ServerStorage
+└─ AppleTool (Tool)
+   ├─ Handle (Part)
+   ├─ Crunch (Sound)          ← valgfritt
+   └─ LocalScript             ← “AppleToolLocal.client.lua” f.eks.
+```
+
+**AppleTool (Tool)**
+
+* Ingen spesielle innstillinger her.
+
+**Handle (Part)**
+
+* **Navn:** `Handle` (må være akkurat dette)
+* **Anchored:** `false`
+* **CanCollide:** `false` (anbefalt for håndholdte ting)
+* **Shape:** `Ball` (valgfritt)
+* **Size:** f.eks. `0.7, 0.7, 0.7`
+* **Color/Material:** som du ønsker (rød/grønn eple-look)
+
+**Crunch (Sound) – valgfritt**
+
+* Legg en `Sound` inn i **AppleTool** (gjerne under `Handle` om du vil trigge lyden derfra)
+* Sett **SoundId** til ditt crunch-klipp
+
+**LocalScript** (ligger i AppleTool – kjører på klienten)
+
+* Innhold: Tool-input → `EatApple:FireServer()`
+* (Dette er skriptet jeg ga i forrige svar under “LocalScript i AppleTool”)
+
+---
+
+## 3) ServerScriptService (serverside logikk)
+
+```
+ServerScriptService
+└─ EatAppleHandler.server.lua (Script)
+```
+
+* Innhold: Lytt på `EatApple.OnServerEvent`, sjekk at spilleren holder `AppleTool`, gi helse, spill lyd, fjern verktøyet etter liten delay.
+* (Dette er skriptet jeg ga i forrige svar under “ServerScriptService: håndter spis eple”)
+
+---
+
+## 4) Workspace (verdens-eplet som faller og kan plukkes)
+
+```
+Workspace
+└─ AppleDrop (Model)          ← valgfritt som mappe/organisering
+   ├─ AppleWorld (Part)
+   └─ AppleDrop.server.lua (Script)
+```
+
+**AppleWorld (Part)**
+
+* **Navn:** `AppleWorld` (kall det hva du vil)
+* **Anchored:** `true` (start gjerne som forankret oppe i treet; koden slipper det)
+* **CanCollide:** `true` (eplet treffer bakken)
+* **Shape/Size/Color:** som du vil
+* **(IKKE** sett ProximityPrompt manuelt — skriptet lager det automatisk)
+
+**AppleDrop.server.lua (Script)** (ligger som barn av `AppleWorld` ELLER av `AppleDrop` modellen)
+
+* Innhold: Vent 10–600 sek → `Anchored = false` (slipp eplet) → lag `ProximityPrompt` → ved `Triggered` klon `AppleTool` fra ServerStorage til `player.Backpack` → `Destroy()` verdens-eplet.
+* (Dette er skriptet jeg ga i forrige svar under “ServerScript under verdens-eplet”)
+
+---
+
+## 5) Rask sjekkliste (vanlige feil)
+
+* `Handle` **må** hete akkurat **Handle** og være en **Part**.
+* `Handle.Anchored = false`, ellers kan ikke Tool equips.
+* `EatApple` må ligge i **ReplicatedStorage** (samme navn i både LocalScript og ServerScript).
+* LocalScript **må ligge inne i** `AppleTool` for å få `tool.Activated`.
+* Verdens-eplet: start gjerne **Anchored = true** og la skriptet slippe det.
+* ProximityPrompt: opprettes i server-skriptet (du trenger ikke legge det manuelt).
+
+---
+
+## Hele treet samlet
+
+```
+ReplicatedStorage
+└─ EatApple (RemoteEvent)
+
+ServerStorage
+└─ AppleTool (Tool)
+   ├─ Handle (Part) [Anchored=false, CanCollide=false, Shape=Ball]
+   ├─ Crunch (Sound) [valgfritt]
+   └─ AppleToolLocal.client.lua (LocalScript)
+
+ServerScriptService
+└─ EatAppleHandler.server.lua (Script)
+
+Workspace
+└─ AppleDrop (Model) [valgfritt]
+   ├─ AppleWorld (Part) [Anchored=true ved start]
+   └─ AppleDrop.server.lua (Script)
+```
+
+Hvis du vil, kan jeg lime inn **alle skriptene i én blokk** klar til copy-paste med de samme navnene som ovenfor.

@@ -1,0 +1,37 @@
+-- Script under verdens-eplet (Part) i Workspace
+local Eple = script.Parent
+local ServerStorage = game:GetService("ServerStorage")
+
+-- La eplet falle etter 10–600 sek
+local venteTid = math.random(10, 600)
+task.wait(venteTid)
+Eple.Anchored = false
+
+-- Legg til ProximityPrompt så spilleren kan "plukke opp"
+local prompt = Instance.new("ProximityPrompt")
+prompt.ActionText = "Plukk opp eple"
+prompt.ObjectText = "Eple"
+prompt.HoldDuration = 0 -- trykk, ikke hold
+prompt.MaxActivationDistance = 12
+prompt.Parent = Eple
+
+local function giveTool(player)
+	-- Sjekk at Tool-malen finnes
+	local template = ServerStorage:FindFirstChild("AppleTool")
+	if not template then
+		warn("AppleTool mangler i ServerStorage")
+		return
+	end
+
+	-- Gi spilleren eple-verktøyet i ryggsekken (inventory)
+	local tool = template:Clone()
+	tool.Parent = player.Backpack
+
+	-- (Valgfritt) Auto-equip i hånden med én gang:
+	-- tool.Parent = player.Character
+
+	-- Fjern verdens-eplet
+	Eple:Destroy()
+end
+
+prompt.Triggered:Connect(giveTool)
