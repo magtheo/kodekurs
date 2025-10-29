@@ -5,12 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dag 7 - Roblox Studio Kodekurs</title>
     <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Små UI-forbedringer for Dag 7 */
+        .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:#eef5ff; font-size:0.9rem; margin-right:8px; }
+        .grid { display:grid; gap:16px; }
+        .grid-2 { grid-template-columns: 1fr; }
+        @media (min-width: 900px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
+        .card { background:#fff; border:1px solid #eee; border-radius:12px; padding:16px; box-shadow:0 1px 2px rgba(0,0,0,0.04); }
+        .kode { background:#0b1020; color:#e9f0ff; border-radius:10px; padding:16px; overflow:auto; font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; line-height:1.4; }
+        .callout { border-left:4px solid #6aa6ff; background:#f5f9ff; padding:12px 14px; border-radius:8px; }
+        .danger { border-left:4px solid #ff6a6a; background:#fff5f5; }
+        .success { border-left:4px solid #29b36a; background:#f3fff8; }
+        .warning { border-left:4px solid #ffa500; background:#fff9f0; }
+        .subtitle { max-width:60ch; }
+        .legend { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+        ol.stepper { counter-reset: step; list-style: none; padding-left: 0; }
+        ol.stepper > li { counter-increment: step; margin: 0 0 14px 0; background:#fafafa; border:1px solid #eee; border-radius:10px; padding:12px 14px; }
+        ol.stepper > li::before { content: counter(step); display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:#2c5cff; color:#fff; font-weight:700; margin-right:10px; }
+        .prop { background:#f7f7ff; border:1px dashed #cdd1ff; border-radius:8px; padding:8px 10px; margin-top:10px; }
+        .mini { font-size:0.95rem; color:#334; }
+        .task-list li { margin-bottom:8px; }
+        .concept-badge { font-weight:600; color:#2c5cff; }
+        .tight { margin-top: 6px; margin-bottom: 0; }
+
+        /* --- Kopier-knapp for kodesnutt --- */
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 6px 10px;
+            border: 1px solid #d9e2ff;
+            background: #f3f6ff;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background:#e9efff; }
+        .copy-btn:active { transform: translateY(1px); }
+        .copy-btn:focus { outline: 2px solid #2c5cff; outline-offset: 2px; }
+
+        .tree-structure {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .property-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .property-list li {
+            background: white;
+            margin: 8px 0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .property-list li strong {
+            color: #667eea;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📅 Dag 7: Data Spearing og Leaderboards</h1>
-            <p class="subtitle">Lær å lagre spillerdata og vise frem topplister i spillet ditt!</p>
+            <h1>📅 Dag 7: Eple-plukking og spisesystem</h1>
+            <p class="subtitle">I dag lager vi et komplett system hvor spillere kan plukke opp epler som faller fra trær, og spise dem for å få helse tilbake!</p>
+            <div class="legend">
+                <span class="pill">Tools</span>
+                <span class="pill">ProximityPrompt</span>
+                <span class="pill">RemoteEvent</span>
+                <span class="pill">ServerStorage</span>
+                <span class="pill">Clone()</span>
+                <span class="pill">Humanoid.Health</span>
+            </div>
         </header>
 
         <nav class="nav">
@@ -40,10 +129,342 @@
         </nav>
 
         <main>
-            <section class="concept">
-                <h2>Velkommen til Dag 7!</h2>
-                <p>Her vil innholdet for Dag 7 av Roblox Studio Kodekurset komme. Vi skal lære hvordan man lagrer spillerdata og implementerer leaderboards.</p>
-                <p>Følg med for spennende oppgaver og konsepter!</p>
+            <!-- Mål -->
+            <section class="concept card">
+                <h2>🎯 Mål for dagen</h2>
+                <ul class="task-list">
+                    <li>Lage et <strong>eple</strong> i verden som faller fra et tre etter tilfeldig tid.</li>
+                    <li>Bruke <strong>ProximityPrompt</strong> så spilleren kan plukke opp eplet.</li>
+                    <li>Gi spilleren et <strong>Tool</strong> (eple) som de kan holde i hånden.</li>
+                    <li>La spilleren <strong>spise</strong> eplet for å få tilbake helse (+20 HP).</li>
+                    <li>Bruke <strong>RemoteEvent</strong> for kommunikasjon mellom klient og server.</li>
+                </ul>
+                <div class="callout success mini">
+                    <strong>Resultat:</strong> Et komplett item-system med plukking, bruk, og effekt!
+                </div>
+            </section>
+
+            <!-- Oppsett oversikt -->
+            <section class="card">
+                <h2>📦 Komplett oppsett - Oversikt</h2>
+                <p class="mini">Før vi begynner, se på den komplette strukturen. Dette er det vi skal bygge i dag:</p>
+                
+                <div class="tree-structure">ReplicatedStorage
+└─ EatApple (RemoteEvent)
+
+ServerStorage
+└─ AppleTool (Tool)
+   ├─ Handle (Part) [Anchored=false, CanCollide=false, Shape=Ball]
+   ├─ Crunch (Sound) [valgfritt]
+   └─ LocalScript
+
+ServerScriptService
+└─ EatAppleHandler (Script)
+
+Workspace
+└─ AppleWorld (Part) [Anchored=true ved start]
+   └─ Script</div>
+
+                <div class="callout mini">
+                    <strong>Enkelt forklart:</strong> Et eple faller fra et tre → spilleren plukker det opp → får et Tool → klikker for å spise → får helse!
+                </div>
+            </section>
+
+            <!-- Trinnvis: bygge i Studio -->
+            <section class="card">
+                <h2>🧱 Del 1: Lag eple-verktøyet (Tool)</h2>
+                <p class="mini">Dette er malen som spilleren får når de plukker opp eplet.</p>
+
+                <h3><span class="step-number">1</span> Opprett Tool i ServerStorage</h3>
+                <ol class="stepper">
+                    <li>
+                        Åpne <strong>ServerStorage</strong> i Explorer.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ServerStorage</strong> → Insert Object → <strong>Tool</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>AppleTool</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        Lag en <strong>Handle</strong> (Part) inne i AppleTool.
+                        <div class="prop mini">
+                            <p class="tight"><strong>VIKTIG:</strong> Den MÅ hete <code>Handle</code> (med stor H)</p>
+                            <p class="tight"><strong>Anchored:</strong> <code>false</code></p>
+                            <p class="tight"><strong>CanCollide:</strong> <code>false</code></p>
+                            <p class="tight"><strong>Shape:</strong> <code>Ball</code></p>
+                            <p class="tight"><strong>Size:</strong> <code>0.7, 0.7, 0.7</code></p>
+                            <p class="tight"><strong>Color:</strong> Rød eller grønn (som et eple)</p>
+                            <p class="tight"><strong>Material:</strong> SmoothPlastic eller Neon</p>
+                        </div>
+                    </li>
+                    <li>
+                        (Valgfritt) Legg til en <strong>Sound</strong> i AppleTool for "crunch"-lyd.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Navn:</strong> <code>Crunch</code></p>
+                            <p class="tight"><strong>SoundId:</strong> Lim inn en lyd-ID (f.eks. fra Roblox Library)</p>
+                        </div>
+                    </li>
+                </ol>
+
+                <h3><span class="step-number">2</span> LocalScript i AppleTool</h3>
+                <p class="mini">Dette scriptet sender en beskjed til serveren når spilleren aktiverer Tool.</p>
+
+                <div class="code-wrap">
+                    <button class="copy-btn" data-target="#code-appletool" aria-label="Kopier koden">Kopier</button>
+                    <pre class="kode"><code id="code-appletool" class="language-lua">-- LocalScript under AppleTool
+local tool = script.Parent
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local EatAppleEvent = ReplicatedStorage:WaitForChild("EatApple")
+
+-- Når spilleren klikker (aktivere Tool), be server om å "spise eplet"
+tool.Activated:Connect(function()
+    -- Sikre at den kjører hos riktig spiller
+    local player = Players.LocalPlayer
+    if not player then return end
+    EatAppleEvent:FireServer()
+end)
+
+-- (Valgfritt) Små UI-hint når verktøyet er tatt i hånda
+tool.Equipped:Connect(function()
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "🍎 Eple";
+        Text = "Klikk for å spise eplet.";
+        Duration = 2
+    })
+end)</code></pre>
+                </div>
+                
+                <div class="callout mini" style="margin-top: 12px;">
+                    <strong>Hva gjør denne koden?</strong> Når spilleren klikker med eplet, sendes en melding til serveren. Vi viser også en liten notifikasjon når eplet holdes i hånden.
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>🧱 Del 2: Kommunikasjon (RemoteEvent)</h2>
+
+                <h3><span class="step-number">3</span> Opprett RemoteEvent</h3>
+                <ol class="stepper">
+                    <li>
+                        Åpne <strong>ReplicatedStorage</strong> i Explorer.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ReplicatedStorage</strong> → Insert Object → <strong>RemoteEvent</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>EatApple</code></p>
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="callout mini">
+                    <strong>Hvorfor RemoteEvent?</strong> LocalScript (klient) kan ikke endre spillerens helse direkte. Vi må sende en beskjed til serveren som gjør endringen.
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>🧱 Del 3: Server-side logikk</h2>
+
+                <h3><span class="step-number">4</span> ServerScript i ServerScriptService</h3>
+                <p class="mini">Dette scriptet lytter etter "spis eple"-beskjeden og gir spilleren helse.</p>
+
+                <div class="code-wrap">
+                    <button class="copy-btn" data-target="#code-serverscript" aria-label="Kopier koden">Kopier</button>
+                    <pre class="kode"><code id="code-serverscript" class="language-lua">-- ServerScriptService/EatAppleHandler.server.lua
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local EatAppleEvent = ReplicatedStorage:WaitForChild("EatApple")
+
+EatAppleEvent.OnServerEvent:Connect(function(player)
+    -- Sjekk at spilleren holder AppleTool
+    local character = player.Character
+    if not character then return end
+    local tool = character:FindFirstChildOfClass("Tool")
+    if not tool or tool.Name ~= "AppleTool" then return end
+
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if not humanoid then return end
+
+    -- Gi helse (juster tallene som du vil)
+    local healAmount = 20
+    humanoid.Health = math.min(humanoid.MaxHealth, humanoid.Health + healAmount)
+
+    -- Spill crunch-lyden om den finnes
+    local handle = tool:FindFirstChild("Handle")
+    if handle then
+        local crunch = handle:FindFirstChild("Crunch")
+        if crunch then crunch:Play() end
+    end
+
+    -- Fjern verktøyet etter en liten delay så lyden rekker å spille
+    task.delay(0.4, function()
+        if tool and tool.Parent then
+            tool:Destroy()
+        end
+    end)
+end)</code></pre>
+                </div>
+                
+                <div class="callout mini" style="margin-top: 12px;">
+                    <strong>Hva gjør denne koden?</strong> Serveren sjekker at spilleren holder AppleTool, gir 20 helse, spiller crunch-lyd, og sletter eplet.
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>🧱 Del 4: Verdens-eple som faller</h2>
+
+                <h3><span class="step-number">5</span> Lag eple i Workspace</h3>
+                <ol class="stepper">
+                    <li>
+                        Sett inn en <strong>Part</strong> i <em>Workspace</em>.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Navn:</strong> <code>AppleWorld</code> (eller valgfritt)</p>
+                            <p class="tight"><strong>Anchored:</strong> <code>true</code> (starter forankret)</p>
+                            <p class="tight"><strong>CanCollide:</strong> <code>true</code></p>
+                            <p class="tight"><strong>Shape:</strong> <code>Ball</code></p>
+                            <p class="tight"><strong>Size:</strong> <code>1, 1, 1</code></p>
+                            <p class="tight"><strong>Color:</strong> Rød eller grønn</p>
+                            <p class="tight"><strong>Position:</strong> Plasser høyt oppe i et tre</p>
+                        </div>
+                    </li>
+                    <li>
+                        Legg til et <strong>Script</strong> inne i denne Part.
+                    </li>
+                </ol>
+
+                <h3><span class="step-number">6</span> Script for å falle og gi Tool</h3>
+
+                <div class="code-wrap">
+                    <button class="copy-btn" data-target="#code-appledrop" aria-label="Kopier koden">Kopier</button>
+                    <pre class="kode"><code id="code-appledrop" class="language-lua">-- Script under verdens-eplet (Part) i Workspace
+local Eple = script.Parent
+local ServerStorage = game:GetService("ServerStorage")
+
+-- La eplet falle etter 10–600 sek
+local venteTid = math.random(10, 10 * 60)
+task.wait(venteTid)
+Eple.Anchored = false
+
+-- Legg til ProximityPrompt så spilleren kan "plukke opp"
+local prompt = Instance.new("ProximityPrompt")
+prompt.ActionText = "Plukk opp eple"
+prompt.ObjectText = "Eple"
+prompt.HoldDuration = 0 -- trykk, ikke hold
+prompt.MaxActivationDistance = 12
+prompt.Parent = Eple
+
+local function giveTool(player)
+    -- Sjekk at Tool-malen finnes
+    local template = ServerStorage:FindFirstChild("AppleTool")
+    if not template then
+        warn("AppleTool mangler i ServerStorage")
+        return
+    end
+
+    -- Gi spilleren eple-verktøyet i ryggsekken (inventory)
+    local tool = template:Clone()
+    tool.Parent = player.Backpack
+
+    -- (Valgfritt) Auto-equip i hånden med én gang:
+    -- tool.Parent = player.Character
+
+    -- Fjern verdens-eplet
+    Eple:Destroy()
+end
+
+prompt.Triggered:Connect(giveTool)</code></pre>
+                </div>
+                
+                <div class="callout mini" style="margin-top: 12px;">
+                    <strong>Hva gjør denne koden?</strong> Eplet venter 10 sekunder til 10 minutter, faller ned, lager en "plukk opp"-knapp, og gir spilleren et Tool når de trykker.
+                </div>
+            </section>
+
+            <!-- Kombinert: flow + konsepter -->
+            <section class="card">
+                <h2>🧩 Slik fungerer systemet - enkelt forklart!</h2>
+                <ol class="stepper">
+                    <li>
+                        <strong>Eplet venter</strong>: Det ligger i et tre og teller ned (10 sek til 10 min)
+                    </li>
+                    <li>
+                        <strong>Eplet faller</strong>: Når tiden er ute, slippes eplet og faller til bakken
+                    </li>
+                    <li>
+                        <strong>Du ser en knapp</strong>: Når du går nær eplet, ser du "Plukk opp eple" (ProximityPrompt)
+                    </li>
+                    <li>
+                        <strong>Du trykker E</strong>: Serveren gir deg en kopi av AppleTool i ryggsekken din
+                    </li>
+                    <li>
+                        <strong>Du holder eplet</strong>: Velg eplet fra inventory - det dukker opp i hånden din
+                    </li>
+                    <li>
+                        <strong>Du klikker</strong>: LocalScript sender melding til serveren: "Jeg vil spise!"
+                    </li>
+                    <li>
+                        <strong>Du blir frisk</strong>: Serveren gir deg +20 helse, spiller "crunch"-lyd
+                    </li>
+                    <li>
+                        <strong>Eplet forsvinner</strong>: Etter 0.4 sekunder slettes Tool fra spillet
+                    </li>
+                </ol>
+                
+                <div class="callout success mini">
+                    <strong>Viktig å forstå:</strong> LocalScript (på din PC) kan ikke endre helse direkte - det må serveren gjøre! Derfor bruker vi RemoteEvent til å sende beskjed.
+                </div>
+            </section>
+
+            <section class="grid grid-2">
+                <div class="card">
+                    <h3>🧪 Mini-oppgaver</h3>
+                    <ul class="task-list mini">
+                        <li>Endre helse-boost fra 20 til 30.</li>
+                        <li>Lag flere epler på forskjellige steder.</li>
+                        <li>Endre venteTid til <code>math.random(5, 30)</code> for raskere testing.</li>
+                        <li>Lag en "gylden eple" som gir 50 helse.</li>
+                        <li>Legg til en ParticleEmitter på eplet for en "magisk" effekt.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>🚀 Videreutvikling</h3>
+                    <ul class="task-list mini">
+                        <li>Lag et "eple-tre" som respawner nye epler automatisk.</li>
+                        <li>Legg til debounce så spilleren ikke kan spise flere epler samtidig.</li>
+                        <li>Vis en UI-melding når spilleren spiser eplet.</li>
+                        <li>Lag et "rotne eple" som tar bort helse i stedet.</li>
+                        <li>Tell hvor mange epler spilleren har spist med en Leaderboard.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>🛠️ Feilsøking</h2>
+                <div class="callout danger mini">
+                    <strong>"AppleTool is not a valid member of ServerStorage"</strong><br>
+                    Sjekk at Tool heter nøyaktig <code>AppleTool</code> (samme store/små bokstaver) og ligger i <em>ServerStorage</em>.
+                </div>
+                <div class="callout warning mini">
+                    <strong>"Handle is not a valid member of Tool"</strong><br>
+                    Part-en inne i Tool MÅ hete <code>Handle</code> (med stor H). Hvis den heter noe annet, vil ikke Tool fungere.
+                </div>
+                <div class="callout mini">
+                    <strong>Eplet faller ikke:</strong> Sjekk at scriptet ligger inne i eplet (Part), og at <code>Anchored</code> starter som <code>true</code>.
+                </div>
+                <div class="callout mini">
+                    <strong>ProximityPrompt vises ikke:</strong> Vent til eplet har falt. Prompten lages først etter at <code>Anchored</code> er satt til <code>false</code>.
+                </div>
+                <div class="callout mini">
+                    <strong>Helse endrer seg ikke:</strong> Sjekk at <code>EatApple</code> RemoteEvent ligger i <em>ReplicatedStorage</em> og har riktig navn.
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>📝 Viktige konsepter fra i dag</h2>
+                <ul class="task-list">
+                    <li><span class="concept-badge">Tool</span> - Et objekt spilleren kan holde i hånden</li>
+                    <li><span class="concept-badge">Handle</span> - Den synlige delen av et Tool (MÅ hete "Handle")</li>
+                    <li><span class="concept-badge">ProximityPrompt</span> - Viser en melding når spilleren er nær et objekt</li>
+                    <li><span class="concept-badge">RemoteEvent</span> - Kommunikasjon mellom klient (LocalScript) og server (Script)</li>
+                    <li><span class="concept-badge">Clone()</span> - Lager en kopi av et objekt</li>
+                    <li><span class="concept-badge">ServerStorage</span> - Lagring av maler/templates som bare serveren ser</li>
+                    <li><span class="concept-badge">Backpack</span> - Spillerens inventory hvor Tools ligger</li>
+                </ul>
             </section>
 
             <div style="text-align: center; margin-top: 40px;">
@@ -56,5 +477,47 @@
             <p>© 2025 Kodekurs for Barn - Roblox-kurset! 🌟</p>
         </footer>
     </div>
+
+    <!-- Kopier-knapp logikk -->
+    <script>
+    (function () {
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+        } else {
+          // Fallback for file:// eller ikke-secure context
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          try { document.execCommand('copy'); }
+          finally { document.body.removeChild(ta); }
+          return Promise.resolve();
+        }
+      }
+
+      document.querySelectorAll('.copy-btn').forEach(function (btn) {
+        btn.addEventListener('click', async function () {
+          const targetSel = btn.getAttribute('data-target');
+          const codeEl = document.querySelector(targetSel);
+          const code = codeEl ? codeEl.innerText : '';
+          try {
+            await copyText(code);
+            const old = btn.textContent;
+            btn.textContent = 'Kopiert!';
+            btn.setAttribute('aria-live', 'polite');
+            setTimeout(function () { btn.textContent = old; }, 1500);
+          } catch (e) {
+            const old = btn.textContent;
+            btn.textContent = 'Kunne ikke kopiere';
+            setTimeout(function () { btn.textContent = old; }, 1500);
+          }
+        });
+      });
+    })();
+    </script>
 </body>
 </html>
