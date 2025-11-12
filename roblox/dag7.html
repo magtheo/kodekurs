@@ -211,27 +211,52 @@ Workspace
                 <div class="code-wrap">
                     <button class="copy-btn" data-target="#code-appletool" aria-label="Kopier koden">Kopier</button>
                     <pre class="kode"><code id="code-appletool" class="language-lua">-- LocalScript under AppleTool
+-- LocalScript under Apple Tool
 local tool = script.Parent
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local EatAppleEvent = ReplicatedStorage:WaitForChild("EatApple")
 
--- Når spilleren klikker (aktivere Tool), be server om å "spise eplet"
+-- Debounce så vi ikke skyter mange ganger pr klikk
+local canUse = true
+
+local function updateTooltip()
+	local stack = tool:GetAttribute("Stack") or 1
+	tool.ToolTip = ("Eple x%d – klikk for å spise"):format(stack)
+end
+
+tool:GetAttributeChangedSignal("Stack"):Connect(updateTooltip)
+updateTooltip()
+
 tool.Activated:Connect(function()
-    -- Sikre at den kjører hos riktig spiller
-    local player = Players.LocalPlayer
-    if not player then return end
-    EatAppleEvent:FireServer()
+	if not canUse then return end
+	local stack = tool:GetAttribute("Stack") or 0
+	if stack <= 0 then return end
+
+	canUse = false
+	local player = Players.LocalPlayer
+	if not player then
+		canUse = true
+		return
+	end
+
+	-- Be server om å spise ett eple
+	EatAppleEvent:FireServer()
+
+	-- Kort lokal cooldown (matcher server-delay)
+	task.delay(0.35, function()
+		canUse = true
+	end)
 end)
 
--- (Valgfritt) Små UI-hint når verktøyet er tatt i hånda
 tool.Equipped:Connect(function()
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "🍎 Eple";
-        Text = "Klikk for å spise eplet.";
-        Duration = 2
-    })
-end)</code></pre>
+	game:GetService("StarterGui"):SetCore("SendNotification", {
+		Title = "🍎 Eple";
+		Text = "Klikk for å spise. Stacks: " .. (tool:GetAttribute("Stack") or 1);
+		Duration = 2
+	})
+end)
+</code></pre>
                 </div>
                 
                 <div class="callout mini" style="margin-top: 12px;">
@@ -271,33 +296,34 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local EatAppleEvent = ReplicatedStorage:WaitForChild("EatApple")
 
 EatAppleEvent.OnServerEvent:Connect(function(player)
-    -- Sjekk at spilleren holder AppleTool
-    local character = player.Character
-    if not character then return end
-    local tool = character:FindFirstChildOfClass("Tool")
-    if not tool or tool.Name ~= "AppleTool" then return end
+	local char = player.Character
+	if not char then return end
+	local tool = char:FindFirstChild("AppleTool")
+	if not tool then return end
+	local humanoid = char:FindFirstChildOfClass("Humanoid")
+	if not humanoid then return end
 
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-    if not humanoid then return end
+	local heal = 20
+	humanoid.Health = math.min(humanoid.MaxHealth, humanoid.Health + heal)
 
-    -- Gi helse (juster tallene som du vil)
-    local healAmount = 20
-    humanoid.Health = math.min(humanoid.MaxHealth, humanoid.Health + healAmount)
+	local handle = tool:FindFirstChild("Handle")
+	if handle then
+		local crunch = handle:FindFirstChild("Crunch")
+		if crunch then crunch:Play() end
+	end
 
-    -- Spill crunch-lyden om den finnes
-    local handle = tool:FindFirstChild("Handle")
-    if handle then
-        local crunch = handle:FindFirstChild("Crunch")
-        if crunch then crunch:Play() end
-    end
+	local stack = tool:GetAttribute("Stack") or 1
+	stack -= 1
+	tool:SetAttribute("Stack", stack)
 
-    -- Fjern verktøyet etter en liten delay så lyden rekker å spille
-    task.delay(0.4, function()
-        if tool and tool.Parent then
-            tool:Destroy()
-        end
-    end)
-end)</code></pre>
+	-- Vent litt slik at lyd/heal fullføres
+	task.delay(0.5, function()
+		if tool and tool.Parent and (tool:GetAttribute("Stack") or 0) <= 0 then
+			tool:Destroy()
+		end
+	end)
+end)
+</code></pre>
                 </div>
                 
                 <div class="callout mini" style="margin-top: 12px;">
@@ -336,38 +362,74 @@ local Eple = script.Parent
 local ServerStorage = game:GetService("ServerStorage")
 
 -- La eplet falle etter 10–600 sek
-local venteTid = math.random(10, 10 * 60)
-task.wait(venteTid)
+local ventetid = math.random(10, 10 * 60)
+task.wait(3)
 Eple.Anchored = false
 
--- Legg til ProximityPrompt så spilleren kan "plukke opp"
+-- Prompt
 local prompt = Instance.new("ProximityPrompt")
 prompt.ActionText = "Plukk opp eple"
 prompt.ObjectText = "Eple"
-prompt.HoldDuration = 0 -- trykk, ikke hold
+prompt.HoldDuration = 0
 prompt.MaxActivationDistance = 12
 prompt.Parent = Eple
 
-local function giveTool(player)
-    -- Sjekk at Tool-malen finnes
-    local template = ServerStorage:FindFirstChild("AppleTool")
-    if not template then
-        warn("AppleTool mangler i ServerStorage")
-        return
-    end
+local DEFAULT_MAX = 20
+local DEFAULT_STACK = 1
+local pickedUp = false -- server-globalt flagg
 
-    -- Gi spilleren eple-verktøyet i ryggsekken (inventory)
-    local tool = template:Clone()
-    tool.Parent = player.Backpack
-
-    -- (Valgfritt) Auto-equip i hånden med én gang:
-    -- tool.Parent = player.Character
-
-    -- Fjern verdens-eplet
-    Eple:Destroy()
+local function ensureAttributes(tool)
+	if tool:GetAttribute("MaxStack") == nil then tool:SetAttribute("MaxStack", DEFAULT_MAX) end
+	if tool:GetAttribute("Stack") == nil then tool:SetAttribute("Stack", DEFAULT_STACK) end
 end
 
-prompt.Triggered:Connect(giveTool)</code></pre>
+local function findAppleTool(player)
+	local char = player.Character
+	if char then
+		local t = char:FindFirstChild("Apple")
+		if t then return t end
+	end
+	return player.Backpack:FindFirstChild("Apple")
+end
+
+local function giveTool(player)
+	-- Sjekk og lås umiddelbart
+	if pickedUp then return end
+	pickedUp = true
+	prompt.Enabled = false -- blokker ekstra triggers
+
+	local template = ServerStorage:FindFirstChild("Apple")
+	if not template then
+		warn("AppleTool mangler i ServerStorage")
+		return
+	end
+
+	local existing = findAppleTool(player)
+	if existing then
+		ensureAttributes(existing)
+		local stack = existing:GetAttribute("Stack") or DEFAULT_STACK
+		local max = existing:GetAttribute("MaxStack") or DEFAULT_MAX
+		if stack < max then
+			existing:SetAttribute("Stack", stack + 1)
+		else
+			-- kan vise beskjed her
+		end
+	else
+		local tool = template:Clone()
+		ensureAttributes(tool)
+		tool.Parent = player.Backpack
+	end
+
+	-- Fjern delen trygt
+	task.defer(function()
+		if Eple and Eple.Parent then
+			Eple:Destroy()
+		end
+	end)
+end
+
+prompt.Triggered:Connect(giveTool)
+</code></pre>
                 </div>
                 
                 <div class="callout mini" style="margin-top: 12px;">
