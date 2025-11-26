@@ -153,7 +153,7 @@
 └─ EatApple (RemoteEvent)
 
 ServerStorage
-└─ AppleTool (Tool)
+└─ Apple (Tool)
    ├─ Handle (Part) [Anchored=false, CanCollide=false, Shape=Ball]
    ├─ Crunch (Sound) [valgfritt]
    └─ LocalScript
@@ -298,7 +298,7 @@ local EatAppleEvent = ReplicatedStorage:WaitForChild("EatApple")
 EatAppleEvent.OnServerEvent:Connect(function(player)
 	local char = player.Character
 	if not char then return end
-	local tool = char:FindFirstChild("AppleTool")
+	local tool = char:FindFirstChild("Apple")
 	if not tool then return end
 	local humanoid = char:FindFirstChildOfClass("Humanoid")
 	if not humanoid then return end
@@ -400,7 +400,7 @@ local function giveTool(player)
 
 	local template = ServerStorage:FindFirstChild("Apple")
 	if not template then
-		warn("AppleTool mangler i ServerStorage")
+		warn("Apple mangler i ServerStorage")
 		return
 	end
 
