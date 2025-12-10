@@ -5,56 +5,529 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dag 8 - Roblox Studio Kodekurs</title>
     <link rel="stylesheet" href="../styles.css">
+    <style>
+        .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:#eef5ff; font-size:0.9rem; margin-right:8px; }
+        .grid { display:grid; gap:16px; }
+        .grid-2 { grid-template-columns: 1fr; }
+        @media (min-width: 900px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
+        .card { background:#fff; border:1px solid #eee; border-radius:12px; padding:16px; box-shadow:0 1px 2px rgba(0,0,0,0.04); }
+        .kode { background:#0b1020; color:#e9f0ff; border-radius:10px; padding:16px; overflow:auto; font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; line-height:1.4; }
+        .callout { border-left:4px solid #6aa6ff; background:#f5f9ff; padding:12px 14px; border-radius:8px; }
+        .danger { border-left:4px solid #ff6a6a; background:#fff5f5; }
+        .success { border-left:4px solid #29b36a; background:#f3fff8; }
+        .warning { border-left:4px solid #ffa500; background:#fff9f0; }
+        .subtitle { max-width:60ch; }
+        .legend { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+        ol.stepper { counter-reset: step; list-style: none; padding-left: 0; }
+        ol.stepper > li { counter-increment: step; margin: 0 0 14px 0; background:#fafafa; border:1px solid #eee; border-radius:10px; padding:12px 14px; }
+        ol.stepper > li::before { content: counter(step); display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:#2c5cff; color:#fff; font-weight:700; margin-right:10px; }
+        .prop { background:#f7f7ff; border:1px dashed #cdd1ff; border-radius:8px; padding:8px 10px; margin-top:10px; }
+        .mini { font-size:0.95rem; color:#334; }
+        .tight { margin-top: 4px; margin-bottom: 0; }
+
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 6px 10px;
+            border: 1px solid #d9e2ff;
+            background: #f3f6ff;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background:#e9efff; }
+        .copy-btn:active { transform: translateY(1px); }
+        .copy-btn:focus { outline: 2px solid #2c5cff; outline-offset: 2px; }
+
+        .tree-structure {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .task-list li { margin-bottom: 6px; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📅 Dag 8: Feller og Hindringer</h1>
-            <p class="subtitle">Lær å lage utfordrende feller og hindringer for å teste spillernes ferdigheter!</p>
-        </header>
+<div class="container">
+    <header>
+        <h1>📅 Dag 8: Passord-dører og hindringer</h1>
+        <p class="subtitle">
+            I dag lager vi en dør-terminal der spilleren må skrive inn riktig passord for å åpne (eller lukke) dører.
+            Vi bygger hele systemet: dører i verden + UI + kode.
+        </p>
+        <div class="legend">
+            <span class="pill">TextBox</span>
+            <span class="pill">TextButton</span>
+            <span class="pill">Folder</span>
+            <span class="pill">Attributes</span>
+            <span class="pill">Dictionary</span>
+            <span class="pill">UI-script</span>
+        </div>
+    </header>
 
-        <nav class="nav">
-            <a href="../index.html">🏠 Hjem</a>
-            <a href="index.html">Roblox Oversikt</a>
-            <details class="dropdown-nav">
-                <summary>Dager</summary>
-                <div class="dropdown-content">
-                    <a href="dag1.html">Dag 1</a>
-                    <a href="dag2.html">Dag 2</a>
-                    <a href="dag3.html">Dag 3</a>
-                    <a href="dag4.html">Dag 4</a>
-                    <a href="dag5.html">Dag 5</a>
-                    <a href="dag6.html">Dag 6</a>
-                    <a href="dag7.html">Dag 7</a>
-                    <a href="dag8.html" class="active">Dag 8</a>
-                    <a href="dag9.html">Dag 9</a>
-                    <a href="dag10.html">Dag 10</a>
-                    <a href="dag11.html">Dag 11</a>
-                    <a href="dag12.html">Dag 12</a>
-                    <a href="dag13.html">Dag 13</a>
-                    <a href="dag14.html">Dag 14</a>
-                    <a href="dag15.html">Dag 15</a>
-                    <a href="dag16.html">Dag 16</a>
-                </div>
-            </details>
-        </nav>
-
-        <main>
-            <section class="concept">
-                <h2>Velkommen til Dag 8!</h2>
-                <p>Her vil innholdet for Dag 8 av Roblox Studio Kodekurset komme. Vi skal fokusere på å designe og implementere ulike feller og hindringer for å gjøre spillene mer spennende.</p>
-                <p>Følg med for spennende oppgaver og konsepter!</p>
-            </section>
-
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="dag7.html" class="day-link" style="margin-right: 20px;">← Forrige: Dag 7</a>
-                <a href="dag9.html" class="day-link">Neste: Dag 9 →</a>
+    <nav class="nav">
+        <a href="../index.html">🏠 Hjem</a>
+        <a href="index.html">Roblox Oversikt</a>
+        <details class="dropdown-nav">
+            <summary>Dager</summary>
+            <div class="dropdown-content">
+                <a href="dag1.html">Dag 1</a>
+                <a href="dag2.html">Dag 2</a>
+                <a href="dag3.html">Dag 3</a>
+                <a href="dag4.html">Dag 4</a>
+                <a href="dag5.html">Dag 5</a>
+                <a href="dag6.html">Dag 6</a>
+                <a href="dag7.html">Dag 7</a>
+                <a href="dag8.html" class="active">Dag 8</a>
+                <a href="dag9.html">Dag 9</a>
+                <a href="dag10.html">Dag 10</a>
+                <a href="dag11.html">Dag 11</a>
+                <a href="dag12.html">Dag 12</a>
+                <a href="dag13.html">Dag 13</a>
+                <a href="dag14.html">Dag 14</a>
+                <a href="dag15.html">Dag 15</a>
+                <a href="dag16.html">Dag 16</a>
             </div>
-        </main>
+        </details>
+    </nav>
 
-        <footer>
-            <p>© 2025 Kodekurs for Barn - Roblox-kurset! 🌟</p>
-        </footer>
-    </div>
+    <main>
+        <!-- Mål -->
+        <section class="card">
+            <h2>🎯 Mål for dagen</h2>
+            <ul class="task-list">
+                <li>Bygge en <strong>dør</strong> i Workspace som kan åpnes og lukkes med kode.</li>
+                <li>Organisere dørene i en <strong>Folder</strong> (klar for mange dører).</li>
+                <li>Lage en <strong>terminal</strong> i UI (TextBox + knapp).</li>
+                <li>Koble <strong>passord → riktig dør</strong> med en dictionary (tabell).</li>
+                <li>Legge inn <strong>maks antall forsøk</strong> før systemet låser seg.</li>
+            </ul>
+            <div class="callout mini" style="margin-top: 10px;">
+                Resultat: Et fleksibelt passordsystem der du kan legge til så mange dører du vil,
+                bare ved å utvide tabellen i koden.
+            </div>
+        </section>
+
+        <!-- Struktur -->
+        <section class="card">
+            <h2>📦 Komplett oppsett – Oversikt</h2>
+            <p class="mini">Før vi bygger alt steg for steg, ser vi på den ferdige strukturen:</p>
+
+            <div class="tree-structure">
+Workspace
+└─ Doors (Folder)
+   ├─ Door1 (Part)
+   ├─ Door2 (Part)
+   └─ BossDoor (Part)
+
+StarterGui
+└─ DoorTerminalGui (ScreenGui)
+   └─ TerminalFrame (Frame)
+      ├─ TitleLabel (TextLabel)
+      ├─ DoorText (TextBox)
+      └─ SubmitButton (TextButton)
+         └─ LocalScript (passord-kode)
+
+        </div>
+
+            <div class="callout mini">
+                <strong>Enkelt forklart:</strong> Spilleren skriver inn et passord i DoorText, trykker på knappen,
+                og LocalScriptet sjekker om passordet matcher en av dørene i <code>Doors</code>-folderen.
+            </div>
+        </section>
+
+        <!-- Del 1: Dør-oppsett -->
+        <section class="card">
+            <h2>🧱 Del 1: Lag dørene i Workspace</h2>
+            <p class="mini">Vi starter med å lage dørene fysisk i verden.</p>
+
+            <h3><span class="step-number">1</span> Lag en Doors-folder</h3>
+            <ol class="stepper">
+                <li>
+                    Åpne <strong>Workspace</strong> i Explorer.
+                    <div class="prop mini">
+                        <p class="tight"><strong>Høyreklikk Workspace</strong> → Insert Object → <strong>Folder</strong></p>
+                        <p class="tight"><strong>Navn:</strong> <code>Doors</code></p>
+                    </div>
+                </li>
+                <li>
+                    Dette gjør det lett å ha <strong>mange dører</strong> samlet ett sted.
+                </li>
+            </ol>
+
+            <h3><span class="step-number">2</span> Lag selve dørene (Parts)</h3>
+            <ol class="stepper">
+                <li>
+                    Høyreklikk på <strong>Doors</strong>-folderen → Insert Object → <strong>Part</strong>.
+                    <div class="prop mini">
+                        <p class="tight"><strong>Navn:</strong> <code>Door1</code></p>
+                        <p class="tight"><strong>Anchored:</strong> <code>true</code> (døren skal stå stille)</p>
+                        <p class="tight"><strong>CanCollide:</strong> <code>true</code> (blokkere spilleren)</p>
+                        <p class="tight"><strong>Size:</strong> f.eks. <code>6, 12, 1</code> (en høy dør)</p>
+                        <p class="tight"><strong>Material:</strong> Concrete / Metal / Wood</p>
+                        <p class="tight"><strong>Color:</strong> velg en farge (f.eks. rød)</p>
+                    </div>
+                </li>
+                <li>
+                    Du kan lage flere dører på samme måte:
+                    <div class="prop mini">
+                        <p class="tight"><code>Door2</code> – kanskje blå dør</p>
+                        <p class="tight"><code>BossDoor</code> – stor og skummel dør</p>
+                    </div>
+                </li>
+                <li>
+                    Plasser dørene i level/designet ditt slik at de virkelig sperrer veien.
+                </li>
+            </ol>
+
+            <div class="callout mini">
+                Når vi åpner en dør i koden, gjør vi den <strong>gjennomsiktig</strong> og skrur av <code>CanCollide</code>.
+                Da kan spilleren gå gjennom.
+            </div>
+        </section>
+
+        <!-- Del 2: UI-terminal -->
+        <section class="card">
+            <h2>🧱 Del 2: Lag passord-terminalen (UI)</h2>
+            <p class="mini">Nå lager vi et lite panel på skjermen hvor spilleren kan skrive inn passordet.</p>
+
+            <h3><span class="step-number">3</span> Lag ScreenGui og Frame</h3>
+            <ol class="stepper">
+                <li>
+                    Åpne <strong>StarterGui</strong> i Explorer.
+                    <div class="prop mini">
+                        <p class="tight"><strong>Høyreklikk StarterGui</strong> → Insert Object → <strong>ScreenGui</strong></p>
+                        <p class="tight"><strong>Navn:</strong> <code>DoorTerminalGui</code></p>
+                    </div>
+                </li>
+                <li>
+                    Høyreklikk <code>DoorTerminalGui</code> → Insert Object → <strong>Frame</strong>.
+                    <div class="prop mini">
+                        <p class="tight"><strong>Navn:</strong> <code>TerminalFrame</code></p>
+                        <p class="tight"><strong>Size:</strong> f.eks. <code>{0, 300}, {0, 200}</code></p>
+                        <p class="tight"><strong>Position:</strong> f.eks. midt på skjermen eller i et hjørne</p>
+                    </div>
+                </li>
+            </ol>
+
+            <h3><span class="step-number">4</span> Legg til tekst og input</h3>
+            <ol class="stepper">
+                <li>
+                    Høyreklikk <code>TerminalFrame</code> → Insert Object → <strong>TextLabel</strong>.
+                    <div class="prop mini">
+                        <p class="tight"><strong>Navn:</strong> <code>TitleLabel</code></p>
+                        <p class="tight"><strong>Text:</strong> "Dør-terminal"</p>
+                    </div>
+                </li>
+                <li>
+                    Høyreklikk <code>TerminalFrame</code> → Insert Object → <strong>TextBox</strong>.
+                    <div class="prop mini">
+                        <p class="tight"><strong>Navn:</strong> <code>DoorText</code></p>
+                        <p class="tight"><strong>PlaceholderText:</strong> "Skriv passord..."</p>
+                    </div>
+                </li>
+                <li>
+                    Høyreklikk <code>TerminalFrame</code> → Insert Object → <strong>TextButton</strong>.
+                    <div class="prop mini">
+                        <p class="tight"><strong>Navn:</strong> <code>SubmitButton</code></p>
+                        <p class="tight"><strong>Text:</strong> "Åpne dør"</p>
+                    </div>
+                </li>
+            </ol>
+        </section>
+
+        <!-- Del 3: Kode -->
+        <section class="card">
+            <h2>🧱 Del 3: Koble knapp + TextBox til dørene (kode)</h2>
+            <p class="mini">
+                Nå legger vi inn et <strong>LocalScript</strong> under knappen som leser tekst fra <code>DoorText</code>
+                og åpner riktig dør.
+            </p>
+
+            <h3><span class="step-number">5</span> LocalScript under knappen</h3>
+            <ol class="stepper">
+                <li>
+                    Høyreklikk <code>SubmitButton</code> → Insert Object → <strong>LocalScript</strong>.
+                </li>
+                <li>
+                    Slett innholdet som står der, og lim inn koden under:
+                </li>
+            </ol>
+
+            <div class="code-wrap">
+                <button class="copy-btn" data-target="#code-door-system">Kopier</button>
+<pre class="kode"><code id="code-door-system" class="language-lua">local button = script.Parent
+local textBox = button.Parent:WaitForChild("DoorText")
+
+-- Folder med alle dører
+local doorsFolder = workspace:WaitForChild("Doors")
+
+-- Koble passord til dører.
+-- Du kan legge til SÅ MANGE du vil:
+local doorsByPassword = {
+    ["pass"] = doorsFolder:WaitForChild("Door1"),
+    ["pass2"] = doorsFolder:WaitForChild("Door2"),
+    ["boss"] = doorsFolder:WaitForChild("BossDoor"),
+    -- Legg til flere:
+    -- ["hemmelig"] = doorsFolder:WaitForChild("SecretDoor"),
+}
+
+local maxAttempts = 4
+local attempts = 0
+local locked = false
+
+-- Hjelpefunksjoner for dørtilstand
+local function ensureAttributes(door)
+    if door:GetAttribute("Open") == nil then
+        door:SetAttribute("Open", false)
+    end
+end
+
+local function setDoorOpen(door, shouldOpen)
+    if shouldOpen then
+        door.Transparency = 0.7
+        door.CanCollide = false
+    else
+        door.Transparency = 0
+        door.CanCollide = true
+    end
+    door:SetAttribute("Open", shouldOpen)
+end
+
+local function toggleDoor(door)
+    ensureAttributes(door)
+    local isOpen = door:GetAttribute("Open")
+    setDoorOpen(door, not isOpen)
+
+    if not isOpen then
+        print(("Døren '%s' er åpnet!"):format(door.Name))
+    else
+        print(("Døren '%s' er lukket!"):format(door.Name))
+    end
+end
+
+button.MouseButton1Click:Connect(function()
+    if locked then
+        print("Låst. For mange forsøk.")
+        return
+    end
+
+    local input = textBox.Text
+    if input == nil or input == "" then
+        print("Skriv inn et passord.")
+        return
+    end
+
+    local chosenDoor = doorsByPassword[input]
+    if chosenDoor then
+        -- Riktig passord til en bestemt dør → toggle denne døren
+        toggleDoor(chosenDoor)
+    else
+        -- Feil passord → øk forsøk
+        attempts += 1
+        print(("Feil passord, prøv igjen! Du har brukt %d forsøk."):format(attempts))
+
+        if attempts >= maxAttempts then
+            locked = true
+            print("Dørsystemet er nå låst (for mange forsøk).")
+        end
+    end
+end)</code></pre>
+            </div>
+
+            <div class="callout mini" style="margin-top: 12px;">
+                Du kan legge til nye dører ved å:
+                <ol class="mini">
+                    <li>Lage en ny dør (Part) i <code>Doors</code>-folderen.</li>
+                    <li>Gi den et navn, f.eks. <code>YellowDoor</code>.</li>
+                    <li>Legge til en linje i <code>doorsByPassword</code>:
+                        <code>["gul"] = doorsFolder:WaitForChild("YellowDoor")</code>.
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Hva koden gjør / Konsepter -->
+        <section class="card">
+            <h2>🧠 Hva koden gjør (for elevene)</h2>
+            <ul class="task-list mini">
+                <li>Spilleren skriver inn et passord i <strong>DoorText</strong> og trykker på <strong>SubmitButton</strong>.</li>
+                <li>Scriptet leser teksten og sjekker om den finnes i <code>doorsByPassword</code>-tabellen.</li>
+                <li>Hvis passordet finnes, finner vi riktig dør og <strong>åpner/lukker</strong> den (toggle).</li>
+                <li>Hvis passordet er feil, øker vi antall forsøk.</li>
+                <li>Etter for mange feil (4), blir systemet <strong>låst</strong>, og knappen gjør ingenting.</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>🔑 Viktige kodekonsepter</h2>
+            <h3>1. Variabler</h3>
+<pre class="kode mini"><code>local maxAttempts = 4
+local attempts = 0
+local locked = false</code></pre>
+            <p class="mini">
+                <code>maxAttempts</code> er hvor mange ganger spilleren kan prøve.
+                <code>attempts</code> teller hvor mange feil de har gjort.
+                <code>locked</code> sier om systemet er låst eller ikke.
+            </p>
+
+            <h3>2. Tabeller (dictionary / map)</h3>
+<pre class="kode mini"><code>local doorsByPassword = {
+    ["pass"] = doorsFolder:WaitForChild("Door1"),
+    ["pass2"] = doorsFolder:WaitForChild("Door2")
+}</code></pre>
+            <p class="mini">
+                En tabell der <strong>nøkkelen</strong> er passord-tekst (f.eks. "pass"), og <strong>verdien</strong> er
+                selve døren (Part) i Workspace. Når spilleren skriver noe, slår vi opp i tabellen:
+            </p>
+<pre class="kode mini"><code>local chosenDoor = doorsByPassword[input]</code></pre>
+
+            <h3>3. Funksjoner</h3>
+<pre class="kode mini"><code>local function toggleDoor(door)
+    ...
+end</code></pre>
+            <p class="mini">
+                Funksjoner er gjenbrukbare kodeblokker. <code>toggleDoor</code> tar inn en dør og bytter mellom
+                åpen/lukket. Vi slipper å skrive samme kode flere ganger.
+            </p>
+
+            <h3>4. Attributes</h3>
+<pre class="kode mini"><code>door:SetAttribute("Open", shouldOpen)</code></pre>
+            <p class="mini">
+                Attributes er små verdier som lagres direkte på et objekt. Her bruker vi <code>Open</code> på døren
+                for å huske om den er åpen eller lukket.
+            </p>
+
+            <h3>5. If-setninger</h3>
+<pre class="kode mini"><code>if locked then
+    print("Låst.")
+    return
+end</code></pre>
+            <p class="mini">
+                If-setninger gjør at koden tar valg: "hvis dette er sant, gjør dette – ellers gjør noe annet".
+            </p>
+
+            <h3>6. Events</h3>
+<pre class="kode mini"><code>button.MouseButton1Click:Connect(function()
+    ...
+end)</code></pre>
+            <p class="mini">
+                Events kobler spillerens handlinger til kode. Her kjører funksjonen hver gang spilleren klikker knappen.
+            </p>
+        </section>
+
+        <!-- Mini-oppgaver -->
+        <section class="grid grid-2">
+            <div class="card">
+                <h3>🧪 Mini-oppgaver</h3>
+                <ul class="task-list mini">
+                    <li>Legg til en ny dør <code>YellowDoor</code> med passord <code>"gul"</code>.</li>
+                    <li>Endre <code>maxAttempts</code> til 6.</li>
+                    <li>Vis en TextLabel i terminalen som sier "Feil passord" ved feil.</li>
+                    <li>Endre dørene til å bruke forskjellige farger når de åpnes.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🚀 Videreutvikling</h3>
+                <ul class="task-list mini">
+                    <li>Lag en “felle-dør” som åpner gulvet i stedet for selve døren.</li>
+                    <li>Lag forskjellige nivåer med ulike passord.</li>
+                    <li>Resett <code>attempts</code> etter 30 sekunder.</li>
+                    <li>Lag et Leaderboard som teller hvor mange riktige passord spilleren har skrevet inn.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Feilsøking -->
+        <section class="card">
+            <h2>🛠️ Feilsøking</h2>
+            <div class="callout danger mini">
+                <strong>"Doors is not a valid member of Workspace"</strong><br>
+                Sjekk at du har laget en Folder som heter <code>Doors</code> inne i <em>Workspace</em>.
+            </div>
+            <div class="callout danger mini">
+                <strong>"Door1 is not a valid member of Doors"</strong><br>
+                Sjekk at døren heter nøyaktig <code>Door1</code> (samme store/små bokstaver) og ligger inne i <code>Doors</code>-folderen.
+            </div>
+            <div class="callout mini">
+                <strong>Knappen gjør ingenting:</strong> Sjekk at LocalScript ligger under <code>SubmitButton</code>, ikke under Frame eller ScreenGui.
+            </div>
+            <div class="callout mini">
+                <strong>Systemet er alltid låst:</strong> Sjekk at du ikke har satt <code>locked = true</code> i starten.
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="dag7.html" class="day-link" style="margin-right: 20px;">← Forrige: Dag 7</a>
+            <a href="dag9.html" class="day-link">Neste: Dag 9 →</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Kodekurs for Barn - Roblox-kurset! 🌟</p>
+    </footer>
+</div>
+
+<!-- Kopier-knapp logikk -->
+<script>
+(function () {
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try { document.execCommand('copy'); }
+      finally { document.body.removeChild(ta); }
+      return Promise.resolve();
+    }
+  }
+
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', async function () {
+      const targetSel = btn.getAttribute('data-target');
+      const codeEl = document.querySelector(targetSel);
+      const code = codeEl ? codeEl.innerText : '';
+      try {
+        await copyText(code);
+        const old = btn.textContent;
+        btn.textContent = 'Kopiert!';
+        btn.setAttribute('aria-live', 'polite');
+        setTimeout(function () { btn.textContent = old; }, 1500);
+      } catch (e) {
+        const old = btn.textContent;
+        btn.textContent = 'Kunne ikke kopiere';
+        setTimeout(function () { btn.textContent = old; }, 1500);
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
