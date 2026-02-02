@@ -174,49 +174,73 @@
                     <button class="copy-btn" data-target="#code-dag4" aria-label="Kopier koden">Kopier</button>
                     <pre class="kode"><code id="code-dag4" class="language-lua">local textLabel = script.Parent
 local Players = game:GetService("Players")
+
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 
-local boostBox = workspace:WaitForChild("boostBox")
+local boostFolder = workspace:WaitForChild("BoostBoxes")
 
 -- Settings
-local BOOST_SPEED = 32 -- normal is 16
-local BOOST_JUMPPOWER = 150 -- normal is 50
-local BOOST_DURATION = 2 -- seconds
+local BOOST_SPEED = 32
+local BOOST_JUMPPOWER = 150
+local BOOST_DURATION = 2
 
--- Store defaults so we can reset
+-- Defaults
 local NORMAL_SPEED = humanoid.WalkSpeed
 local NORMAL_JUMPPOWER = humanoid.JumpPower
 
-boostBox.Touched:Connect(function(hit)
-    if hit.Parent == character then
-        print("box hit")
+-- Debounce to prevent retrigger spam
+local boostActive = false
 
-        -- Show text
-        textLabel.Visible = true
-        textLabel.Text = "You get speed and jumpboost for 2 seconds!"
-        task.delay(3, function()
-            textLabel.Visible = false
-        end)
+-- Shared boost logic
+local function applyBoost()
+	if boostActive then return end
+	boostActive = true
 
-        -- Ensure we’re using JumpPower
-        humanoid.UseJumpPower = true
+	-- UI
+	textLabel.Visible = true
+	textLabel.Text = "You get speed and jump boost for 2 seconds!"
+	task.delay(3, function()
+		textLabel.Visible = false
+	end)
 
-        -- Apply boost
-        humanoid.WalkSpeed = BOOST_SPEED
-        humanoid.JumpPower = BOOST_JUMPPOWER
-        print("Boost applied!")
+	-- Apply boost
+	humanoid.UseJumpPower = true
+	humanoid.WalkSpeed = BOOST_SPEED
+	humanoid.JumpPower = BOOST_JUMPPOWER
 
-        -- Reset after delay
-        task.delay(BOOST_DURATION, function()
-            if humanoid then
-                humanoid.WalkSpeed = NORMAL_SPEED
-                humanoid.JumpPower = NORMAL_JUMPPOWER
-                print("Boost reset.")
-            end
-        end)
-    end
+	-- Reset
+	task.delay(BOOST_DURATION, function()
+		if humanoid then
+			humanoid.WalkSpeed = NORMAL_SPEED
+			humanoid.JumpPower = NORMAL_JUMPPOWER
+		end
+		boostActive = false
+	end)
+end
+
+-- Connect all boost boxes
+local function connectBoostBox(box)
+	box.Touched:Connect(function(hit)
+		if hit.Parent == character then
+			applyBoost()
+		end
+	end)
+end
+
+-- Existing boxes
+for _, box in ipairs(boostFolder:GetChildren()) do
+	if box:IsA("BasePart") then
+		connectBoostBox(box)
+	end
+end
+
+-- Future boxes added at runtime
+boostFolder.ChildAdded:Connect(function(box)
+	if box:IsA("BasePart") then
+		connectBoostBox(box)
+	end
 end)</code></pre>
                 </div>
             </section>
