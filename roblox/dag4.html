@@ -54,7 +54,7 @@
     <div class="container">
         <header>
             <h1>📅 Dag 4: Brukergrensesnitt (UI)</h1>
-            <p class="subtitle">I dag lager vi en usynlig «boost-boks» i verden, viser en melding på skjermen, og gir spilleren midlertidig fart og hopphøyde.</p>
+            <p class="subtitle">I dag lager vi en mappe med «boost-bokser» i verden, viser en melding på skjermen, og gir spilleren midlertidig fart og hopphøyde.</p>
             <div class="legend">
                 <span class="pill">UI (TextLabel)</span>
                 <span class="pill">Events (Touched)</span>
@@ -96,7 +96,7 @@
             <section class="concept card">
                 <h2>🎯 Mål for dagen</h2>
                 <ul class="task-list">
-                    <li>Bygge en del («boost-boks») i <strong>Workspace</strong> som trigger når spilleren går gjennom.</li>
+                    <li>Bygge en mappe med deler («boost-bokser») i <strong>Workspace</strong> som trigger når spilleren går gjennom.</li>
                     <li>Lage <strong>ScreenGui</strong> med <strong>TextLabel</strong> som viser en melding.</li>
                     <li>Gi <strong>midlertidig</strong> fart og hopphøyde med kode — og resette etter noen sekunder.</li>
                 </ul>
@@ -109,7 +109,7 @@
             <section class="card">
                 <h2>🧱 Bygg i Studio: Slik setter du opp alt</h2>
 
-                <h3>Del A — Lag «boost-boks» i <em>Workspace</em></h3>
+                <h3>Del A — Lag mappe med «boost-bokser» i <em>Workspace</em></h3>
                 <ol class="stepper">
                     <li>
                         Sett inn en <strong>Part</strong> i <em>Workspace</em> (rotnivå).
@@ -258,8 +258,8 @@ end)</code></pre>
                         <span class="mini"><code>character = player.Character or player.CharacterAdded:Wait()</code> og <code>Humanoid</code> må finnes før vi endrer fart/hopp.</span>
                     </li>
                     <li>
-                        <strong>Finn “boost-boksen”</strong> i <span class="concept-badge">Workspace</span>:
-                        <span class="mini"><code>workspace:WaitForChild("boostBox")</code> sikrer at delen er lastet. Husk <code>Anchored=true</code>, <code>CanCollide=false</code>, <code>CanTouch=true</code>, og gjennomsiktighet.</span>
+                        <strong>Finn “BoostBoxes”-mappen</strong> i <span class="concept-badge">Workspace</span>:
+                        <span class="mini"><code>workspace:WaitForChild("BoostBoxes")</code> sikrer at delen er lastet. Husk <code>Anchored=true</code>, <code>CanCollide=false</code>, <code>CanTouch=true</code>, og gjennomsiktighet.</span>
                     </li>
                     <li>
                         <strong>Lytt etter berøring</strong> med <span class="concept-badge">Touched</span> (Event):
