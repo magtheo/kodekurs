@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dag 4 - Roblox Studio Kodekurs</title>
+    <title>UI og Boost System - Roblox Studio Kodekurs</title>
     <link rel="stylesheet" href="../styles.css">
     <style>
-        /* Små UI-forbedringer for Dag 4 */
+        /* Små UI-forbedringer for UI og Boost System */
         .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:#eef5ff; font-size:0.9rem; margin-right:8px; }
         .grid { display:grid; gap:16px; }
-        .grid-2 { grid-template-columns: 1fr; }
+        .grid-2 { grid-template-columns:1fr; }
         @media (min-width: 900px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
         .card { background:#fff; border:1px solid #eee; border-radius:12px; padding:16px; box-shadow:0 1px 2px rgba(0,0,0,0.04); }
         .kode { background:#0b1020; color:#e9f0ff; border-radius:10px; padding:16px; overflow:auto; font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; line-height:1.4; }
@@ -53,8 +53,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>📅 Dag 4: Brukergrensesnitt (UI)</h1>
-            <p class="subtitle">I dag lager vi en mappe med «boost-bokser» i verden, viser en melding på skjermen, og gir spilleren midlertidig fart og hopphøyde.</p>
+            <h1>🎨 UI og Boost System</h1>
+            <p class="subtitle">Lag boost-bokser i verden, vis meldinger på skjermen, og gi spilleren midlertidig fart og hopphøyde.</p>
             <div class="legend">
                 <span class="pill">UI (TextLabel)</span>
                 <span class="pill">Events (Touched)</span>
@@ -69,24 +69,11 @@
             <a href="../index.html">🏠 Hjem</a>
             <a href="index.html">Roblox Oversikt</a>
             <details class="dropdown-nav">
-                <summary>Dager</summary>
+                <summary>Systemer</summary>
                 <div class="dropdown-content">
-                    <a href="dag1.html">Dag 1</a>
-                    <a href="dag2.html">Dag 2</a>
-                    <a href="dag3.html">Dag 3</a>
-                    <a href="dag4.html" class="active">Dag 4</a>
-                    <a href="dag5.html">Dag 5</a>
-                    <a href="dag6.html">Dag 6</a>
-                    <a href="dag7.html">Dag 7</a>
-                    <a href="dag8.html">Dag 8</a>
-                    <a href="dag9.html">Dag 9</a>
-                    <a href="dag10.html">Dag 10</a>
-                    <a href="dag11.html">Dag 11</a>
-                    <a href="dag12.html">Dag 12</a>
-                    <a href="dag13.html">Dag 13</a>
-                    <a href="dag14.html">Dag 14</a>
-                    <a href="dag15.html">Dag 15</a>
-                    <a href="dag16.html">Dag 16</a>
+                    <a href="ui-boost-system.html" class="active">🎨 UI og Boost System</a>
+                    <a href="item-system.html">🎒 Item System</a>
+                    <a href="door-security-system.html">🚪 Door og Security System</a>
                 </div>
             </details>
         </nav>
@@ -94,14 +81,14 @@
         <main>
             <!-- Mål -->
             <section class="concept card">
-                <h2>🎯 Mål for dagen</h2>
+                <h2>🎯 Mål for dette systemet</h2>
                 <ul class="task-list">
                     <li>Bygge en mappe med deler («boost-bokser») i <strong>Workspace</strong> som trigger når spilleren går gjennom.</li>
                     <li>Lage <strong>ScreenGui</strong> med <strong>TextLabel</strong> som viser en melding.</li>
                     <li>Gi <strong>midlertidig</strong> fart og hopphøyde med kode — og resette etter noen sekunder.</li>
                 </ul>
                 <div class="callout success mini">
-                    <strong>Resultat:</strong> Tydelig “power-up” med trygg reset og forklarende tekst på skjermen.
+                    <strong>Resultat:</strong> Tydelig "power-up" med trygg reset og forklarende tekst på skjermen.
                 </div>
             </section>
 
@@ -136,7 +123,7 @@
                     <li>
                         Inni <strong>ScreenGui</strong>: lag en <strong>TextLabel</strong>.
                         <div class="prop mini">
-                            <p class="tight"><strong>Text:</strong> f.eks. “Du fikk en boost!” (vi overskriver i kode)</p>
+                            <p class="tight"><strong>Text:</strong> f.eks. "Du fikk en boost!" (vi overskriver i kode)</p>
                             <p class="tight"><strong>Visible:</strong> <code>false</code> (starter skjult)</p>
                             <p class="tight"><strong>BackgroundTransparency:</strong> 0.3–0.5 (lesbart, men ikke i veien)</p>
                             <p class="tight"><strong>AnchorPoint/Position/Size:</strong> Plasser øverst midt på skjermen</p>
@@ -167,12 +154,12 @@
 
             <!-- Kode barna lager + Kopier-knapp -->
             <section class="card">
-                <h2>👩‍💻 Koden barna lager i dag</h2>
+                <h2>👩‍💻 Koden du lager i dette systemet</h2>
                 <p class="mini">Legg denne i <strong>LocalScript</strong> under <em>TextLabel</em> (i <em>ScreenGui</em>).</p>
 
                 <div class="code-wrap">
-                    <button class="copy-btn" data-target="#code-dag4" aria-label="Kopier koden">Kopier</button>
-                    <pre class="kode"><code id="code-dag4" class="language-lua">local textLabel = script.Parent
+                    <button class="copy-btn" data-target="#code-ui-boost" aria-label="Kopier koden">Kopier</button>
+                    <pre class="kode"><code id="code-ui-boost" class="language-lua">local textLabel = script.Parent
 local Players = game:GetService("Players")
 
 local player = Players.LocalPlayer
@@ -251,14 +238,14 @@ end)</code></pre>
                 <ol class="stepper">
                     <li>
                         <strong>Finn spilleren</strong> med <span class="concept-badge">Players</span>:
-                        <span class="mini">Vi henter <code>Players.LocalPlayer</code> fordi UI og boost bare gjelder for “meg”.</span>
+                        <span class="mini">Vi henter <code>Players.LocalPlayer</code> fordi UI og boost bare gjelder for "meg".</span>
                     </li>
                     <li>
                         <strong>Vent til figuren er klar</strong> med <span class="concept-badge">WaitForChild</span>:
                         <span class="mini"><code>character = player.Character or player.CharacterAdded:Wait()</code> og <code>Humanoid</code> må finnes før vi endrer fart/hopp.</span>
                     </li>
                     <li>
-                        <strong>Finn “BoostBoxes”-mappen</strong> i <span class="concept-badge">Workspace</span>:
+                        <strong>Finn "BoostBoxes"-mappen</strong> i <span class="concept-badge">Workspace</span>:
                         <span class="mini"><code>workspace:WaitForChild("BoostBoxes")</code> sikrer at delen er lastet. Husk <code>Anchored=true</code>, <code>CanCollide=false</code>, <code>CanTouch=true</code>, og gjennomsiktighet.</span>
                     </li>
                     <li>
@@ -287,7 +274,7 @@ end)</code></pre>
                         <li>Gjør meldingen norsk og legg til en emoji (🎉).</li>
                         <li>Lag en ny boks som bare gir ekstra fart — ikke hopp.</li>
                         <li>Endre <code>BOOST_DURATION</code> til 5 sek og observer.</li>
-                        <li>Endre <strong>Size/Plassering</strong> på boksen for å lage en “boost-port”.</li>
+                        <li>Endre <strong>Size/Plassering</strong> på boksen for å lage en "boost-port".</li>
                     </ul>
                 </div>
                 <div class="card">
@@ -304,7 +291,7 @@ end)</code></pre>
             <section class="card">
                 <h2>🛠️ Feilsøking</h2>
                 <div class="callout danger mini">
-                    <strong>“boostBox is not a valid member of Workspace”</strong><br>
+                    <strong>"boostBox is not a valid member of Workspace"</strong><br>
                     Sjekk at delen heter <code>boostBox</code> (samme store/små bokstaver), og at den ligger i <em>Workspace</em> — ikke inni en annen modell.
                 </div>
                 <div class="callout mini">
@@ -316,8 +303,7 @@ end)</code></pre>
             </section>
 
             <div style="text-align: center; margin-top: 40px;">
-                <a href="dag3.html" class="day-link" style="margin-right: 20px;">← Forrige: Dag 3</a>
-                <a href="dag5.html" class="day-link">Neste: Dag 5 →</a>
+                <a href="index.html" class="day-link">🏠 Tilbake til Roblox Oversikt</a>
             </div>
         </main>
 

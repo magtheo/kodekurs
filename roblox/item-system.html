@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dag 7 - Roblox Studio Kodekurs</title>
+    <title>Item System - Roblox Studio Kodekurs</title>
     <link rel="stylesheet" href="../styles.css">
     <style>
-        /* Små UI-forbedringer for Dag 7 */
+        /* Små UI-forbedringer for Item System */
         .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:#eef5ff; font-size:0.9rem; margin-right:8px; }
         .grid { display:grid; gap:16px; }
         .grid-2 { grid-template-columns: 1fr; }
@@ -90,8 +90,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>📅 Dag 7: Eple-plukking og spisesystem</h1>
-            <p class="subtitle">I dag lager vi et komplett system hvor spillere kan plukke opp epler som faller fra trær, og spise dem for å få helse tilbake!</p>
+            <h1>🎒 Item System</h1>
+            <p class="subtitle">Lag et komplett system hvor spillere kan plukke opp epler som faller fra trær, og spise dem for å få helse tilbake!</p>
             <div class="legend">
                 <span class="pill">Tools</span>
                 <span class="pill">ProximityPrompt</span>
@@ -106,24 +106,11 @@
             <a href="../index.html">🏠 Hjem</a>
             <a href="index.html">Roblox Oversikt</a>
             <details class="dropdown-nav">
-                <summary>Dager</summary>
+                <summary>Systemer</summary>
                 <div class="dropdown-content">
-                    <a href="dag1.html">Dag 1</a>
-                    <a href="dag2.html">Dag 2</a>
-                    <a href="dag3.html">Dag 3</a>
-                    <a href="dag4.html">Dag 4</a>
-                    <a href="dag5.html">Dag 5</a>
-                    <a href="dag6.html">Dag 6</a>
-                    <a href="dag7.html" class="active">Dag 7</a>
-                    <a href="dag8.html">Dag 8</a>
-                    <a href="dag9.html">Dag 9</a>
-                    <a href="dag10.html">Dag 10</a>
-                    <a href="dag11.html">Dag 11</a>
-                    <a href="dag12.html">Dag 12</a>
-                    <a href="dag13.html">Dag 13</a>
-                    <a href="dag14.html">Dag 14</a>
-                    <a href="dag15.html">Dag 15</a>
-                    <a href="dag16.html">Dag 16</a>
+                    <a href="ui-boost-system.html">🎨 UI og Boost System</a>
+                    <a href="item-system.html" class="active">🎒 Item System</a>
+                    <a href="door-security-system.html">🚪 Door og Security System</a>
                 </div>
             </details>
         </nav>
@@ -131,7 +118,7 @@
         <main>
             <!-- Mål -->
             <section class="concept card">
-                <h2>🎯 Mål for dagen</h2>
+                <h2>🎯 Mål for dette systemet</h2>
                 <ul class="task-list">
                     <li>Lage et <strong>eple</strong> i verden som faller fra et tre etter tilfeldig tid.</li>
                     <li>Bruke <strong>ProximityPrompt</strong> så spilleren kan plukke opp eplet.</li>
@@ -147,8 +134,8 @@
             <!-- Oppsett oversikt -->
             <section class="card">
                 <h2>📦 Komplett oppsett - Oversikt</h2>
-                <p class="mini">Før vi begynner, se på den komplette strukturen. Dette er det vi skal bygge i dag:</p>
-                
+                <p class="mini">Før vi begynner, se på den komplette strukturen. Dette er det vi skal bygge i dette systemet:</p>
+
                 <div class="tree-structure">ReplicatedStorage
 └─ EatApple (RemoteEvent)
 
@@ -211,7 +198,6 @@ Workspace
                 <div class="code-wrap">
                     <button class="copy-btn" data-target="#code-appletool" aria-label="Kopier koden">Kopier</button>
                     <pre class="kode"><code id="code-appletool" class="language-lua">-- LocalScript under AppleTool
--- LocalScript under Apple Tool
 local tool = script.Parent
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -258,7 +244,7 @@ tool.Equipped:Connect(function()
 end)
 </code></pre>
                 </div>
-                
+
                 <div class="callout mini" style="margin-top: 12px;">
                     <strong>Hva gjør denne koden?</strong> Når spilleren klikker med eplet, sendes en melding til serveren. Vi viser også en liten notifikasjon når eplet holdes i hånden.
                 </div>
@@ -325,7 +311,7 @@ EatAppleEvent.OnServerEvent:Connect(function(player)
 end)
 </code></pre>
                 </div>
-                
+
                 <div class="callout mini" style="margin-top: 12px;">
                     <strong>Hva gjør denne koden?</strong> Serveren sjekker at spilleren holder AppleTool, gir 20 helse, spiller crunch-lyd, og sletter eplet.
                 </div>
@@ -431,7 +417,7 @@ end
 prompt.Triggered:Connect(giveTool)
 </code></pre>
                 </div>
-                
+
                 <div class="callout mini" style="margin-top: 12px;">
                     <strong>Hva gjør denne koden?</strong> Eplet venter 10 sekunder til 10 minutter, faller ned, lager en "plukk opp"-knapp, og gir spilleren et Tool når de trykker.
                 </div>
@@ -466,7 +452,7 @@ prompt.Triggered:Connect(giveTool)
                         <strong>Eplet forsvinner</strong>: Etter 0.4 sekunder slettes Tool fra spillet
                     </li>
                 </ol>
-                
+
                 <div class="callout success mini">
                     <strong>Viktig å forstå:</strong> LocalScript (på din PC) kan ikke endre helse direkte - det må serveren gjøre! Derfor bruker vi RemoteEvent til å sende beskjed.
                 </div>
@@ -517,7 +503,7 @@ prompt.Triggered:Connect(giveTool)
             </section>
 
             <section class="card">
-                <h2>📝 Viktige konsepter fra i dag</h2>
+                <h2>📝 Viktige konsepter i dette systemet</h2>
                 <ul class="task-list">
                     <li><span class="concept-badge">Tool</span> - Et objekt spilleren kan holde i hånden</li>
                     <li><span class="concept-badge">Handle</span> - Den synlige delen av et Tool (MÅ hete "Handle")</li>
@@ -530,8 +516,7 @@ prompt.Triggered:Connect(giveTool)
             </section>
 
             <div style="text-align: center; margin-top: 40px;">
-                <a href="dag6.html" class="day-link" style="margin-right: 20px;">← Forrige: Dag 6</a>
-                <a href="dag8.html" class="day-link">Neste: Dag 8 →</a>
+                <a href="index.html" class="day-link">🏠 Tilbake til Roblox Oversikt</a>
             </div>
         </main>
 
