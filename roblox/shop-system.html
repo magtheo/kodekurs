@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop System - Roblox Studio Kodekurs</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Små UI-forbedringer for Shop System */
+        .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:#eef5ff; font-size:0.9rem; margin-right:8px; }
+        .grid { display:grid; gap:16px; }
+        .grid-2 { grid-template-columns: 1fr; }
+        @media (min-width: 900px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
+        .card { background:#fff; border:1px solid #eee; border-radius:12px; padding:16px; box-shadow:0 1px 2px rgba(0,0,0,0.04); }
+        .kode { background:#0b1020; color:#e9f0ff; border-radius:10px; padding:16px; overflow:auto; font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; line-height:1.4; }
+        .callout { border-left:4px solid #6aa6ff; background:#f5f9ff; padding:12px 14px; border-radius:8px; }
+        .danger { border-left:4px solid #ff6a6a; background:#fff5f5; }
+        .success { border-left:4px solid #29b36a; background:#f3fff8; }
+        .warning { border-left:4px solid #ffa500; background:#fff9f0; }
+        .subtitle { max-width:60ch; }
+        .legend { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+        ol.stepper { counter-reset: step; list-style: none; padding-left: 0; }
+        ol.stepper > li { counter-increment: step; margin: 0 0 14px 0; background:#fafafa; border:1px solid #eee; border-radius:10px; padding:12px 14px; }
+        ol.stepper > li::before { content: counter(step); display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:#2c5cff; color:#fff; font-weight:700; margin-right:10px; }
+        .prop { background:#f7f7ff; border:1px dashed #cdd1ff; border-radius:8px; padding:8px 10px; margin-top:10px; }
+        .mini { font-size:0.95rem; color:#334; }
+        .task-list li { margin-bottom:8px; }
+        .concept-badge { font-weight:600; color:#2c5cff; }
+        .tight { margin-top: 6px; margin-bottom: 0; }
+
+        /* --- Kopier-knapp for kodesnutt --- */
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 6px 10px;
+            border: 1px solid #d9e2ff;
+            background: #f3f6ff;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background:#e9efff; }
+        .copy-btn:active { transform: translateY(1px); }
+        .copy-btn:focus { outline: 2px solid #2c5cff; outline-offset: 2px; }
+
+        .tree-structure {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .property-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .property-list li {
+            background: white;
+            margin: 8px 0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .property-list li strong {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛒 Shop System</h1>
+            <p class="subtitle">Lag en komplett butikk hvor spillere kan bruke myntene sine til å kjøpe verktøy, tilbehør og andre gjenstander!</p>
+            <div class="legend">
+                <span class="pill">RemoteFunction</span>
+                <span class="pill">Attributes</span>
+                <span class="pill">Folder</span>
+                <span class="pill">Clone()</span>
+                <span class="pill">Humanoid.AddAccessory</span>
+            </div>
+        </header>
+
+        <nav class="nav">
+            <a href="../index.html">🏠 Hjem</a>
+            <a href="index.html">Roblox Oversikt</a>
+            <details class="dropdown-nav">
+                <summary>Systemer</summary>
+                <div class="dropdown-content">
+                    <a href="ui-boost-system.html">🎨 UI og Boost System</a>
+                    <a href="item-system.html">🎒 Item System</a>
+                    <a href="wallet-coin-system.html">💰 Wallet og Coin System</a>
+                    <a href="shop-system.html" class="active">🛒 Shop System</a>
+                    <a href="door-security-system.html">🚪 Door og Security System</a>
+                </div>
+            </details>
+        </nav>
+
+        <main>
+            <!-- Mål -->
+            <section class="concept card">
+                <h2>🎯 Mål for dette systemet</h2>
+                <ul class="task-list">
+                    <li>Lage en <strong>butikk</strong> med en katalog av varer.</li>
+                    <li>Vise varer i et <strong>UI</strong> med bilder, navn og priser.</li>
+                    <li>La spillere <strong>kjøpe</strong> varer med myntene sine.</li>
+                    <li>Gi varer til spillere (Tools, Accessories, Models).</li>
+                    <li>Forhindre <strong>dobbeltkjøp</strong> av varer som kun kan kjøpes én gang.</li>
+                </ul>
+                <div class="callout success mini">
+                    <strong>Resultat:</strong> En fullt fungerende butikk hvor spillere kan bruke myntene sine!
+                </div>
+            </section>
+
+            <!-- Oppsett oversikt -->
+            <section class="card">
+                <h2>📦 Komplett oppsett - Oversikt</h2>
+                <p class="mini">Dette er strukturen vi skal bygge i dette systemet:</p>
+
+                <div class="tree-structure">ReplicatedStorage
+├─ ShopItems (Folder)
+│  ├─ Sword (Tool)
+│  │  └─ [Attributes: Price=100, DisplayName="Sverd", IconId=123456, OneTime=false]
+│  ├─ Hat (Accessory)
+│  │  └─ [Attributes: Price=50, DisplayName="Hatt", IconId=789012, OneTime=true]
+│  └─ Chair (Model)
+│     └─ [Attributes: Price=25, DisplayName="Stol", IconId=345678, OneTime=false]
+│
+└─ ShopRemotes (Folder)
+   ├─ GetCatalog (RemoteFunction)
+   └─ Purchase (RemoteFunction)
+
+ServerScriptService
+└─ ShopServer (Script)
+
+StarterGui
+└─ ShopUI (ScreenGui)
+   └─ LocalScript</div>
+
+                <div class="callout mini">
+                    <strong>Enkelt forklart:</strong> Server holder katalogen → klient henter og viser varer → spiller kjøper → server leverer varen!
+                </div>
+            </section>
+
+            <!-- Del 1: Shop Items -->
+            <section class="card">
+                <h2>🧱 Del 1: Opprett Shop Items</h2>
+                <p class="mini">Først må vi lage varer som kan kjøpes i butikken.</p>
+
+                <h3><span class="step-number">1</span> Opprett ShopItems Folder</h3>
+                <ol class="stepper">
+                    <li>
+                        Åpne <strong>ReplicatedStorage</strong> i Explorer.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ReplicatedStorage</strong> → Insert Object → <strong>Folder</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>ShopItems</code></p>
+                        </div>
+                    </li>
+                </ol>
+
+                <h3><span class="step-number">2</span> Opprett en Tool (Sverd)</h3>
+                <ol class="stepper">
+                    <li>
+                        Legg til en <strong>Tool</strong> i ShopItems-folderen.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ShopItems</strong> → Insert Object → <strong>Tool</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>Sword</code> (dette blir ID for varen)</p>
+                        </div>
+                    </li>
+                    <li>
+                        Lag en <strong>Handle</strong> (Part) inne i Sword.
+                        <div class="prop mini">
+                            <p class="tight"><strong>VIKTIG:</strong> Den MÅ hete <code>Handle</code> (med stor H)</p>
+                            <p class="tight"><strong>Anchored:</strong> <code>false</code></p>
+                            <p class="tight"><strong>CanCollide:</strong> <code>false</code></p>
+                            <p class="tight"><strong>Size:</strong> <code>0.5, 4, 0.5</code> (lang og tynn som et sverd)</p>
+                        </div>
+                    </li>
+                    <li>
+                        Legg til <strong>Attributes</strong> til Sword:
+                        <div class="prop mini">
+                            <p class="tight"><strong>Price:</strong> <code>100</code> (heltall)</p>
+                            <p class="tight"><strong>DisplayName:</strong> <code>Sverd</code> (tekst)</p>
+                            <p class="tight"><strong>IconId:</strong> <code>123456</code> (valgfritt, bilde-ID)</p>
+                            <p class="tight"><strong>OneTime:</strong> <code>false</strong> (bool, kan kjøpes flere ganger)</p>
+                        </div>
+                    </li>
+                </ol>
+
+                <h3><span class="step-number">3</span> Opprett en Accessory (Hatt)</h3>
+                <ol class="stepper">
+                    <li>
+                        Legg til en <strong>Accessory</strong> i ShopItems-folderen.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ShopItems</strong> → Insert Object → <strong>Accessory</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>Hat</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        Legg til <strong>Attributes</strong> til Hat:
+                        <div class="prop mini">
+                            <p class="tight"><strong>Price:</strong> <code>50</code></p>
+                            <p class="tight"><strong>DisplayName:</strong> <code>Hatt</code></p>
+                            <p class="tight"><strong>IconId:</strong> <code>789012</code> (valgfritt)</p>
+                            <p class="tight"><strong>OneTime:</strong> <code>true</code> (kan kun kjøpes én gang)</p>
+                        </div>
+                    </li>
+                </ol>
+
+                <h3><span class="step-number">4</span> Opprett en Model (Stol)</h3>
+                <ol class="stepper">
+                    <li>
+                        Legg til en <strong>Model</strong> i ShopItems-folderen.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ShopItems</strong> → Insert Object → <strong>Model</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>Chair</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        Legg til en <strong>Part</strong> inne i Chair.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Navn:</strong> <code>Seat</code></p>
+                            <p class="tight"><strong>Anchored:</strong> <code>true</code></p>
+                            <p class="tight"><strong>Size:</strong> <code>2, 0.5, 2</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        Sett <strong>PrimaryPart</strong> til Seat:
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk Chair</strong> → Set Primary Part → <strong>Seat</strong></p>
+                        </div>
+                    </li>
+                    <li>
+                        Legg til <strong>Attributes</strong> til Chair:
+                        <div class="prop mini">
+                            <p class="tight"><strong>Price:</strong> <code>25</code></p>
+                            <p class="tight"><strong>DisplayName:</strong> <code>Stol</code></p>
+                            <p class="tight"><strong>IconId:</strong> <code>345678</code> (valgfritt)</p>
+                            <p class="tight"><strong>OneTime:</strong> <code>false</code></p>
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="callout warning mini">
+                    <strong>⚠️ Viktig:</strong> Navnet på varen (Sword, Hat, Chair) blir ID-en som brukes for å kjøpe den. Hver vare må ha et unikt navn!
+                </div>
+            </section>
+
+            <!-- Del 2: Shop Server -->
+            <section class="card">
+                <h2>🧱 Del 2: Shop Server</h2>
+                <p class="mini">Nå skal vi lage server-scriptet som håndterer kjøp og levering av varer.</p>
+
+                <h3><span class="step-number">1</span> Opprett ShopRemotes Folder</h3>
+                <ol class="stepper">
+                    <li>
+                        Åpne <strong>ReplicatedStorage</strong> i Explorer.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ReplicatedStorage</strong> → Insert Object → <strong>Folder</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>ShopRemotes</strong></p>
+                        </div>
+                    </li>
+                    <li>
+                        Legg til en <strong>RemoteFunction</strong> i ShopRemotes.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ShopRemotes</strong> → Insert Object → <strong>RemoteFunction</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>GetCatalog</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        Legg til en annen <strong>RemoteFunction</strong> i ShopRemotes.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ShopRemotes</strong> → Insert Object → <strong>RemoteFunction</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>Purchase</code></p>
+                        </div>
+                    </li>
+                </ol>
+
+                <h3><span class="step-number">2</span> Opprett ShopServer Script</h3>
+                <ol class="stepper">
+                    <li>
+                        Åpne <strong>ServerScriptService</strong> i Explorer.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ServerScriptService</strong> → Insert Object → <strong>Script</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>ShopServer</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        Lim inn følgende kode:
+                        <div class="code-wrap">
+                            <button class="copy-btn" data-target="#code-shopserver" aria-label="Kopier koden">Kopier</button>
+                            <pre class="kode"><code id="code-shopserver" class="language-lua">-- ServerScriptService/ShopServer.lua
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+-- === FOLDERS & REMOTES ===
+local shopFolder = ReplicatedStorage:FindFirstChild("ShopItems")
+if not shopFolder then
+	shopFolder = Instance.new("Folder")
+	shopFolder.Name = "ShopItems"
+	shopFolder.Parent = ReplicatedStorage
+end
+
+local remotes = ReplicatedStorage:FindFirstChild("ShopRemotes")
+if not remotes then
+	remotes = Instance.new("Folder")
+	remotes.Name = "ShopRemotes"
+	remotes.Parent = ReplicatedStorage
+end
+
+local getCatalog = remotes:FindFirstChild("GetCatalog") :: RemoteFunction
+if not getCatalog then
+	getCatalog = Instance.new("RemoteFunction")
+	getCatalog.Name = "GetCatalog"
+	getCatalog.Parent = remotes
+end
+
+local purchaseFn = remotes:FindFirstChild("Purchase") :: RemoteFunction
+if not purchaseFn then
+	purchaseFn = Instance.new("RemoteFunction")
+	purchaseFn.Name = "Purchase"
+	purchaseFn.Parent = remotes
+end
+
+-- === UTILS ===
+local function ensureOwnedFolder(player: Player)
+	local owned = player:FindFirstChild("OwnedItems")
+	if not owned then
+		owned = Instance.new("Folder")
+		owned.Name = "OwnedItems"
+		owned.Parent = player
+	end
+	return owned
+end
+
+local function getWalletCoins(player: Player): IntValue?
+	local wallet = player:FindFirstChild("wallet")
+	if not wallet then return nil end
+	local coins = wallet:FindFirstChild("Coins")
+	if not coins then return nil end
+	return coins :: IntValue
+end
+
+local function guessItemType(inst: Instance): string
+	if inst:IsA("Tool") then
+		return "Tool"
+	elseif inst:IsA("Accessory") then
+		return "Accessory"
+	elseif inst:IsA("Model") then
+		return "Model"
+	else
+		return "Other"
+	end
+end
+
+local function getIconFromAttributes(item: Instance): string?
+	local iconId = item:GetAttribute("IconId")
+	if typeof(iconId) == "number" and iconId > 0 then
+		return "rbxassetid://" .. iconId
+	end
+	return nil
+end
+
+local function buildCatalog()
+	local list = {}
+	for _, item in ipairs(shopFolder:GetChildren()) do
+		-- Krev unik Name per vare
+		local price = tonumber(item:GetAttribute("Price")) or 0
+		if price > 0 then
+			table.insert(list, {
+				id = item.Name, -- må være unik
+				displayName = item:GetAttribute("DisplayName") or item.Name,
+				price = price,
+				icon = getIconFromAttributes(item),
+				type = guessItemType(item),
+				oneTime = item:GetAttribute("OneTime") == true,
+			})
+		end
+	end
+	table.sort(list, function(a,b) return a.price < b.price end)
+	return list
+end
+
+local function alreadyOwned(player: Player, itemId: string): boolean
+	local owned = ensureOwnedFolder(player)
+	return owned:FindFirstChild(itemId) ~= nil
+end
+
+local function markOwned(player: Player, itemId: string)
+	local owned = ensureOwnedFolder(player)
+	if not owned:FindFirstChild(itemId) then
+		local flag = Instance.new("BoolValue")
+		flag.Name = itemId
+		flag.Value = true
+		flag.Parent = owned
+	end
+end
+
+local function giveItem(player: Player, template: Instance, itemType: string)
+	local character = player.Character
+	if itemType == "Tool" then
+		local clone = template:Clone()
+		clone.Parent = player:WaitForChild("Backpack")
+		return true, "Levert til ryggsekken."
+	elseif itemType == "Accessory" then
+		local clone = template:Clone()
+		local char = character or player.CharacterAdded:Wait()
+		local hum = char:WaitForChild("Humanoid")
+		-- Accessory må være Accessory
+		if clone:IsA("Accessory") then
+			hum:AddAccessory(clone)
+			return true, "Tilbehør utstyrt."
+		else
+			clone:Destroy()
+			return false, "Varen er ikke en Accessory."
+		end
+	elseif itemType == "Model" then
+		local clone = template:Clone()
+		local char = character or player.CharacterAdded:Wait()
+		local root = char:WaitForChild("HumanoidRootPart")
+		local putCF = root.CFrame * CFrame.new(0, 0, -4)
+		if clone.PrimaryPart == nil then
+			-- Prøv å sette PrimaryPart automatisk
+			for _, p in ipairs(clone:GetDescendants()) do
+				if p:IsA("BasePart") then
+					clone.PrimaryPart = p
+					break
+				end
+			end
+		end
+		if clone.PrimaryPart then
+			clone:PivotTo(putCF)
+		end
+		clone.Parent = workspace
+		return true, "Plassert foran spilleren."
+	else
+		return false, "Ukjent varetype."
+	end
+end
+
+-- === REMOTES ===
+getCatalog.OnServerInvoke = function(player: Player)
+	-- Kan legge på tilgangskontroll her om ønskelig
+	return buildCatalog()
+end
+
+purchaseFn.OnServerInvoke = function(player: Player, itemId: string)
+	if typeof(itemId) ~= "string" then
+		return { ok = false, message = "Ugyldig forespørsel." }
+	end
+
+	local template = shopFolder:FindFirstChild(itemId)
+	if not template then
+		return { ok = false, message = "Varen finnes ikke." }
+	end
+
+	local price = tonumber(template:GetAttribute("Price")) or 0
+	if price <= 0 then
+		return { ok = false, message = "Varen mangler pris." }
+	end
+
+	local oneTime = template:GetAttribute("OneTime") == true
+	if oneTime and alreadyOwned(player, itemId) then
+		return { ok = false, message = "Du eier allerede denne varen." }
+	end
+
+	local coins = getWalletCoins(player)
+	if not coins then
+		return { ok = false, message = "Fant ikke mynter hos spilleren." }
+	end
+
+	if coins.Value < price then
+		return { ok = false, message = "For lite Coins." }
+	end
+
+	-- Trekk og gi vare (transaksjon)
+	coins.Value -= price
+
+	local itemType = guessItemType(template)
+	local ok, msg = giveItem(player, template, itemType)
+	if not ok then
+		-- Rull tilbake coins om utdeling feiler
+		coins.Value += price
+		return { ok = false, message = "Kunne ikke levere: " .. (msg or "Ukjent feil") }
+	end
+
+	if oneTime then
+		markOwned(player, itemId)
+	end
+
+	return { ok = true, message = ("Kjøpt %s for %d Coins. %s"):format(template.Name, price, msg or "") }
+end
+
+-- Opprett OwnedItems for alle
+Players.PlayerAdded:Connect(function(plr)
+	ensureOwnedFolder(plr)
+end)</code></pre>
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="callout success mini">
+                    <strong>✅ Ferdig!</strong> Server-scriptet håndterer nå alle kjøp og leverer varer til spillere.
+                </div>
+            </section>
+
+            <!-- Del 3: Shop UI -->
+            <section class="card">
+                <h2>🧱 Del 3: Shop UI</h2>
+                <p class="mini">Nå skal vi lage et brukergrensesnitt som viser butikken og lar spillere kjøpe varer.</p>
+
+                <h3><span class="step-number">1</span> Opprett ShopUI</h3>
+                <ol class="stepper">
+                    <li>
+                        Åpne <strong>StarterGui</strong> i Explorer.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk StarterGui</strong> → Insert Object → <strong>ScreenGui</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>ShopUI</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        Legg til en <strong>LocalScript</strong> i ShopUI.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ShopUI</strong> → Insert Object → <strong>LocalScript</strong></p>
+                        </div>
+                    </li>
+                    <li>
+                        Lim inn følgende kode i LocalScript:
+                        <div class="code-wrap">
+                            <button class="copy-btn" data-target="#code-shopui" aria-label="Kopier koden">Kopier</button>
+                            <pre class="kode"><code id="code-shopui" class="language-lua">-- StarterGui/ShopUI.client.lua  (LocalScript)
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local player = Players.LocalPlayer
+
+local remotes = ReplicatedStorage:WaitForChild("ShopRemotes")
+local getCatalog = remotes:WaitForChild("GetCatalog") :: RemoteFunction
+local purchase = remotes:WaitForChild("Purchase") :: RemoteFunction
+
+-- ===== UI BY CODE =====
+local screen = Instance.new("ScreenGui")
+screen.Name = "AutoShopGui"
+screen.ResetOnSpawn = false
+screen.Parent = player:WaitForChild("PlayerGui")
+
+local openBtn = Instance.new("TextButton")
+openBtn.Name = "OpenShop"
+openBtn.Size = UDim2.fromOffset(140, 44)
+openBtn.Position = UDim2.new(0, 20, 1, -64)
+openBtn.AnchorPoint = Vector2.new(0,1)
+openBtn.TextScaled = true
+openBtn.Text = "🛒 Shop"
+openBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+openBtn.TextColor3 = Color3.fromRGB(255,255,255)
+openBtn.Parent = screen
+
+local frame = Instance.new("Frame")
+frame.Name = "ShopFrame"
+frame.Size = UDim2.fromScale(0.38, 0.6)
+frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+frame.AnchorPoint = Vector2.new(0.5,0.5)
+frame.BackgroundColor3 = Color3.fromRGB(22,22,22)
+frame.Visible = false
+frame.Parent = screen
+
+local uiCorner = Instance.new("UICorner", frame)
+uiCorner.CornerRadius = UDim.new(0,12)
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -20, 0, 40)
+title.Position = UDim2.new(0, 10, 0, 8)
+title.BackgroundTransparency = 1
+title.Text = "Shop"
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.TextScaled = true
+title.TextColor3 = Color3.new(1,1,1)
+title.Parent = frame
+
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.fromOffset(36, 36)
+closeBtn.Position = UDim2.new(1, -46, 0, 8)
+closeBtn.BackgroundColor3 = Color3.fromRGB(60,60,60)
+closeBtn.Text = "X"
+closeBtn.TextScaled = true
+closeBtn.TextColor3 = Color3.new(1,1,1)
+closeBtn.Parent = frame
+Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0,8)
+
+local listHolder = Instance.new("Frame")
+listHolder.Name = "ListHolder"
+listHolder.Size = UDim2.new(1, -20, 1, -64)
+listHolder.Position = UDim2.new(0, 10, 0, 54)
+listHolder.BackgroundTransparency = 1
+listHolder.Parent = frame
+
+local scroller = Instance.new("ScrollingFrame")
+scroller.Size = UDim2.fromScale(1,1)
+scroller.CanvasSize = UDim2.new(0,0,0,0)
+scroller.ScrollBarThickness = 8
+scroller.BackgroundTransparency = 1
+scroller.Parent = listHolder
+
+local layout = Instance.new("UIGridLayout")
+layout.CellPadding = UDim2.fromOffset(10,10)
+layout.CellSize = UDim2.new(0.5, -10, 0, 100)
+layout.SortOrder = Enum.SortOrder.LayoutOrder
+layout.Parent = scroller
+
+local function createItemCard(item)
+	local card = Instance.new("Frame")
+	card.BackgroundColor3 = Color3.fromRGB(35,35,35)
+	card.Parent = scroller
+	Instance.new("UICorner", card).CornerRadius = UDim.new(0,10)
+
+	local nameLbl = Instance.new("TextLabel")
+	nameLbl.Size = UDim2.new(1, -110, 0, 36)
+	nameLbl.Position = UDim2.new(0, 10, 0, 8)
+	nameLbl.BackgroundTransparency = 1
+	nameLbl.TextXAlignment = Enum.TextXAlignment.Left
+	nameLbl.TextScaled = true
+	nameLbl.TextColor3 = Color3.new(1,1,1)
+	nameLbl.Text = item.displayName or item.id
+	nameLbl.Parent = card
+
+	local priceLbl = Instance.new("TextLabel")
+	priceLbl.Size = UDim2.new(1, -110, 0, 24)
+	priceLbl.Position = UDim2.new(0, 10, 0, 50)
+	priceLbl.BackgroundTransparency = 1
+	priceLbl.TextXAlignment = Enum.TextXAlignment.Left
+	priceLbl.TextScaled = true
+	priceLbl.TextColor3 = Color3.fromRGB(200,200,200)
+	priceLbl.Text = ("Pris: %d"):format(item.price)
+	priceLbl.Parent = card
+
+
+	local icon = Instance.new("ImageLabel")
+	icon.Size = UDim2.fromOffset(90, 90)
+	icon.Position = UDim2.new(1, -100, 0, 5)
+	icon.BackgroundTransparency = 1
+	icon.Parent = card
+	if item.icon then icon.Image = item.icon end
+
+	local buyBtn = Instance.new("TextButton")
+	buyBtn.Size = UDim2.fromOffset(90, 32)
+	buyBtn.Position = UDim2.new(1, -100, 1, -38)
+	buyBtn.BackgroundColor3 = Color3.fromRGB(80,160,80)
+	buyBtn.Text = "Kjøp"
+	buyBtn.TextScaled = true
+	buyBtn.TextColor3 = Color3.new(1,1,1)
+	buyBtn.Parent = card
+	Instance.new("UICorner", buyBtn).CornerRadius = UDim.new(0,6)
+
+	buyBtn.MouseButton1Click:Connect(function()
+		buyBtn.Active = false
+		buyBtn.AutoButtonColor = false
+		buyBtn.Text = "..."
+		local result = nil
+		local ok, err = pcall(function()
+			result = purchase:InvokeServer(item.id)
+		end)
+		if not ok then
+			result = { ok = false, message = "Feil: " .. tostring(err) }
+		end
+		buyBtn.Text = "Kjøp"
+		buyBtn.Active = true
+		buyBtn.AutoButtonColor = true
+
+		-- Liten tilbakemelding
+		local msg = Instance.new("TextLabel")
+		msg.Size = UDim2.new(1, -20, 0, 28)
+		msg.Position = UDim2.new(0, 10, 1, -32)
+		msg.BackgroundColor3 = result.ok and Color3.fromRGB(60,110,60) or Color3.fromRGB(110,60,60)
+		msg.TextColor3 = Color3.new(1,1,1)
+		msg.TextScaled = true
+		msg.Text = result.message or (result.ok and "Kjøp fullført!" or "Kjøp feilet")
+		msg.Parent = frame
+		Instance.new("UICorner", msg).CornerRadius = UDim.new(0,6)
+		task.delay(2, function() msg:Destroy() end)
+	end)
+end
+
+local function populate()
+	for _, c in ipairs(scroller:GetChildren()) do
+		if c:IsA("Frame") then c:Destroy() end
+	end
+	local catalog = {}
+	local ok, err = pcall(function()
+		catalog = getCatalog:InvokeServer()
+	end)
+	if not ok then
+		warn("Kunne ikke hente katalog:", err)
+		return
+	end
+	for _, item in ipairs(catalog) do
+		createItemCard(item)
+	end
+	-- Oppdater scroll-høyde
+	task.defer(function()
+		local contentSize = layout.AbsoluteContentSize
+		scroller.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y + 20)
+	end)
+end
+
+openBtn.MouseButton1Click:Connect(function()
+	frame.Visible = not frame.Visible
+	if frame.Visible then
+		populate()
+	end
+end)
+
+closeBtn.MouseButton1Click:Connect(function()
+	frame.Visible = false
+end)</code></pre>
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="callout success mini">
+                    <strong>✅ Ferdig!</strong> Nå har du et komplett shop UI som viser alle varer og lar spillere kjøpe dem!
+                </div>
+            </section>
+
+            <!-- Testing -->
+            <section class="card">
+                <h2>🧪 Test systemet</h2>
+                <ol class="stepper">
+                    <li>Sørg for at du har <a href="wallet-coin-system.html">Wallet og Coin System</a> installert.</li>
+                    <li>Start spillet ved å trykke <strong>Play</strong> i Roblox Studio.</li>
+                    <li>Du skal se en "🛒 Shop"-knapp nede til venstre.</li>
+                    <li>Klikk på knappen for å åpne butikken.</li>
+                    <li>Du skal se alle varer du har laget med bilder, navn og priser.</li>
+                    <li>Prøv å kjøpe en vare (du trenger nok mynter!).</li>
+                    <li>Varen skal leveres til deg (Tool i ryggsekk, Accessory på hodet, eller Model foran deg).</li>
+                    <li>Prøv å kjøpe en vare med <code>OneTime=true</code> to ganger – det skal ikke være mulig.</li>
+                </ol>
+
+                <div class="callout success mini">
+                    <strong>🎉 Gratulerer!</strong> Du har nå et komplett shop system!
+                </div>
+            </section>
+
+            <!-- Konsepter -->
+            <section class="card">
+                <h2>📚 Konsepter du har lært</h2>
+                <ul class="property-list">
+                    <li><strong>RemoteFunction:</strong> To-veis kommunikasjon mellom klient og server.</li>
+                    <li><strong>Attributes:</strong> Egendefinerte data knyttet til objekter (Price, DisplayName, etc.).</li>
+                    <li><strong>Clone():</strong> Lager en kopi av et objekt.</li>
+                    <li><strong>Humanoid.AddAccessory:</strong> Legger til tilbehør på en karakter.</li>
+                    <li><strong>UIGridLayout:</strong> Arrangerer UI-elementer i et rutenett.</li>
+                    <li><strong>ScrollingFrame:</strong> En container som kan scrolles.</li>
+                    <li><strong>pcall:</strong> Beskytter mot feil ved å kjøre kode trygt.</li>
+                    <li><strong>task.defer:</strong> Utfører kode i neste frame.</li>
+                </ul>
+            </section>
+
+            <!-- Neste steg -->
+            <section class="card">
+                <h2>🚀 Neste steg</h2>
+                <p>Nå som du har et shop system, kan du:</p>
+                <ul class="task-list">
+                    <li>Legge til flere varer i butikken med forskjellige typer.</li>
+                    <li>Lage spesielle tilbud eller rabatter.</li>
+                    <li>Legge til kategorier for å organisere varer.</li>
+                    <li>Lagre kjøpshistorikk i DataStore.</li>
+                    <li>Lage en "My Items"-side som viser hva spilleren eier.</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Roblox Studio Kodekurs - Laget med ❤️ for å lære bort koding</p>
+        </footer>
+    </div>
+
+    <script>
+        // Kopier-funksjonalitet for alle kodeblokker
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const codeElement = document.querySelector(targetId);
+                const code = codeElement.textContent;
+                
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalText = this.textContent;
+                    this.textContent = 'Kopiert!';
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Kunne ikke kopiere:', err);
+                    this.textContent = 'Feil!';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet og Coin System - Roblox Studio Kodekurs</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Små UI-forbedringer for Wallet og Coin System */
+        .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:#eef5ff; font-size:0.9rem; margin-right:8px; }
+        .grid { display:grid; gap:16px; }
+        .grid-2 { grid-template-columns: 1fr; }
+        @media (min-width: 900px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
+        .card { background:#fff; border:1px solid #eee; border-radius:12px; padding:16px; box-shadow:0 1px 2px rgba(0,0,0,0.04); }
+        .kode { background:#0b1020; color:#e9f0ff; border-radius:10px; padding:16px; overflow:auto; font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; line-height:1.4; }
+        .callout { border-left:4px solid #6aa6ff; background:#f5f9ff; padding:12px 14px; border-radius:8px; }
+        .danger { border-left:4px solid #ff6a6a; background:#fff5f5; }
+        .success { border-left:4px solid #29b36a; background:#f3fff8; }
+        .warning { border-left:4px solid #ffa500; background:#fff9f0; }
+        .subtitle { max-width:60ch; }
+        .legend { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+        ol.stepper { counter-reset: step; list-style: none; padding-left: 0; }
+        ol.stepper > li { counter-increment: step; margin: 0 0 14px 0; background:#fafafa; border:1px solid #eee; border-radius:10px; padding:12px 14px; }
+        ol.stepper > li::before { content: counter(step); display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:#2c5cff; color:#fff; font-weight:700; margin-right:10px; }
+        .prop { background:#f7f7ff; border:1px dashed #cdd1ff; border-radius:8px; padding:8px 10px; margin-top:10px; }
+        .mini { font-size:0.95rem; color:#334; }
+        .task-list li { margin-bottom:8px; }
+        .concept-badge { font-weight:600; color:#2c5cff; }
+        .tight { margin-top: 6px; margin-bottom: 0; }
+
+        /* --- Kopier-knapp for kodesnutt --- */
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 6px 10px;
+            border: 1px solid #d9e2ff;
+            background: #f3f6ff;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background:#e9efff; }
+        .copy-btn:active { transform: translateY(1px); }
+        .copy-btn:focus { outline: 2px solid #2c5cff; outline-offset: 2px; }
+
+        .tree-structure {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .property-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .property-list li {
+            background: white;
+            margin: 8px 0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .property-list li strong {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Wallet og Coin System</h1>
+            <p class="subtitle">Lag et komplett system hvor spillere kan samle mynter, se saldoen sin, og bruke myntene i en butikk!</p>
+            <div class="legend">
+                <span class="pill">IntValue</span>
+                <span class="pill">Touched Event</span>
+                <span class="pill">RenderStepped</span>
+                <span class="pill">Folder</span>
+                <span class="pill">LocalScript</span>
+            </div>
+        </header>
+
+        <nav class="nav">
+            <a href="../index.html">🏠 Hjem</a>
+            <a href="index.html">Roblox Oversikt</a>
+            <details class="dropdown-nav">
+                <summary>Systemer</summary>
+                <div class="dropdown-content">
+                    <a href="ui-boost-system.html">🎨 UI og Boost System</a>
+                    <a href="item-system.html">🎒 Item System</a>
+                    <a href="wallet-coin-system.html" class="active">💰 Wallet og Coin System</a>
+                    <a href="shop-system.html">🛒 Shop System</a>
+                    <a href="door-security-system.html">🚪 Door og Security System</a>
+                </div>
+            </details>
+        </nav>
+
+        <main>
+            <!-- Mål -->
+            <section class="concept card">
+                <h2>🎯 Mål for dette systemet</h2>
+                <ul class="task-list">
+                    <li>Lage en <strong>wallet</strong> som holder oversikt over spillerens mynter.</li>
+                    <li>Vise mynt-saldoen i <strong>UI</strong> som oppdateres i sanntid.</li>
+                    <li>Skape <strong>coins</strong> i verdenen som roterer og bobber.</li>
+                    <li>La spillere <strong>plukke opp</strong> coins ved å gå på dem.</li>
+                    <li>Gi <strong>lydeffekter</strong> og <strong>partikler</strong> når coins plukkes opp.</li>
+                </ul>
+                <div class="callout success mini">
+                    <strong>Resultat:</strong> Spillere kan samle mynter og se saldoen sin i UI!
+                </div>
+            </section>
+
+            <!-- Oppsett oversikt -->
+            <section class="card">
+                <h2>📦 Komplett oppsett - Oversikt</h2>
+                <p class="mini">Dette er strukturen vi skal bygge i dette systemet:</p>
+
+                <div class="tree-structure">ServerScriptService
+└─ Wallet (Script)
+
+Workspace
+├─ coins (Folder)
+│  └─ Coin1 (Part) [Anchored=true]
+│     ├─ Script (coin pickup)
+│     ├─ Coin_collect (Sound) [valgfritt]
+│     └─ ParticleEmitter [valgfritt]
+
+StarterPlayer
+└─ StarterPlayerScripts
+   └─ AnimateCoins (LocalScript)
+
+StarterGui
+└─ ScreenGui
+   └─ coinsLabel (TextLabel)
+      └─ LocalScript</div>
+
+                <div class="callout mini">
+                    <strong>Enkelt forklart:</strong> Wallet opprettes automatisk → coins vises i verden → spiller plukker opp → UI oppdateres!
+                </div>
+            </section>
+
+            <!-- Del 1: Wallet System -->
+            <section class="card">
+                <h2>🧱 Del 1: Wallet System</h2>
+                <p class="mini">Først må vi lage en wallet som holder oversikt over spillerens mynter.</p>
+
+                <h3><span class="step-number">1</span> Opprett Wallet Script</h3>
+                <ol class="stepper">
+                    <li>
+                        Åpne <strong>ServerScriptService</strong> i Explorer.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk ServerScriptService</strong> → Insert Object → <strong>Script</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>Wallet</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        Lim inn følgende kode:
+                        <div class="code-wrap">
+                            <button class="copy-btn" data-target="#code-wallet" aria-label="Kopier koden">Kopier</button>
+                            <pre class="kode"><code id="code-wallet" class="language-lua">local Players = game:GetService("Players")
+
+local function ensureWallet(player)
+	local wallet = player:FindFirstChild("wallet")
+	if not wallet then
+		wallet = Instance.new("Folder")
+		wallet.Name = "wallet"
+		wallet.Parent = player
+	end
+
+	local coins = wallet:FindFirstChild("Coins")
+	if not coins then
+		coins = Instance.new("IntValue")
+		coins.Name = "coins"
+		coins.Value = 0
+		coins.Parent = wallet
+	end
+end
+
+Players.PlayerAdded:Connect(function(player)
+	ensureWallet(player)
+end)</code></pre>
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="callout warning mini">
+                    <strong>⚠️ Viktig:</strong> Dette scriptet kjører på serveren og oppretter automatisk en wallet for hver spiller som blir med i spillet.
+                </div>
+            </section>
+
+            <!-- Del 2: Coin UI -->
+            <section class="card">
+                <h2>🧱 Del 2: Coin UI</h2>
+                <p class="mini">Nå skal vi lage en enkel UI som viser hvor mange mynter spilleren har.</p>
+
+                <h3><span class="step-number">1</span> Opprett Coin UI</h3>
+                <ol class="stepper">
+                    <li>
+                        Åpne <strong>StarterGui</strong> i Explorer.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk StarterGui</strong> → Insert Object → <strong>ScreenGui</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>CoinUI</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        Legg til en <strong>TextLabel</strong> i ScreenGui.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk CoinUI</strong> → Insert Object → <strong>TextLabel</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>coinsLabel</code></p>
+                            <p class="tight"><strong>Position:</strong> <code>UDim2.new(0, 20, 0, 20)</code></p>
+                            <p class="tight"><strong>Size:</strong> <code>UDim2.new(0, 200, 0, 50)</code></p>
+                            <p class="tight"><strong>BackgroundTransparency:</strong> <code>1</code></p>
+                            <p class="tight"><strong>Text:</strong> <code>Coins: 0</code></p>
+                            <p class="tight"><strong>TextScaled:</strong> <code>true</code></p>
+                            <p class="tight"><strong>TextColor3:</strong> <code>White</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        Legg til en <strong>LocalScript</strong> i coinsLabel.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk coinsLabel</strong> → Insert Object → <strong>LocalScript</strong></p>
+                        </div>
+                    </li>
+                    <li>
+                        Lim inn følgende kode i LocalScript:
+                        <div class="code-wrap">
+                            <button class="copy-btn" data-target="#code-coinui" aria-label="Kopier koden">Kopier</button>
+                            <pre class="kode"><code id="code-coinui" class="language-lua">-- StarterGui -> ScreenGui -> coinsLabel -> LocalScript
+
+local player = game.Players.LocalPlayer
+local coins = player:WaitForChild("wallet"):WaitForChild("Coins")
+local textLable = script.Parent
+
+local function updateCoins()
+	textLable.Text = "Coins: " .. coins.Value
+end
+
+updateCoins()
+
+coins.Changed:Connect(updateCoins)</code></pre>
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="callout success mini">
+                    <strong>✅ Ferdig!</strong> Nå vil UI automatisk oppdatere seg hver gang spilleren får eller bruker mynter.
+                </div>
+            </section>
+
+            <!-- Del 3: Coin Collection -->
+            <section class="card">
+                <h2>🧱 Del 3: Coin Collection</h2>
+                <p class="mini">Nå skal vi lage coins som spillere kan plukke opp ved å gå på dem.</p>
+
+                <h3><span class="step-number">1</span> Opprett Coins Folder</h3>
+                <ol class="stepper">
+                    <li>
+                        Åpne <strong>Workspace</strong> i Explorer.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk Workspace</strong> → Insert Object → <strong>Folder</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>coins</code></p>
+                        </div>
+                    </li>
+                </ol>
+
+                <h3><span class="step-number">2</span> Opprett Coin Part</h3>
+                <ol class="stepper">
+                    <li>
+                        Legg til en <strong>Part</strong> i coins-folderen.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk coins</strong> → Insert Object → <strong>Part</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>Coin1</code></p>
+                            <p class="tight"><strong>Anchored:</strong> <code>true</code></p>
+                            <p class="tight"><strong>CanCollide:</strong> <code>false</code></p>
+                            <p class="tight"><strong>Size:</strong> <code>2, 0.4, 2</code></p>
+                            <p class="tight"><strong>Color:</strong> Gull eller sølv</p>
+                            <p class="tight"><strong>Material:</strong> SmoothPlastic eller Metal</p>
+                        </div>
+                    </li>
+                    <li>
+                        (Valgfritt) Legg til en <strong>Sound</strong> for pickup-lyd.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk Coin1</strong> → Insert Object → <strong>Sound</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>Coin_collect</code></p>
+                            <p class="tight"><strong>SoundId:</strong> Lim inn en lyd-ID (f.eks. fra Roblox Library)</p>
+                        </div>
+                    </li>
+                    <li>
+                        (Valgfritt) Legg til en <strong>ParticleEmitter</strong> for visuell effekt.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk Coin1</strong> → Insert Object → <strong>ParticleEmitter</strong></p>
+                            <p class="tight"><strong>Color:</strong> Gull eller sølv</p>
+                        </div>
+                    </li>
+                    <li>
+                        Legg til en <strong>Script</strong> i Coin1.
+                        <div class="code-wrap">
+                            <button class="copy-btn" data-target="#code-coin" aria-label="Kopier koden">Kopier</button>
+                            <pre class="kode"><code id="code-coin" class="language-lua">-- ServerScript under coin-Part
+local coin = script.Parent
+local COIN_VALUE = 50
+
+-- Valgfritt: hvis lyden ligger som barn av coinen (f.eks. "Coin_collect")
+local soundTemplate = coin:FindFirstChild("Coin_collect")
+
+local SoundService = game:GetService("SoundService")
+local Debris = game:GetService("Debris")
+
+local taken = false
+
+local function onTouch(otherPart)
+	if taken then return end
+
+	local character = otherPart.Parent
+	local player = game.Players:GetPlayerFromCharacter(character)
+	if not player then return end
+
+	-- Finn wallet/Coins (tilpass hvis du bruker leaderstats)
+	local wallet = player:FindFirstChild("wallet")
+	if not wallet then return end
+	local coins = wallet:FindFirstChild("coins")
+	if not coins then return end
+	
+	print("wallet og coins er funnet")
+
+	-- Lås umiddelbart så vi ikke kan plukke dobbelt
+	taken = true
+	coin.CanTouch = false
+
+	-- Gi verdi
+	coins.Value += COIN_VALUE
+
+	-- Spill lyd ETTER at vi har klonet den til SoundService
+	if soundTemplate then
+		local s = soundTemplate:Clone()
+		s.Parent = SoundService
+		s:Play()
+
+		-- Rydd opp automatisk etter at lyden er ferdig (med litt margin)
+		local ttl = (s.TimeLength > 0) and (s.TimeLength + 0.5) or 2
+		Debris:AddItem(s, ttl)
+	end
+
+	-- Emit partikler KUN nå
+	for _, d in ipairs(coin:GetDescendants()) do
+		if d:IsA("ParticleEmitter") then
+			-- Bare én burst
+			d:Emit(10)
+		end
+	end
+
+
+	-- FÅ COINEN BORT MED EN GANG (visuelt og fysisk)
+	coin.Transparency = 1
+	coin.CanCollide = false
+	coin.CanQuery = false
+	coin.CanTouch = false
+	
+	wait(2)
+
+	-- Slett coinen helt (lyden fortsetter siden den er i SoundService)
+	coin:Destroy()
+end
+
+coin.Touched:Connect(onTouch)</code></pre>
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="callout warning mini">
+                    <strong>⚠️ Viktig:</strong> Coinen forsvinner etter 2 sekunder for å gi tid til lyd og partikler.
+                </div>
+            </section>
+
+            <!-- Del 4: Coin Animation -->
+            <section class="card">
+                <h2>🧱 Del 4: Coin Animation</h2>
+                <p class="mini">La oss gjøre coins mer levende ved å la dem rotere og bobbe!</p>
+
+                <h3><span class="step-number">1</span> Opprett AnimateCoins Script</h3>
+                <ol class="stepper">
+                    <li>
+                        Åpne <strong>StarterPlayer</strong> → <strong>StarterPlayerScripts</strong> i Explorer.
+                        <div class="prop mini">
+                            <p class="tight"><strong>Høyreklikk StarterPlayerScripts</strong> → Insert Object → <strong>LocalScript</strong></p>
+                            <p class="tight"><strong>Navn:</strong> <code>AnimateCoins</code></p>
+                        </div>
+                    </li>
+                    <li>
+                        Lim inn følgende kode:
+                        <div class="code-wrap">
+                            <button class="copy-btn" data-target="#code-animatecoins" aria-label="Kopier koden">Kopier</button>
+                            <pre class="kode"><code id="code-animatecoins" class="language-lua">-- LocalScript: StarterPlayer -> StarterPlayerScripts
+-- Roterer og bobber alle coins i workspace.coins
+
+local RunService = game:GetService("RunService")
+
+-- === Oppsett ===
+local FOLDER_NAME     = "coins"  -- mappe i Workspace
+local ROTATION_SPEED  = 90       -- grader per sekund
+local FLOAT_HEIGHT    = 0.5      -- bob-amplitude (meter)
+local FLOAT_SPEED     = 2        -- bob-hastighet (Hz ~ svingninger/sek)
+
+-- Hvis mesh-aksen er "liggende", kan du rotere mynten fast én gang her:
+-- Sett til CFrame.Angles(0,0,0) hvis du ikke trenger dette.
+local MESH_FIX = CFrame.Angles(0, 0, 0) -- evt. CFrame.Angles(math.rad(90), 0, 0)
+
+-- === Internt lager ===
+-- [BasePart] = { basePos = Vector3, baseRot = CFrame (valgfri), phase = number }
+local animated = {}
+
+-- Finn visningspart for en coin (Part direkte eller PrimaryPart/første BasePart i Model)
+local function getDisplayPart(inst: Instance): BasePart?
+	if inst:IsA("BasePart") then
+		return inst
+	elseif inst:IsA("Model") then
+		if inst.PrimaryPart then
+			return inst.PrimaryPart
+		end
+		return inst:FindFirstChildWhichIsA("BasePart", true)
+	end
+	return nil
+end
+
+-- Legg til én coin
+local function addCoin(inst: Instance)
+	local part = getDisplayPart(inst)
+	if not part or animated[part] then return end
+
+	part.Anchored = true -- stabil animasjon uten fysikk
+
+	animated[part] = {
+		basePos = part.Position,                 -- posisjon i verden
+		baseRot = (part.CFrame - part.Position), -- opprinnelig tilt/roll (valgfri)
+		phase   = math.random() * math.pi * 2,   -- desynk bobbing
+	}
+end
+
+-- Fjern coin som forsvinner
+local function removeCoin(inst: Instance)
+	if inst:IsA("BasePart") and animated[inst] then
+		animated[inst] = nil
+	elseif inst:IsA("Model") then
+		for part, _ in pairs(animated) do
+			if part:IsDescendantOf(inst) then
+				animated[part] = nil
+			end
+		end
+	end
+end
+
+-- Finn/vent på mappen
+local coinsFolder = workspace:WaitForChild(FOLDER_NAME)
+
+-- Init: legg til alle nåværende coins
+for _, d in ipairs(coinsFolder:GetDescendants()) do
+	addCoin(d)
+end
+
+-- Reager på endringer i mappen
+coinsFolder.DescendantAdded:Connect(addCoin)
+coinsFolder.DescendantRemoving:Connect(removeCoin)
+
+-- === Animasjonsloop ===
+local t = 0
+RunService.RenderStepped:Connect(function(dt)
+	t += dt
+	local angle = math.rad(ROTATION_SPEED) * t
+
+	for part, info in pairs(animated) do
+		if part and part.Parent then
+			-- Bob i verdens Y
+			local y = math.sin(t * FLOAT_SPEED + info.phase) * FLOAT_HEIGHT
+
+			-- Roter rundt verdens Y, og (valgfritt) gjenbruk opprinnelig tilt + mesh-fix
+			part.CFrame =
+				CFrame.new(info.basePos + Vector3.new(0, y, 0)) -- pos+bob i verden
+				* CFrame.Angles(0, angle, 0)                    -- ren spin rundt Y
+				* info.baseRot                                   -- bevar tilt (kan fjernes)
+				* MESH_FIX                                       -- fast korrigering (valgfritt)
+		else
+			animated[part] = nil
+		end
+	end
+end)
+
+print("[CoinsAnim] Aktiv – roterer og bobber coins i workspace." .. FOLDER_NAME)</code></pre>
+                        </div>
+                    </li>
+                </ol>
+
+                <div class="callout success mini">
+                    <strong>✅ Ferdig!</strong> Nå vil alle coins i workspace.coins rotere og bobbe automatisk!
+                </div>
+            </section>
+
+            <!-- Testing -->
+            <section class="card">
+                <h2>🧪 Test systemet</h2>
+                <ol class="stepper">
+                    <li>Start spillet ved å trykke <strong>Play</strong> i Roblox Studio.</li>
+                    <li>Du skal se en wallet i spilleren med 0 coins.</li>
+                    <li>UI skal vise "Coins: 0".</li>
+                    <li>Gå til en coin og plukk den opp.</li>
+                    <li>UI skal oppdatere til "Coins: 50" (eller verdien du satte).</li>
+                    <li>Coinen skal rotere og bobbe.</li>
+                    <li>Du skal høre lyd og se partikler når du plukker opp coinen.</li>
+                </ol>
+
+                <div class="callout success mini">
+                    <strong>🎉 Gratulerer!</strong> Du har nå et komplett wallet og coin system!
+                </div>
+            </section>
+
+            <!-- Konsepter -->
+            <section class="card">
+                <h2>📚 Konsepter du har lært</h2>
+                <ul class="property-list">
+                    <li><strong>IntValue:</strong> En verdi som kan lagre heltall (brukes for coins).</li>
+                    <li><strong>Folder:</strong> En beholder for å organisere objekter (wallet).</li>
+                    <li><strong>Touched Event:</strong> Skjer når en del berører noe annet.</li>
+                    <li><strong>RenderStepped:</strong> Kjører hver frame for animasjoner.</li>
+                    <li><strong>LocalScript:</strong> Kjører kun på klienten (spillerens maskin).</li>
+                    <li><strong>SoundService:</strong> Tjeneste for å spille lyder på tvers av spillet.</li>
+                    <li><strong>Debris:</strong> Tjeneste for å automatisk slette objekter etter en viss tid.</li>
+                    <li><strong>ParticleEmitter:</strong> Skaper partikkeleffekter.</li>
+                </ul>
+            </section>
+
+            <!-- Neste steg -->
+            <section class="card">
+                <h2>🚀 Neste steg</h2>
+                <p>Nå som du har et wallet og coin system, kan du:</p>
+                <ul class="task-list">
+                    <li>Lage en <a href="shop-system.html">🛒 Shop System</a> hvor spillere kan bruke myntene sine!</li>
+                    <li>Legge til forskjellige typer coins med forskjellige verdier.</li>
+                    <li>Lage power-ups som koster mynter.</li>
+                    <li>Lagre mynter i DataStore så de beholdes mellom sesjoner.</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Roblox Studio Kodekurs - Laget med ❤️ for å lære bort koding</p>
+        </footer>
+    </div>
+
+    <script>
+        // Kopier-funksjonalitet for alle kodeblokker
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const codeElement = document.querySelector(targetId);
+                const code = codeElement.textContent;
+                
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalText = this.textContent;
+                    this.textContent = 'Kopiert!';
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Kunne ikke kopiere:', err);
+                    this.textContent = 'Feil!';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
