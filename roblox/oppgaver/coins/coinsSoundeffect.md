@@ -19,10 +19,10 @@ local function onTouch(otherPart)
 	local player = game.Players:GetPlayerFromCharacter(character)
 	if not player then return end
 
-	-- Finn wallet/Coins (tilpass hvis du bruker leaderstats)
+	-- Finn wallet/coins (tilpass hvis du bruker leaderstats)
 	local wallet = player:FindFirstChild("wallet")
 	if not wallet then return end
-	local coins = wallet:FindFirstChild("Coins")
+	local coins = wallet:FindFirstChild("coins")
 	if not coins then return end
 
 	-- Lås umiddelbart så vi ikke kan plukke dobbelt

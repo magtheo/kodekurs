@@ -189,7 +189,7 @@ local function ensureWallet(player)
 		wallet.Parent = player
 	end
 
-	local coins = wallet:FindFirstChild("Coins")
+	local coins = wallet:FindFirstChild("coins")
 	if not coins then
 		coins = Instance.new("IntValue")
 		coins.Name = "coins"
@@ -250,7 +250,7 @@ end)</code></pre>
                             <pre class="kode"><code id="code-coinui" class="language-lua">-- StarterGui -> ScreenGui -> coinsLabel -> LocalScript
 
 local player = game.Players.LocalPlayer
-local coins = player:WaitForChild("wallet"):WaitForChild("Coins")
+local coins = player:WaitForChild("wallet"):WaitForChild("coins")
 local textLable = script.Parent
 
 local function updateCoins()

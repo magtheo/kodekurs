@@ -356,7 +356,7 @@ end
 local function getWalletCoins(player: Player): IntValue?
 	local wallet = player:FindFirstChild("wallet")
 	if not wallet then return nil end
-	local coins = wallet:FindFirstChild("Coins")
+	local coins = wallet:FindFirstChild("coins")
 	if not coins then return nil end
 	return coins :: IntValue
 end
