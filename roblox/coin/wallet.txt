@@ -8,7 +8,7 @@ local function ensureWallet(player)
 		wallet.Parent = player
 	end
 
-	local coins = wallet:FindFirstChild("Coins")
+	local coins = wallet:FindFirstChild("coins")
 	if not coins then
 		coins = Instance.new("IntValue")
 		coins.Name = "coins"

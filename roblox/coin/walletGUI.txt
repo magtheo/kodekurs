@@ -1,7 +1,7 @@
 -- StarterGui -> ScreenGui -> coinsLabel -> LocalScript
 
 local player = game.Players.LocalPlayer
-local coins = player:WaitForChild("wallet"):WaitForChild("Coins")
+local coins = player:WaitForChild("wallet"):WaitForChild("coins")
 local textLable = script.Parent
 
 local function updateCoins()
