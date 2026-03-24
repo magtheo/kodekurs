@@ -1,0 +1,11 @@
+local player = game.Players.LocalPlayer
+local coins = player:WaitForChild("wallet"):WaitForChild("Coins")
+local textLable = script.Parent
+
+local function updateCoins()
+	textLable.Text = "Coins: " .. coins.Value
+end
+
+updateCoins()
+
+coins.Changed:Connect(updateCoins)

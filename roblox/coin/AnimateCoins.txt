@@ -1,0 +1,95 @@
+-- LocalScript: StarterPlayer -> StarterPlayerScripts
+-- Roterer og bobber alle coins i workspace.coins
+
+local RunService = game:GetService("RunService")
+
+-- === Oppsett ===
+local FOLDER_NAME     = "coins"  -- mappe i Workspace
+local ROTATION_SPEED  = 90       -- grader per sekund
+local FLOAT_HEIGHT    = 0.5      -- bob-amplitude (meter)
+local FLOAT_SPEED     = 2        -- bob-hastighet (Hz ~ svingninger/sek)
+
+-- Hvis mesh-aksen er "liggende", kan du rotere mynten fast én gang her:
+-- Sett til CFrame.Angles(0,0,0) hvis du ikke trenger dette.
+local MESH_FIX = CFrame.Angles(0, 0, 0) -- evt. CFrame.Angles(math.rad(90), 0, 0)
+
+-- === Internt lager ===
+-- [BasePart] = { basePos = Vector3, baseRot = CFrame (valgfri), phase = number }
+local animated = {}
+
+-- Finn visningspart for en coin (Part direkte eller PrimaryPart/første BasePart i Model)
+local function getDisplayPart(inst: Instance): BasePart?
+	if inst:IsA("BasePart") then
+		return inst
+	elseif inst:IsA("Model") then
+		if inst.PrimaryPart then
+			return inst.PrimaryPart
+		end
+		return inst:FindFirstChildWhichIsA("BasePart", true)
+	end
+	return nil
+end
+
+-- Legg til én coin
+local function addCoin(inst: Instance)
+	local part = getDisplayPart(inst)
+	if not part or animated[part] then return end
+
+	part.Anchored = true -- stabil animasjon uten fysikk
+
+	animated[part] = {
+		basePos = part.Position,                 -- posisjon i verden
+		baseRot = (part.CFrame - part.Position), -- opprinnelig tilt/roll (valgfri)
+		phase   = math.random() * math.pi * 2,   -- desynk bobbing
+	}
+end
+
+-- Fjern coin som forsvinner
+local function removeCoin(inst: Instance)
+	if inst:IsA("BasePart") and animated[inst] then
+		animated[inst] = nil
+	elseif inst:IsA("Model") then
+		for part, _ in pairs(animated) do
+			if part:IsDescendantOf(inst) then
+				animated[part] = nil
+			end
+		end
+	end
+end
+
+-- Finn/vent på mappen
+local coinsFolder = workspace:WaitForChild(FOLDER_NAME)
+
+-- Init: legg til alle nåværende coins
+for _, d in ipairs(coinsFolder:GetDescendants()) do
+	addCoin(d)
+end
+
+-- Reager på endringer i mappen
+coinsFolder.DescendantAdded:Connect(addCoin)
+coinsFolder.DescendantRemoving:Connect(removeCoin)
+
+-- === Animasjonsloop ===
+local t = 0
+RunService.RenderStepped:Connect(function(dt)
+	t += dt
+	local angle = math.rad(ROTATION_SPEED) * t
+
+	for part, info in pairs(animated) do
+		if part and part.Parent then
+			-- Bob i verdens Y
+			local y = math.sin(t * FLOAT_SPEED + info.phase) * FLOAT_HEIGHT
+
+			-- Roter rundt verdens Y, og (valgfritt) gjenbruk opprinnelig tilt + mesh-fix
+			part.CFrame =
+				CFrame.new(info.basePos + Vector3.new(0, y, 0)) -- pos+bob i verden
+				* CFrame.Angles(0, angle, 0)                    -- ren spin rundt Y
+				* info.baseRot                                   -- bevar tilt (kan fjernes)
+				* MESH_FIX                                       -- fast korrigering (valgfri)
+		else
+			animated[part] = nil
+		end
+	end
+end)
+
+print("[CoinsAnim] Aktiv – roterer og bobber coins i workspace." .. FOLDER_NAME)

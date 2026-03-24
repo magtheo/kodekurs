@@ -1,0 +1,209 @@
+-- ServerScriptService/ShopServer.lua
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+print(Players)
+
+-- === FOLDERS & REMOTES ===
+local shopFolder = ReplicatedStorage:FindFirstChild("ShopItems")
+if not shopFolder then
+	shopFolder = Instance.new("Folder")
+	shopFolder.Name = "ShopItems"
+	shopFolder.Parent = ReplicatedStorage
+end
+
+local remotes = ReplicatedStorage:FindFirstChild("ShopRemotes")
+if not remotes then
+	remotes = Instance.new("Folder")
+	remotes.Name = "ShopRemotes"
+	remotes.Parent = ReplicatedStorage
+end
+
+local getCatalog = remotes:FindFirstChild("GetCatalog") :: RemoteFunction
+if not getCatalog then
+	getCatalog = Instance.new("RemoteFunction")
+	getCatalog.Name = "GetCatalog"
+	getCatalog.Parent = remotes
+end
+
+local purchaseFn = remotes:FindFirstChild("Purchase") :: RemoteFunction
+if not purchaseFn then
+	purchaseFn = Instance.new("RemoteFunction")
+	purchaseFn.Name = "Purchase"
+	purchaseFn.Parent = remotes
+end
+
+-- === UTILS ===
+local function ensureOwnedFolder(player: Player)
+	local owned = player:FindFirstChild("OwnedItems")
+	if not owned then
+		owned = Instance.new("Folder")
+		owned.Name = "OwnedItems"
+		owned.Parent = player
+	end
+	return owned
+end
+
+local function getWalletCoins(player: Player): IntValue?
+	local wallet = player:FindFirstChild("wallet")
+	if not wallet then return nil end
+	local coins = wallet:FindFirstChild("Coins")
+	if not coins then return nil end
+	print(coins)
+	print(wallet)
+	return coins :: IntValue
+end
+
+local function guessItemType(inst: Instance): string
+	if inst:IsA("Tool") then
+		return "Tool"
+	elseif inst:IsA("Accessory") then
+		return "Accessory"
+	elseif inst:IsA("Model") then
+		return "Model"
+	else
+		return "Other"
+	end
+end
+
+local function getIconFromAttributes(item: Instance): string?
+	local iconId = item:GetAttribute("IconId")
+	if typeof(iconId) == "number" and iconId > 0 then
+		return "rbxassetid://" .. iconId
+	end
+	return nil
+end
+
+local function buildCatalog()
+	local list = {}
+	for _, item in ipairs(shopFolder:GetChildren()) do
+		-- Krev unik Name per vare
+		local price = tonumber(item:GetAttribute("Price")) or 0
+		if price > 0 then
+			table.insert(list, {
+				id = item.Name, -- må være unik
+				displayName = item:GetAttribute("DisplayName") or item.Name,
+				price = price,
+				icon = getIconFromAttributes(item),
+				type = guessItemType(item),
+				oneTime = item:GetAttribute("OneTime") == true,
+			})
+		end
+	end
+	table.sort(list, function(a,b) return a.price < b.price end)
+	return list
+end
+
+local function alreadyOwned(player: Player, itemId: string): boolean
+	local owned = ensureOwnedFolder(player)
+	return owned:FindFirstChild(itemId) ~= nil
+end
+
+local function markOwned(player: Player, itemId: string)
+	local owned = ensureOwnedFolder(player)
+	if not owned:FindFirstChild(itemId) then
+		local flag = Instance.new("BoolValue")
+		flag.Name = itemId
+		flag.Value = true
+		flag.Parent = owned
+	end
+end
+
+local function giveItem(player: Player, template: Instance, itemType: string)
+	local character = player.Character
+	if itemType == "Tool" then
+		local clone = template:Clone()
+		clone.Parent = player:WaitForChild("Backpack")
+		return true, "Levert til ryggsekken."
+	elseif itemType == "Accessory" then
+		local clone = template:Clone()
+		local char = character or player.CharacterAdded:Wait()
+		local hum = char:WaitForChild("Humanoid")
+		-- Accessory må være Accessory
+		if clone:IsA("Accessory") then
+			hum:AddAccessory(clone)
+			return true, "Tilbehør utstyrt."
+		else
+			clone:Destroy()
+			return false, "Varen er ikke en Accessory."
+		end
+	elseif itemType == "Model" then
+		local clone = template:Clone()
+		local char = character or player.CharacterAdded:Wait()
+		local root = char:WaitForChild("HumanoidRootPart")
+		local putCF = root.CFrame * CFrame.new(0, 0, -4)
+		if clone.PrimaryPart == nil then
+			-- Prøv å sette PrimaryPart automatisk
+			for _, p in ipairs(clone:GetDescendants()) do
+				if p:IsA("BasePart") then
+					clone.PrimaryPart = p
+					break
+				end
+			end
+		end
+		if clone.PrimaryPart then
+			clone:PivotTo(putCF)
+		end
+		clone.Parent = workspace
+		return true, "Plassert foran spilleren."
+	else
+		return false, "Ukjent varetype."
+	end
+end
+
+-- === REMOTES ===
+getCatalog.OnServerInvoke = function(player: Player)
+	-- Kan legge på tilgangskontroll her om ønskelig
+	return buildCatalog()
+end
+
+purchaseFn.OnServerInvoke = function(player: Player, itemId: string)
+	if typeof(itemId) ~= "string" then
+		return { ok = false, message = "Ugyldig forespørsel." }
+	end
+
+	local template = shopFolder:FindFirstChild(itemId)
+	if not template then
+		return { ok = false, message = "Varen finnes ikke." }
+	end
+
+	local price = tonumber(template:GetAttribute("Price")) or 0
+	if price <= 0 then
+		return { ok = false, message = "Varen mangler pris." }
+	end
+
+	local oneTime = template:GetAttribute("OneTime") == true
+	if oneTime and alreadyOwned(player, itemId) then
+		return { ok = false, message = "Du eier allerede denne varen." }
+	end
+
+	local coins = getWalletCoins(player)
+	if not coins then
+		return { ok = false, message = "Fant ikke mynter hos spilleren." }
+	end
+
+	if coins.Value < price then
+		return { ok = false, message = "For lite Coins." }
+	end
+
+	-- Trekk og gi vare (transaksjon)
+	coins.Value -= price
+
+	local itemType = guessItemType(template)
+	local ok, msg = giveItem(player, template, itemType)
+	if not ok then
+		-- Rull tilbake coins om utdeling feiler
+		coins.Value += price
+		return { ok = false, message = "Kunne ikke levere: " .. (msg or "Ukjent feil") }
+	end
+
+	if oneTime then
+		markOwned(player, itemId)
+	end
+
+	return { ok = true, message = ("Kjøpt %s for %d Coins. %s"):format(template.Name, price, msg or "") }
+end
+
+-- Opprett OwnedItems for alle
+Players.PlayerAdded:Connect(function(plr)
+	ensureOwnedFolder(plr)
+end)

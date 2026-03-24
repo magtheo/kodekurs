@@ -1,0 +1,22 @@
+local Players = game:GetService("Players")
+
+local function ensureWallet(player)
+	local wallet = player:FindFirstChild("wallet")
+	if not wallet then
+		wallet = Instance.new("Folder")
+		wallet.Name = "wallet"
+		wallet.Parent = player
+	end
+
+	local coins = wallet:FindFirstChild("Coins")
+	if not coins then
+		coins = Instance.new("IntValue")
+		coins.Name = "coins"
+		coins.Value = 0
+		coins.Parent = wallet
+	end
+end
+
+Players.PlayerAdded:Connect(function(player)
+	ensureWallet(player)
+end)
